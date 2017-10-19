@@ -1,0 +1,15 @@
+<div class="overflow">
+  <h1>{{vm.error}}</h1>
+<div ng-repeat="item in vm.novice" class="media">
+    <div ng-show="vm.datum">{{item.publishedAt | date : 'dd MMMM yyyy HH mm ss Z'}}</div>
+    <div ng-show="vm.slika" class="media-left media-middle"> 
+      <a ng-href="{{item.url}}">
+        <img class="media-object" ng-src="{{item.urlToImage}}" alt="...">
+      </a>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading"><a ng-href="{{item.url}}">{{item.title}}</a> </h4>
+   <span ng-show="vm.opis" > {{item.description}}</span>
+    </div>
+  </div>
+</div>
