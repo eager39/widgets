@@ -3,20 +3,7 @@
       var app = angular.module('app', ['ngMessages', 'gridster', 'ngSanitize','angular.filter','googlechart']);
     
       app.run(function($rootScope, $http) {
-          /*
-        var json = 'http://ipv4.myexternalip.com/json';
-        $http.get(json).then(function(result) {
-            alert(result.data.ip);
-        }, function(e) {
-            alert("error");
-        });
-        */
-        app.filter('startFrom', function() {
-          return function(input, start) {
-              start = +start; //parse to int
-              return input.slice(start);
-          }
-        });
+    
         $http.get("template/php/preveriSejo.php")
           .then(function(odlicno) {
             if(odlicno.data != "gtfo") {
@@ -317,7 +304,7 @@
                  poraba.vrsta=vm.izberiVrsto.id;
                 alert(vm.znesek);
                  
-                
+            
                   // delo.push({delo:vm.choice[i],deadline:vm.choice2[i],level:1,id:vm.id})
                 //}
               //  console.log(delo);
@@ -330,18 +317,7 @@
                  }
                })
                .then(function(res) {
-    
-
-
-                
-
-
-
-
-
-
-
-                
+               
                vm.znesek="";
                vm.date="";
                vm.izberiVrsto.id="";
@@ -349,27 +325,7 @@
                 .then(function(res) {
                   $scope.myChartObject.data = res.data;
                   // POSODOBI PORABO
-                  $http.get("template/php/getAllPoraba.php")
-                  .then(function(res) {
-                    
-                    console.log(res.data);
-                    $rootScope.poraba=res.data;
-                    vm.currentPage = 0;
-                    vm.pageSize = 3;
-                    vm.stevilo=[];
-                   
-                     
-                      vm.pages= Math.ceil($rootScope.poraba.length/vm.pageSize);  
-                      for(var i=0;i<vm.pages;i++){
-                        vm.stevilo.push({
-                         id:i,
-                         text:i+1
-                      });        
-                      }         
-                        
-                    
                  
-                  }); 
                   //POSODOBI PORABO
 
                 });
