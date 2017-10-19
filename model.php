@@ -1,14 +1,11 @@
 <?php
+  include "baza.php"; 
 class DB {
-  
-  private $host = "localhost";
-  private $username = "zankr";
-  private $password = "krizanic";
-  private $db_name = "zankr";
+
   private $conn;
 
   function __construct() {
-    $this->conn = new mysqli($this->host, $this->username, $this->password, $this->db_name);
+    $this->conn = new mysqli(HOST, USERNAME, PASSWORD, DB_NAME);
   }
 
   function query($sql) {
