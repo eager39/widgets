@@ -22,7 +22,7 @@ background-repeat: no-repeat;
 	background-color: #FFCC00;
 	border:none;
 }
-#success_message{ display: none;}
+
 
 @media (min-width: 1200px) {
   #regForm {
@@ -38,12 +38,6 @@ margin-top:10px;
 }
 
 
-.kanta{
-	height: 400px;
-	width: 400px;
-display:absolute;
-	margin: auto;
-}
 
 #kraj{
 	text-align: left;
@@ -65,15 +59,8 @@ display: block;
 position: relative;
 top:50%;
 }
-.dodajKanta{
-	width:50%;
-	height:100%;
-	position: relative;
 
-}
-.dodajKanta input, .dodajKanta select{
-	width:80%;
-} 
+
 #vremeTab .glyphicon{
 	float:right;
 	margin:2px;
@@ -81,9 +68,7 @@ top:50%;
 #vremeTab{
 	padding-top: 15px;
 }
-.media-left{
-	
-}
+
 .media-left img{
 
 	width: 256px;

@@ -5,35 +5,51 @@
     <title></title>
 </head>
 <body>
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="?stran=index">Dashboard</a>
-            </div>
-            <div class="navbar-collapse collapse" id="navbar">
-                <!-- MENI ZAČETEK -->
-                <ul class="nav navbar-nav"></ul>
-                <ul class="nav navbar-nav navbar-right" ng-controller="NastavitveController as vm">
-                    <li>
-                        <a data-target="#nastavitveModal" data-toggle="modal" href="#" ng-click="vm.prikaziWidNast()"><i class="glyphicon glyphicon-cog"></i> Nastavitve</a>
-                    </li>
-                    <li ng-if="user"><span class="menu-item"><i class="glyphicon glyphicon-user"></i> {{user.user}}</span></li>
-                    <li ng-if="user">
-                        <a href="#" ng-click="vm.odjava()">Odjava</a>
-                    </li>
-                    <li ng-if="!user">
-                        <a data-target="#regLog" data-toggle="modal" href="#"><i class="glyphicon glyphicon-user"></i> Prijava</a>
-                    </li>
-                </ul>
-            </div><!-- MENI KONEC -->
-            <!--/.nav-collapse -->
-        </div>
-    </nav>
+    <div class="container">
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="?stran=index">Dashboard</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" ng-controller="NastavitveController as vm">
+            <li>
+                <a data-target="#nastavitveModal" data-toggle="modal" href="#" ng-click="vm.prikaziWidNast()"><i class="glyphicon glyphicon-cog"></i> Nastavitve</a>
+            </li>
+            <li ng-if="user"><span class="menu-item"><i class="glyphicon glyphicon-user"></i> {{user.user}}</span></li>
+            <li ng-if="user">
+                <a href="#" ng-click="vm.odjava()">Odjava</a>
+            </li>
+            <li ng-if="!user">
+                <a data-target="#regLog" data-toggle="modal" href="#"><i class="glyphicon glyphicon-user"></i> Prijava</a>
+            </li>
+        </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+    </div> 
+
+
+
+
     <div ng-controller="WidgetController as vm">
         <div gridster="gridsterOpts">
-            <ul>
+            
                 <li col="item.position[1]" dynamic-controller="{{item.controller}} as vm" gridster-item="" ng-hide="item.active == 0" ng-include='item.template' ng-repeat="item in widgets track by $index" row="item.position[0]" size-x="item.size.x" size-y="item.size.y" widget="{{item.id_widget}}"></li>
-            </ul>
+           
         </div>
     </div><!-- konec polja -->
     <div class="container">
