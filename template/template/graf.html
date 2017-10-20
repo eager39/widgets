@@ -1,4 +1,6 @@
 <span id="flip-icon" class="glyphicon glyphicon-trash" ng-click="vm.graf=!vm.graf;vm.allPoraba()"   aria-hidden="true"></span>
+<select class="form-control" id="zgoGraf" ng-change="vm.whenZgoSelected()" required ng-model="vm.izberiZgo" ng-options="x.mesec group by x.leto for x in vm.zgodovina">
+  </select>
 <div id="graf" ng-hide="vm.graf" >
 <div google-chart chart="myChartObject" style="height:100%; width:100%;"></div>
 

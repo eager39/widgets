@@ -230,23 +230,37 @@
         
         $http.get("template/php/getVrste.php")
         .then(function(res) {
-        
-      
-        
           vm.vrste=res.data;
-
-         
-          
+        });
+        $http.get("template/php/getGrafMonthAndYear.php")
+        .then(function(res) {
         
+         
+          vm.zgodovina=res.data;
+        console.log(res.data);
         
         });
         
 
    
 
-
-
-
+        vm.whenZgoSelected = function (){
+          alert(vm.izberiZgo.mesec_id);
+          $http.get("template/php/test.php?id=5")
+          .then(function(res) {
+          
+           
+            if(res.data!="vnesi podatke"){
+            $scope.myChartObject.data = res.data;
+            console.log(res.data);
+            }else{
+              $scope.myChartObject.data = [["ni podatkov","ni podatkov"]];
+            }
+            
+          
+          
+          });
+        };
 
 
 
@@ -257,7 +271,7 @@
          
           if(res.data!="vnesi podatke"){
           $scope.myChartObject.data = res.data;
-          console.log(res.data);
+          console.log(res);
           }else{
             $scope.myChartObject.data = [["ni podatkov","ni podatkov"]];
           }
