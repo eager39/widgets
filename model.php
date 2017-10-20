@@ -105,7 +105,7 @@ class userFunc
             }
         return $asd;
         }
-    function getPoraba($test)
+    function getPoraba($mesec,$leto)
         {
         session_start();
         $array = [];
@@ -120,9 +120,9 @@ class userFunc
                 'type' => 'number'
             ) ,
         );
-        if ($test != "")
+        if ($mesec != "")
             {
-            $q = $this->conn->query("SELECT SUM(znesek) as znesek,ime_vrste FROM poraba inner join vrsta on vrsta.id=poraba.vrsta where poraba_list=(SELECT id FROM poraba_list WHERE user='$_SESSION[id]') and used=0 and year(datum) =year(now()) and month(datum)=month(now()) GROUP BY vrsta");
+            $q = $this->conn->query("SELECT SUM(znesek) as znesek,ime_vrste FROM poraba inner join vrsta on vrsta.id=poraba.vrsta where poraba_list=(SELECT id FROM poraba_list WHERE user='$_SESSION[id]') and used=0 and year(datum) =$leto and month(datum)=$mesec GROUP BY vrsta");
             }
         else
             {

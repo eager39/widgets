@@ -245,8 +245,8 @@
    
 
         vm.whenZgoSelected = function (){
-          alert(vm.izberiZgo.mesec_id);
-          $http.get("template/php/test.php?id=5")
+         
+          $http.get("template/php/test.php?mesec="+vm.izberiZgo.mesec_id+"&leto="+vm.izberiZgo.leto)
           .then(function(res) {
           
            
