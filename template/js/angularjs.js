@@ -294,7 +294,7 @@
     
         $scope.myChartObject.options = {
             'title': 'Poraba',
-            prefix: '$',
+            
             backgroundColor: 'transparent'
         };
         
@@ -718,6 +718,10 @@
           })
           .then(function(res) {
           alert(res.data);
+
+          location.reload();
+
+
           //  alert("Podatki so bili uspešno izbrisani!");
           });
 

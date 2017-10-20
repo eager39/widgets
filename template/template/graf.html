@@ -1,5 +1,6 @@
 <span id="flip-icon" class="glyphicon glyphicon-trash" ng-click="vm.graf=!vm.graf;vm.allPoraba()"   aria-hidden="true"></span>
 <select class="form-control" id="zgoGraf" ng-change="vm.whenZgoSelected()" required ng-model="vm.izberiZgo" ng-options="x.mesec group by x.leto for x in vm.zgodovina">
+   
   </select>
 <div id="graf" ng-hide="vm.graf" >
 <div google-chart chart="myChartObject" style="height:100%; width:100%;"></div>
@@ -9,6 +10,7 @@
       <input  class="form-control" required type="text"  ng-model="vm.znesek" name="znesek" placeholder="Vnesi znesek"> 
       <input class="form-control" required type="date"  ng-model="vm.date" name="datum">
       <select class="form-control" required ng-model="vm.izberiVrsto" ng-options="x.ime_vrste for x in vm.vrste">
+        
       </select>
      
   </ng-form>

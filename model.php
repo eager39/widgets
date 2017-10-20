@@ -153,10 +153,15 @@ class userFunc
           session_start();
         $array = [];
         $q = $this->conn->query("SELECT DISTINCT DATE_FORMAT(`datum`,'%M')  as mesec, year(datum) as leto,month(datum) as mesec_id FROM `poraba` where poraba_list=(SELECT id FROM poraba_list WHERE user='$_SESSION[id]') and used=0  GROUP BY `datum`");
+        $array[]= (object) ['mesec' =>"Trenutni mesec",'leto'=>date('Y'),"mesec_id"=>date('m')];
         while ($row = mysqli_fetch_assoc($q))
             {
             $array[] = $row;
+            
             }
+            
+           
+            
         return $array;
         }
     function resetPoraba()
