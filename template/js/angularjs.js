@@ -138,7 +138,7 @@
           $http({
               method: "POST",
               url: "template/php/widgetupdate.php",
-              data: "asd=" + JSON.stringify(vm.widgetdata),
+              data: "asd=" + JSON.stringify($rootScope.widgets),
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
               }
