@@ -224,10 +224,10 @@
         }
       });
 
-      app.controller("GrafWidgetController", function($http, $rootScope,$scope,$timeout) {
+      app.controller("GrafWidgetController", function($http, $rootScope,$scope,$timeout,$filter) {
         var vm = this;
         var skup=[];
-        
+       
         $http.get("template/php/getVrste.php")
         .then(function(res) {
           vm.vrste=res.data;
@@ -238,6 +238,7 @@
          
           vm.zgodovina=res.data;
         console.log(res.data);
+       
         
         });
         
@@ -248,6 +249,12 @@
          
           $http.get("template/php/test.php?mesec="+vm.izberiZgo.mesec_id+"&leto="+vm.izberiZgo.leto)
           .then(function(res) {
+            $scope.myChartObject.options = {
+              'title':"Poraba za mesec "+ vm.izberiZgo.mesec+" " + vm.izberiZgo.leto,
+              
+            backgroundColor: 'transparent'
+              
+          };
           
            
             if(res.data!="vnesi podatke"){
@@ -291,9 +298,13 @@
         ];
     
        
-    
+        var mesec=new Date();
+        var leto=new Date();
+        mesec = $filter('date')( mesec,'MMMM');
+        leto = $filter('date')( leto,'yyyy');
+        
         $scope.myChartObject.options = {
-            'title': 'Poraba',
+            'title':"Poraba za mesec "+ mesec+" "+leto,
             
             backgroundColor: 'transparent'
         };

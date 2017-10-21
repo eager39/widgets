@@ -153,7 +153,13 @@ class userFunc
           session_start();
         $array = [];
         $q = $this->conn->query("SELECT DISTINCT DATE_FORMAT(`datum`,'%M')  as mesec, year(datum) as leto,month(datum) as mesec_id FROM `poraba` where poraba_list=(SELECT id FROM poraba_list WHERE user='$_SESSION[id]') and used=0  GROUP BY `datum`");
-        $array[]= (object) ['mesec' =>"Trenutni mesec",'leto'=>date('Y'),"mesec_id"=>date('m')];
+       // $array[]= (object) ['mesec' =>"Trenutni mesec",'leto'=>date('Y'),"mesec_id"=>date('m')];
+        $test= new stdClass();
+        $test->custom="Trenutni mesec";
+        $test->leto=date('Y');
+        $test->mesec_id=date('m');
+        $test->mesec=date('F');
+        $array[]=$test;
         while ($row = mysqli_fetch_assoc($q))
             {
             $array[] = $row;
@@ -166,7 +172,8 @@ class userFunc
         }
     function resetPoraba()
         {
-        return $this->conn->query("UPDATE poraba SET used=0  WHERE poraba_list=(SELECT id FROM poraba_list WHERE user='76')");
+            session_start();
+        return $this->conn->query("UPDATE poraba SET used=0  WHERE poraba_list=(SELECT id FROM poraba_list WHERE user='$_SESSION[id]')");
         }
     function widgetConfig($widget_id, $userid)
         {

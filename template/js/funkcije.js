@@ -6,7 +6,7 @@ $(document).ready(function(){
 	
 	$('[data-toggle="tooltip"]').tooltip();
 	$("body").niceScroll();
-	$(".gridster-item").niceScroll();
+	$(".gridster-item").hide();
 /*	$(".navbar").css("opacity", "0");
 
 	var timer;
