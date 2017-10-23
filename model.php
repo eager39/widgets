@@ -217,9 +217,25 @@ class userFunc
             }
         return $array;
         }
+        function getDogodek($id,$mesec)
+        {
+        $array = [];
+        
+        $q = $this->conn->query("SELECT * FROM events  where widget='$id' and start_date >= now() and month(start_date)= $mesec  order by start_date desc");
+        //$q = $this->conn->query("SELECT * FROM widgets inner join todo on widgets.id_widget = todo.widget  where id_widget='$id' and user=". $_SESSION['id']);
+        while ($row = mysqli_fetch_object($q))
+            {
+            array_push($array, $row);
+            }
+        return $array;
+        }
     function addTodo($delo)
         {
         return $this->conn->query("INSERT INTO todo (delo,deadline,level,widget,done) values ('$delo->delo','$delo->deadline','$delo->level','$delo->id',0)");
+        }
+        function addDogodek($dogodek)
+        {
+        return $this->conn->query("INSERT INTO events (title,event_opis,start_date,widget) values ('$dogodek->title','$dogodek->opis','$dogodek->start','$dogodek->id')");
         }
     function addPoraba($poraba)
         {

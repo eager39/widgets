@@ -583,6 +583,106 @@
 
 
         });
+        app.controller("EventWidgetController", function($http, $attrs, $rootScope,$scope,$filter,todoUntil) {
+
+          var vm = this;
+          vm.editEnabled = false;
+          
+          vm.id=$attrs.widget;
+          var mesec=new Date();
+          mesec = $filter('date')( mesec,'MM');
+     
+          $http.get("template/php/getDogodki.php?id="+vm.id+"&mesec="+mesec)
+          .then(function(res) {
+            vm.dogodki = res.data;
+         
+          
+          });
+          
+        
+         
+  
+          vm.edit = function() {
+            if(vm.editEnabled) {
+              vm.editEnabled = false;
+            } else {
+              vm.editEnabled = true;
+            }
+          }
+  
+          vm.shraniDogodek = function(dogodek){
+           
+              var dogodek={};
+        
+                 //for(var i=0;i<choices.length;i++){
+                  
+                   // delo[i]["delo"]=vm.choice[i];
+                  //  delo[i]["cas"]=vm.choice2[i];
+                  dogodek.title=vm.title;
+                  dogodek.opis=vm.opis;
+                  dogodek.id=vm.id; 
+                  dogodek.start=vm.start; 
+             
+                   // delo.push({delo:vm.choice[i],deadline:vm.choice2[i],level:1,id:vm.id})
+                 //}
+               //  console.log(delo);
+               
+                 $http({
+                  method: "POST",
+                  url: "template/php/addDogodek.php",
+                  data: "dogodek=" + JSON.stringify(dogodek),
+                  headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                  }
+                })
+                .then(function(res) {
+                  
+  
+                  $http.get("template/php/getDogodki.php?id="+vm.id+"&mesec="+mesec)
+                  .then(function(res) {
+                    vm.dogodki = res.data;
+                    dogodek.title=null;
+                    dogodek.opis=null;
+                  
+                    dogodek.start=null; 
+
+                  }); //good old copy paste
+                  
+        
+                });
+                
+             
+         
+          };
+          vm.deleteDogodek = function (todo) {
+  /*
+          $http({
+              method: "POST",
+              url: "template/php/deleteDogodek.php",
+              data: "id=" + dogodek.id,
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              }
+            })
+            .then(function (res) {
+              $http.get("template/php/getDogodki.php?id="+vm.id+"&mesec"+mesec)
+              .then(function(res) {
+                vm.dogodki = res.data;
+                dogodek.title=null;
+                dogodek.opis=null;
+                dogodek.kraj=null;
+                dogodek.start=null; 
+                dogodek.length=null;
+               
+              }); //good old copy paste
+            });*/
+          };
+  
+     
+  
+  
+          });
+          
         
      
     
