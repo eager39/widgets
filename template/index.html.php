@@ -322,6 +322,8 @@
                                         vc-recaptcha
                                         key="'6LdW2jUUAAAAAJZxrQHMJiIYot5ge4La96eZIoxn'"
                                         ng-model="vm.captchaRes"
+                                        on-create="setWidgetId(widgetId)"
+                                        
                                     ></div>
                                             <button class="btn btn-default" ng-disabled="vm.error || prijava.$invalid" type="submit">Prijava</button>
                                         </div>

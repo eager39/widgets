@@ -95,21 +95,14 @@
         };
         vm.captchaRes="";
         vm.prijava = function() {
-          var secret="6LdW2jUUAAAAABuJKTcn1gHXka5bY-UxtbvyPKSm";
+      
          
          alert(vm.captchaRes);
          if(vm.captchaRes!=""){
-           
-          $http({
-            method: "POST",
-            url: "https://www.google.com/recaptcha/api/siteverify",
-            data:"secret=" + secret + "&response=" + vm.captchaRes,
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
-          })
+          $http.get("template/php/preveriCaptcho.php?response="+vm.captchaRes)
           .then(function(res) {
-            if(res.data.success=="true"){
+        
+            if(res.data.success){
 
               $http({
                 method: "POST",
@@ -128,8 +121,10 @@
                 } else {
                   if(res.data == "3"){
                     vm.error="Uporabnik ne obstaja!";
+                    vcRecaptchaService.reload();
                   }else{
                     vm.error="Napačno geslo!"
+                    vcRecaptchaService.reload();
                   }
                  
                 }
@@ -138,6 +133,7 @@
 
             }else{
               vm.error="wrong captcha";
+              vcRecaptchaService.reload();
             }
   
           });
