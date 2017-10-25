@@ -315,9 +315,17 @@
                                         <div class="alert alert-success" id="uspesnoReg" style="display:none;">
                                             Registracija je bila uspešna! Zdaj se lahko prijavite.
                                         </div>
+                                      
                                         <div class="modal-footer">
-                                            <button class="btn btn-default" ng-disabled="vm.error" type="submit">Prijava</button>
+                                        <div
+                                       
+                                        vc-recaptcha
+                                        key="'6LdW2jUUAAAAAJZxrQHMJiIYot5ge4La96eZIoxn'"
+                                        ng-model="vm.captchaRes"
+                                    ></div>
+                                            <button class="btn btn-default" ng-disabled="vm.error || prijava.$invalid" type="submit">Prijava</button>
                                         </div>
+                                      
                                     </form>
                                 </div><!-- KONEC TAB PRIJAVA -->
                             </div>

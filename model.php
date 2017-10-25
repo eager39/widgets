@@ -1,5 +1,5 @@
-<?php
-include "baza.php";
+﻿<?php
+include ("baza.php");
 class DB
     {
     private $conn;
@@ -32,33 +32,34 @@ class userFunc
             }
         else
             {
-            echo $email;
+           
             $this->conn->query("INSERT INTO users (email,password,created,active) VALUES ('$email','$password',now(),'1')");
             return $this->conn->query("INSERT INTO poraba_list (user) SELECT id_user FROM users WHERE email='$email'");
             }
         }
-    function prijava($email, $password)
+    function prijava($email,$password)
         {
+            session_start();
         $q = $this->conn->query("SELECT * FROM users WHERE email='$email'");
         if (mysqli_num_rows($q) == 1)
             {
-            session_start();
+            
             $row = mysqli_fetch_object($q);
-            $preveri = password_verify($password, $row->password);
+            $preveri = password_verify($password,$row->password);
             if ($preveri)
                 {
                 $_SESSION['id'] = $row->id_user;
                 $_SESSION['user'] = $row->email;
-                return true;
+               return 1;
                 }
             else
                 {
-                echo "!pass";
+                return 2;
                 }
             }
         else
             {
-            echo "!user";
+           return 3;
             }
         }
     function widgetinit()

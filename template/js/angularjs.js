@@ -1,6 +1,6 @@
 (function() {
     
-      var app = angular.module('app', ['ngMessages', 'gridster', 'ngSanitize','angular.filter','googlechart']);
+      var app = angular.module('app', ['ngMessages', 'gridster', 'ngSanitize','angular.filter','googlechart','vcRecaptcha']);
     
       app.run(function($rootScope, $http) {
     
@@ -48,7 +48,7 @@
           }
     });
     
-      app.controller("LoginRegisterController", function($http, $rootScope, $timeout) {
+      app.controller("LoginRegisterController", function($http, $rootScope, $timeout,$scope,vcRecaptchaService) {
         var vm = this;
         vm.nomatch=false;
 
@@ -93,30 +93,59 @@
             vm.neuspeh = true;
           }
         };
-    
+        vm.captchaRes="";
         vm.prijava = function() {
+          var secret="6LdW2jUUAAAAABuJKTcn1gHXka5bY-UxtbvyPKSm";
+         
+         alert(vm.captchaRes);
+         if(vm.captchaRes!=""){
+           
           $http({
-              method: "POST",
-              url: "template/php/prijava.php",
-              data: "email=" + vm.email + "&password=" + vm.password,
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-              }
-            })
-            .then(function(res) {
-              if(res.data!="!user" && res.data != "!pass") {
-                $rootScope.user = res.data;
-                location.reload();
-              } else {
-                if(res.data=="!user"){
-                  vm.error="Uporabnik ne obstaja!";
-                }else{
-                  vm.error="Napačno geslo!"
+            method: "POST",
+            url: "https://www.google.com/recaptcha/api/siteverify",
+            data:"secret=" + secret + "&response=" + vm.captchaRes,
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          })
+          .then(function(res) {
+            if(res.data.success=="true"){
+
+              $http({
+                method: "POST",
+                url: "template/php/prijava.php",
+                data:"email=" + vm.email + "&password=" + vm.password,
+                headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded'
                 }
-               
-              }
-    
-            });
+              })
+              .then(function(res) {
+  
+                
+                if(res.data == "1") {
+                  $rootScope.user = res.data;
+                  location.reload();
+                } else {
+                  if(res.data == "3"){
+                    vm.error="Uporabnik ne obstaja!";
+                  }else{
+                    vm.error="Napačno geslo!"
+                  }
+                 
+                }
+      
+              });
+
+            }else{
+              vm.error="wrong captcha";
+            }
+  
+          });
+         }else{
+           vm.error="Reši captcho!";
+         }
+      
+         
         };
         vm.reset = function(){
           vm.error=null;
