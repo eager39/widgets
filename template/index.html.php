@@ -334,7 +334,7 @@
                             <div class="tab-pane fade" id="tab-regis">
                                 <!-- TAB REGISTRACIJA -->
                                 <div class="modalCon">
-                                    <form class="form-horizontal" id="register" name="regForm" ng-submit="vm.submit()" role="form">
+                                    <form class="form-horizontal" id="register" name="regForm" ng-submit="vm.registracija()" role="form">
                                         <div class="form-group" ng-class="{'has-error has-feedback': regForm.userEmail.$invalid && regForm.userEmail.$dirty, 'has-success has-feedback': regForm.userEmail.$valid}">
                                             <label class="control-label col-sm-3" for="email">E-Pošta:</label>
                                             <div class="col-sm-8">

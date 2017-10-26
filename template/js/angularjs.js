@@ -16,7 +16,7 @@
         
       });
 
-      app.service('todoUntil', function() {
+      app.service('todoUntil', function($http) {
       var vm=this;
         vm.Until = function (todo) {
           var one_day=1000*60*60*24;
@@ -45,9 +45,25 @@
            }
            return todo;
           }
+         
+    });
+    app.service('PostService', function($http) {
+      var vm=this;
+         vm.Post = function (url,data) {
+           
+             return $http({
+              method: "POST",
+              url: url,
+              data: data,
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              }
+            })
+            }
+
     });
     
-      app.controller("LoginRegisterController", function($http, $rootScope, $timeout,$scope,vcRecaptchaService) {
+      app.controller("LoginRegisterController", function($http, $rootScope, $timeout,$scope,vcRecaptchaService,PostService) {
         var vm = this;
         vm.nomatch=false;
         vm.captchaRes="";
@@ -63,7 +79,7 @@
          
           $scope.widgetId = widgetId;
       };
-        vm.submit = function() {
+        vm.registracija = function() {
 
 
           if(vm.captchaRes2!=""){
@@ -73,7 +89,7 @@
             if(res.data.success){
 
               if(vm.newPass == vm.confPass) {
-                
+                /*
                 $http({
                     method: "POST",
                     url: "template/php/registracija.php",
@@ -82,6 +98,10 @@
                       'Content-Type': 'application/x-www-form-urlencoded'
                     }
                   })
+                  */
+                  var url="template/php/registracija.php";
+                  var data="email=" + vm.email + "&password=" + vm.newPass + "&password2=" + vm.confPass;
+                  PostService.Post(url,data)
                   .then(function(res) {
                     if(res.data == "exist"){
                       vcRecaptchaService.reload(1);
@@ -129,14 +149,12 @@
 
         vm.prijava = function() {
       
-         
-         alert(vm.captchaRes);
          if(vm.captchaRes!=""){
           $http.get("template/php/preveriCaptcho.php?response="+vm.captchaRes)
           .then(function(res) {
         
             if(res.data.success){
-
+              /*
               $http({
                 method: "POST",
                 url: "template/php/prijava.php",
@@ -145,6 +163,10 @@
                   'Content-Type': 'application/x-www-form-urlencoded'
                 }
               })
+              */
+              var url="template/php/prijava.php";
+              var data="email=" + vm.email + "&password=" + vm.password;
+              PostService.Post(url,data)
               .then(function(res) {
   
                 
@@ -157,7 +179,7 @@
                     vcRecaptchaService.reload(0);
                   }else{
                     vm.error="Napačno geslo!"
-                    vcRecaptchaService.reload(0);
+                   vcRecaptchaService.reload(0);
                   }
                  
                 }
@@ -165,7 +187,9 @@
               });
 
             }else{
-              vm.error="wrong captcha";
+              
+              
+              vm.error=res.data["error-codes"][0];
               vcRecaptchaService.reload(0);
             }
   
@@ -182,7 +206,7 @@
     
       });
     
-      app.controller("WidgetController", function($http, $rootScope, $scope) {
+      app.controller("WidgetController", function($http, $rootScope, $scope,PostService) {
         var vm = this;
     
         $http.get("template/php/widgetinit.php")
@@ -192,7 +216,7 @@
           });
     
         function updateXYpos() {
- 
+ /*
           $http({
               method: "POST",
               url: "template/php/widgetupdate.php",
@@ -201,6 +225,10 @@
                 'Content-Type': 'application/x-www-form-urlencoded'
               }
             })
+            */
+            var url="template/php/widgetupdate.php";
+            var data="asd=" + JSON.stringify($rootScope.widgets);
+            PostService.Post(url,data)
             .then(function(res) {
               if(res.data != "error") {
     
@@ -282,7 +310,7 @@
         }
       });
 
-      app.controller("GrafWidgetController", function($http, $rootScope,$scope,$timeout,$filter) {
+      app.controller("GrafWidgetController", function($http, $rootScope,$scope,$timeout,$filter,PostService) {
         var vm = this;
         var skup=[];
        
@@ -391,6 +419,7 @@
                   // delo.push({delo:vm.choice[i],deadline:vm.choice2[i],level:1,id:vm.id})
                 //}
               //  console.log(delo);
+              /*
                 $http({
                  method: "POST",
                  url: "template/php/addPoraba.php",
@@ -399,6 +428,10 @@
                    'Content-Type': 'application/x-www-form-urlencoded'
                  }
                })
+               */
+              var url="template/php/addPoraba.php";
+              var data="poraba=" + JSON.stringify(poraba);
+              PostService.Post(url,data)
                .then(function(res) {
                
                vm.znesek="";
@@ -426,7 +459,7 @@
         };
 
         vm.delPoraba = function(item){
-          alert(item.id_poraba);
+          /*
           $http({
            method: "POST",
            url: "template/php/deletePoraba.php",
@@ -435,6 +468,10 @@
              'Content-Type': 'application/x-www-form-urlencoded'
            }
          })
+         */
+        var url="template/php/deletePoraba.php";
+        var data="id=" + item.id_poraba;
+        PostService.Post(url,data)
          .then(function(res) {
           if(res.data==1){
             alert("uspešno");
@@ -530,7 +567,7 @@
         }
       });
 
-      app.controller("TodoWidgetController", function($http, $attrs, $rootScope,$scope,$filter,todoUntil) {
+      app.controller("TodoWidgetController", function($http, $attrs, $rootScope,$scope,$filter,todoUntil,PostService) {
         var vm = this;
         vm.editEnabled = false;
         
@@ -571,6 +608,7 @@
                  // delo.push({delo:vm.choice[i],deadline:vm.choice2[i],level:1,id:vm.id})
                //}
              //  console.log(delo);
+             /*
                $http({
                 method: "POST",
                 url: "template/php/addTodo.php",
@@ -579,6 +617,10 @@
                   'Content-Type': 'application/x-www-form-urlencoded'
                 }
               })
+              */
+              var url="template/php/addTodo.php";
+              var data="delo=" + JSON.stringify(delo);
+              PostService.Post(url,data)
               .then(function(res) {
 
 
@@ -598,7 +640,7 @@
        
         };
         vm.deleteTodo = function (todo) {
-
+          /*
         $http({
             method: "POST",
             url: "template/php/deleteTodo.php",
@@ -607,6 +649,10 @@
               'Content-Type': 'application/x-www-form-urlencoded'
             }
           })
+          */
+          var url="template/php/deleteTodo.php";
+          var data="id=" + todo.id_todo;
+          PostService.Post(url,data)
           .then(function (res) {
             $http.get("template/php/getTodo.php?id=" + vm.id)
               .then(function (res) {
@@ -619,7 +665,7 @@
         };
 
         vm.doneTodo = function (todo) {
-          
+                /*
                   $http({
                       method: "POST",
                       url: "template/php/doneTodo.php",
@@ -628,6 +674,10 @@
                         'Content-Type': 'application/x-www-form-urlencoded'
                       }
                     })
+                    */
+                    var url="template/php/doneTodo.php";
+                    var data="id=" + todo.id_todo;
+                    PostService.Post(url,data)
                     .then(function (res) {
                       $http.get("template/php/getTodo.php?id=" + vm.id)
                         .then(function (res) {
@@ -641,7 +691,7 @@
 
 
         });
-        app.controller("EventWidgetController", function($http, $attrs, $rootScope,$scope,$filter,todoUntil) {
+        app.controller("EventWidgetController", function($http, $attrs, $rootScope,$scope,$filter,todoUntil,PostService) {
 
           var vm = this;
           vm.editEnabled = false;
@@ -684,7 +734,7 @@
                    // delo.push({delo:vm.choice[i],deadline:vm.choice2[i],level:1,id:vm.id})
                  //}
                //  console.log(delo);
-               
+               /*
                  $http({
                   method: "POST",
                   url: "template/php/addDogodek.php",
@@ -693,6 +743,10 @@
                     'Content-Type': 'application/x-www-form-urlencoded'
                   }
                 })
+                */
+                var url="template/php/addDogodek.php";
+                var data="dogodek=" + JSON.stringify(dogodek);
+                PostService.Post(url,data)
                 .then(function(res) {
                   
   
@@ -713,7 +767,7 @@
          
           };
           vm.deleteDogodek = function (dogodek) {
-  
+            /*
           $http({
               method: "POST",
               url: "template/php/deleteDogodek.php",
@@ -722,6 +776,10 @@
                 'Content-Type': 'application/x-www-form-urlencoded'
               }
             })
+            */
+            var url="template/php/deleteDogodek.php";
+            var data="id=" + dogodek.id_event;
+            PostService.Post(url,data)
             .then(function (res) {
               $http.get("template/php/getDogodki.php?id="+vm.id+"&mesec="+mesec)
               .then(function(res) {
@@ -744,7 +802,7 @@
         
      
     
-      app.controller("NastavitveController", function($http, $rootScope, $timeout,$filter) {
+      app.controller("NastavitveController", function($http, $rootScope, $timeout,$filter,PostService) {
         var vm = this;
         vm.buttonName = "Odkleni polje";
         vm.widgetTypes = [];
@@ -789,7 +847,7 @@
           widget.user = $rootScope.user.id;
           widget.widget_type = item.id;
           widget.imeWidget = vm.name;
-    
+          /*
           $http({
               method: "POST",
               url: "template/php/addWidget.php",
@@ -798,6 +856,10 @@
                 'Content-Type': 'application/x-www-form-urlencoded'
               }
             })
+            */
+            var url="template/php/addWidget.php";
+            var data="asd=" + JSON.stringify(widget);
+            PostService.Post(url,data)
             .then(function(res) {
               $http.get("template/php/widgetinit.php")
                 .then(function(res2) {
@@ -828,7 +890,7 @@
           widget.config = JSON.stringify(config);
           widget.imeWidget = vm.updateName;
           widget.id_widget = item.id_widget;
-    
+    /*
           $http({
               method: "POST",
               url: "template/php/updateWidgetConfig.php",
@@ -837,6 +899,10 @@
                 'Content-Type': 'application/x-www-form-urlencoded'
               }
             })
+            */
+            var url="template/php/updateWidgetConfig.php";
+            var data="asd=" + JSON.stringify(widget);
+            PostService.Post(url,data)
             .then(function(res) {
               $http.get("template/php/widgetinit.php")
                 .then(function(res2) {
@@ -848,7 +914,7 @@
         vm.deleteWidget = function(item) {
 
           if(confirm("Are you sure?")) {
-    
+            /*
             $http({
                 method: "POST",
                 url: "template/php/deleteWidget.php",
@@ -857,6 +923,10 @@
                   'Content-Type': 'application/x-www-form-urlencoded'
                 }
               })
+              */
+              var url="template/php/deleteWidget.php";
+              var data="id=" + item.id_widget + "&type=" + item.widget_type;
+              PostService.Post(url,data)
               .then(function(res) {
               
                 if(res) {
@@ -876,7 +946,7 @@
         };
         vm.reset = function(){
 
-
+          /*
           $http({
             method: "POST",
             url: "template/php/resetPoraba.php",
@@ -885,6 +955,10 @@
               'Content-Type': 'application/x-www-form-urlencoded'
             }
           })
+          */
+          var url="template/php/resetPoraba.php";
+          var data="id=" + $rootScope.user.id;
+          PostService.Post(url,data)
           .then(function(res) {
           alert(res.data);
 
@@ -928,6 +1002,7 @@
           } else {
             item.active = 1;
           }
+          /*
           $http({
               method: "POST",
               url: "template/php/widgetVisUpdate.php",
@@ -936,6 +1011,10 @@
                 'Content-Type': 'application/x-www-form-urlencoded'
               }
             })
+            */
+            var url="template/php/widgetVisUpdate.php";
+            var data="id=" + item.id_widget + "&active=" + item.active;
+            PostService.Post(url,data)
             .then(function(res) {
               if(res.data != "error") {
     
