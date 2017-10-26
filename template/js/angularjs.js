@@ -22,13 +22,12 @@
           var one_day=1000*60*60*24;
           var one_hour=1000*60*60;
           var one_minute=1000*60;
-          
+          vm.zdaj=new Date();
+          vm.zdaj=vm.zdaj.getTime();
+
           for(var i=0;i<todo.length;i++){
             vm.left=todo[i].deadline;
-            
-            vm.zdaj=new Date();
-            vm.zdaj=vm.zdaj.getTime();
-         
+
           vm.left=new Date(vm.left); 
           vm.left=vm.left.getTime();
      
