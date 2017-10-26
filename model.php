@@ -250,6 +250,10 @@ class userFunc
         {
         return $this->conn->query("UPDATE todo SET done=1  WHERE id_todo='$id'");
         }
+        function deleteDogodek($id)
+        {
+        return $this->conn->query("DELETE FROM events WHERE id_event='$id'");
+        }
     function widgetupdate($posX, $posY, $idwid, $height, $width)
         {
         return $this->conn->query("UPDATE widgets SET posX = '$posY', posY = '$posX', y = '$height' , x = '$width'   WHERE id_widget='$idwid'");

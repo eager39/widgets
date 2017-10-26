@@ -1,6 +1,14 @@
-<ul  class="list-group">
-	<li class="list-group-item list-group-item"  ng-repeat="dogodek in vm.dogodki"  id="dogodek.id">
-	  <label>{{dogodek.title}}</label> Ostane: {{dogodek.start}}<span class="glyphicon glyphicon-trash"  ng-click="vm.cancelDogodek(dogodek)" aria-hidden="true"></span>
+<ul  class="list-group dogodki">
+	<li class="list-group-item list-group-item"  ng-repeat="dogodek in vm.dogodki" data-toggle="tooltip" data-html="true" title="{{dogodek.event_opis}}"  id="dogodek.id">
+
+			<div class="bmd-list-group-col">
+					<span class="glyphicon glyphicon-trash"   ng-click="vm.deleteDogodek(dogodek)" aria-hidden="true"></span>
+					<p class="list-group-item-heading"><span class="glyphicon glyphicon-calendar"   aria-hidden="true"></span>{{dogodek.title}}</p>
+					
+					<p class="list-group-item-text">	<span class="	glyphicon glyphicon-time"   aria-hidden="true"></span>{{dogodek.start_date}}</p>
+				</div>
+
+	 
 	</li>
 	
 </ul>

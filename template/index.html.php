@@ -374,6 +374,9 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="alert alert-danger" ng-if="vm.error">
+                                            {{vm.error}}
+                                        </div>
                                         <div class="alert alert-danger" id="regNapaka" ng-show="vm.neuspeh">
                                             {{vm.neuspeh}}
                                         </div>
@@ -381,6 +384,14 @@
                                             Registracija je bila uspešna! Zdaj se lahko prijavite.
                                         </div>
                                         <div class="modal-footer">
+                                        <div
+                                       
+                                        vc-recaptcha
+                                        key="'6LdW2jUUAAAAAJZxrQHMJiIYot5ge4La96eZIoxn'"
+                                        ng-model="vm.captchaRes2"
+                                        on-create="setWidgetId(widgetId)"
+                                        
+                                    ></div>
                                             <button class="btn btn-default" ng-disabled="regForm.$invalid || vm.nomatch || vm.neuspeh" type="submit">Registracija</button>
                                         </div>
                                     </form>

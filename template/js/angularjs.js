@@ -51,7 +51,7 @@
       app.controller("LoginRegisterController", function($http, $rootScope, $timeout,$scope,vcRecaptchaService) {
         var vm = this;
         vm.nomatch=false;
-
+        vm.captchaRes="";
         vm.checkpass = function(){
           vm.neuspeh=null;
           if(vm.newPass == vm.confPass) {
@@ -60,40 +60,74 @@
             vm.nomatch=true;
           }
         }
+        $scope.setWidgetId = function (widgetId) {
+         
+          $scope.widgetId = widgetId;
+      };
         vm.submit = function() {
-          if(vm.newPass == vm.confPass) {
-            
-            $http({
-                method: "POST",
-                url: "template/php/registracija.php",
-                data: "email=" + vm.email + "&password=" + vm.newPass + "&password2=" + vm.confPass,
-                headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded'
-                }
-              })
-              .then(function(res) {
-                if(res.data == "exist"){
-                  vm.neuspeh="Uporabnik s to e-pošto že obstaja!";
-                }else if(res.data) {
+
+
+          if(vm.captchaRes2!=""){
+          $http.get("template/php/preveriCaptcho.php?response="+vm.captchaRes2)
+          .then(function(res) {
+        
+            if(res.data.success){
+
+              if(vm.newPass == vm.confPass) {
                 
-                  vm.neuspeh = false;
-                  vm.uspeh = true;
-                  $timeout(function() {
-                    angular.element('#prijavaTab')
-                      .trigger('click');
-    
-                  }, 1000);
-                } else {
-                  vm.neuspeh = true;
-                 
-                }
-              });
-          } else {
-            vm.uspeh = false;
-            vm.neuspeh = true;
-          }
+                $http({
+                    method: "POST",
+                    url: "template/php/registracija.php",
+                    data: "email=" + vm.email + "&password=" + vm.newPass + "&password2=" + vm.confPass,
+                    headers: {
+                      'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                  })
+                  .then(function(res) {
+                    if(res.data == "exist"){
+                      vcRecaptchaService.reload(1);
+                      alert("reset PLS");
+                      vm.neuspeh="Uporabnik s to e-pošto že obstaja!";
+                   
+                    }else if(res.data) {
+                    
+                      vm.neuspeh = false;
+                      vm.uspeh = true;
+                      vcRecaptchaService.reload(1);
+                      $timeout(function() {
+                        angular.element('#prijavaTab')
+                          .trigger('click');
+        
+                      }, 1000);
+                    } else {
+                      vm.neuspeh = true;
+                      vcRecaptchaService.reload(1);
+                    }
+                  });
+              } else {
+                vm.uspeh = false;
+                vm.neuspeh = true;
+                vcRecaptchaService.reload(1);
+              }
+            }else{
+              vm.error="wrong captcha";
+              vcRecaptchaService.reload(1);
+            }
+
+
+
+          });
+
+
+
+        }else{
+          vm.error="Reši captcho!";
+        }
+
+       
         };
-        vm.captchaRes="";
+        
+
         vm.prijava = function() {
       
          
@@ -121,10 +155,10 @@
                 } else {
                   if(res.data == "3"){
                     vm.error="Uporabnik ne obstaja!";
-                    vcRecaptchaService.reload();
+                    vcRecaptchaService.reload(0);
                   }else{
                     vm.error="Napačno geslo!"
-                    vcRecaptchaService.reload();
+                    vcRecaptchaService.reload(0);
                   }
                  
                 }
@@ -133,7 +167,7 @@
 
             }else{
               vm.error="wrong captcha";
-              vcRecaptchaService.reload();
+              vcRecaptchaService.reload(0);
             }
   
           });
@@ -679,28 +713,28 @@
              
          
           };
-          vm.deleteDogodek = function (todo) {
-  /*
+          vm.deleteDogodek = function (dogodek) {
+  
           $http({
               method: "POST",
               url: "template/php/deleteDogodek.php",
-              data: "id=" + dogodek.id,
+              data: "id=" + dogodek.id_event,
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
               }
             })
             .then(function (res) {
-              $http.get("template/php/getDogodki.php?id="+vm.id+"&mesec"+mesec)
+              $http.get("template/php/getDogodki.php?id="+vm.id+"&mesec="+mesec)
               .then(function(res) {
                 vm.dogodki = res.data;
                 dogodek.title=null;
                 dogodek.opis=null;
-                dogodek.kraj=null;
+              
                 dogodek.start=null; 
-                dogodek.length=null;
+               
                
               }); //good old copy paste
-            });*/
+            });
           };
   
      

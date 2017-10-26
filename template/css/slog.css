@@ -89,6 +89,21 @@ top:50%;
 	float:right;
 	font-size: 25px;
 }
+.dogodki .glyphicon-trash{
+	float:right;
+	font-size: 25px;
+	line-height: 50px;
+}
+.dogodki .glyphicon-time{
+	
+	font-size: 25px;
+	margin-right: 5px;
+}
+.dogodki .glyphicon-calendar{
+	
+	font-size: 25px;
+	margin-right: 5px;
+}
 #plus-icon{
 	height: 35px;
 	width: 35px;
