@@ -33,8 +33,8 @@ class userFunc
         else
             {
            
-            $this->conn->query("INSERT INTO users (email,password,created,active) VALUES ('$email','$password',now(),'1')");
-            return $this->conn->query("INSERT INTO poraba_list (user) SELECT id_user FROM users WHERE email='$email'");
+          return $this->conn->query("INSERT INTO users (email,password,created,active) VALUES ('$email','$password',now(),'1')");
+            
             }
         }
     function prijava($email,$password)
@@ -106,7 +106,7 @@ class userFunc
             }
         return $asd;
         }
-    function getPoraba($mesec,$leto)
+    function getPoraba($mesec,$leto,$widget,$tMesec)
         {
         session_start();
         $array = [];
@@ -123,11 +123,11 @@ class userFunc
         );
         if ($mesec != "")
             {
-            $q = $this->conn->query("SELECT SUM(znesek) as znesek,ime_vrste FROM poraba inner join vrsta on vrsta.id=poraba.vrsta where poraba_list=(SELECT id FROM poraba_list WHERE user='$_SESSION[id]') and used=0 and year(datum) =$leto and month(datum)=$mesec GROUP BY vrsta");
+            $q = $this->conn->query("SELECT SUM(znesek) as znesek,ime_vrste FROM poraba inner join vrsta on vrsta.id=poraba.vrsta INNER JOIN poraba_list on poraba_list.id=poraba.poraba_list where widget='$widget'  and year(datum) =$leto and month(datum)=$mesec GROUP BY vrsta");
             }
         else
             {
-            $q = $this->conn->query("SELECT SUM(znesek) as znesek,ime_vrste FROM poraba inner join vrsta on vrsta.id=poraba.vrsta where poraba_list=(SELECT id FROM poraba_list WHERE user='$_SESSION[id]') and used=1  GROUP BY vrsta");
+            $q = $this->conn->query("SELECT SUM(znesek) as znesek,ime_vrste FROM poraba inner join vrsta on vrsta.id=poraba.vrsta  INNER JOIN poraba_list on poraba_list.id=poraba.poraba_list  where widget='$widget' and month(datum)='$tMesec'  GROUP BY vrsta");
             }
         while ($row = mysqli_fetch_array($q))
             {
@@ -149,18 +149,18 @@ class userFunc
             }
         return $jsonTable;
         }
-        function getGrafMonthandYear()
+        function getGrafMonthandYear($widget)
         {
           session_start();
         $array = [];
-        $q = $this->conn->query("SELECT DISTINCT DATE_FORMAT(`datum`,'%M')  as mesec, year(datum) as leto,month(datum) as mesec_id FROM `poraba` where poraba_list=(SELECT id FROM poraba_list WHERE user='$_SESSION[id]') and used=0  GROUP BY `datum`");
+        $q = $this->conn->query("SELECT DISTINCT DATE_FORMAT(`datum`,'%M')  as mesec, year(datum) as leto,month(datum) as mesec_id FROM `poraba` INNER JOIN poraba_list on poraba_list.id=poraba.poraba_list where poraba_list.widget='$widget'  GROUP BY `datum`");
        // $array[]= (object) ['mesec' =>"Trenutni mesec",'leto'=>date('Y'),"mesec_id"=>date('m')];
         $test= new stdClass();
         $test->custom="Trenutni mesec";
         $test->leto=date('Y');
         $test->mesec_id=date('m');
         $test->mesec=date('F');
-        $array[]=$test;
+       // $array[]=$test;
         while ($row = mysqli_fetch_assoc($q))
             {
             $array[] = $row;
@@ -240,7 +240,7 @@ class userFunc
         }
     function addPoraba($poraba)
         {
-        return $this->conn->query("insert into poraba (znesek,poraba_list,vrsta,datum,used) SELECT '$poraba->znesek',id,'$poraba->vrsta','$poraba->datum',1 FROM poraba_list WHERE user='$poraba->user 'limit 1");
+        return $this->conn->query("insert into poraba (znesek,poraba_list,vrsta,datum,used) SELECT '$poraba->znesek',id,'$poraba->vrsta','$poraba->datum',1 FROM poraba_list WHERE widget='$poraba->widget 'limit 1");
         }
     function deleteTodo($id)
         {
@@ -322,7 +322,11 @@ class userFunc
         }
     function addWidget($widget)
         {
-        return $this->conn->query("INSERT INTO widgets (ImeWidget,active,user,widget_type,posX,posY,config) values ('$widget->imeWidget','$widget->active','$widget->user','$widget->widget_type','$widget->posX','$widget->posY','$widget->config')");
+           
+        echo $this->conn->query("INSERT INTO widgets (ImeWidget,active,user,widget_type,posX,posY,config) values ('$widget->imeWidget','$widget->active','$widget->user','$widget->widget_type','$widget->posX','$widget->posY','$widget->config')");
+        if($widget->widget_type=9){
+            return   $this->conn->query("INSERT INTO poraba_list (widget) SELECT id_widget FROM widgets WHERE user='$widget->user' ORDER BY id_widget DESC LIMIT 1");
         }
+    }
     }
 ?>

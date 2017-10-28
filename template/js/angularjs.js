@@ -309,15 +309,17 @@
     }
   });
 
-  app.controller("GrafWidgetController", function ($http, $rootScope, $scope, $timeout, $filter, PostService) {
+  app.controller("GrafWidgetController", function ($http,$attrs, $rootScope, $scope, $timeout, $filter, PostService) {
     var vm = this;
     var skup = [];
-
+    vm.widget=$attrs.widget;
+    var mesec = new Date();
+    console.log(vm.widget);
     $http.get("template/php/getVrste.php")
       .then(function (res) {
         vm.vrste = res.data;
       });
-    $http.get("template/php/getGrafMonthAndYear.php")
+    $http.get("template/php/getGrafMonthAndYear.php?widget="+vm.widget)
       .then(function (res) {
 
 
@@ -328,11 +330,11 @@
       });
 
 
-
+      var trenutniMesec = $filter('date')(mesec, 'MM');
 
     vm.whenZgoSelected = function () {
 
-      $http.get("template/php/test.php?mesec=" + vm.izberiZgo.mesec_id + "&leto=" + vm.izberiZgo.leto)
+      $http.get("template/php/test.php?mesec=" + vm.izberiZgo.mesec_id + "&leto=" + vm.izberiZgo.leto + "&widget="+vm.widget+"&tMesec="+trenutniMesec)
         .then(function (res) {
           $scope.myChartObject.options = {
             'title': "Poraba za mesec " + vm.izberiZgo.mesec + " " + vm.izberiZgo.leto,
@@ -357,9 +359,9 @@
     };
 
 
-
-
-    $http.get("template/php/test.php")
+   
+    
+    $http.get("template/php/test.php?widget="+vm.widget+"&tMesec="+trenutniMesec)
       .then(function (res) {
 
 
@@ -383,7 +385,7 @@
 
 
 
-    var mesec = new Date();
+    
     var leto = new Date();
     mesec = $filter('date')(mesec, 'MMMM');
     leto = $filter('date')(leto, 'yyyy');
@@ -405,7 +407,7 @@
       var poraba = {};
       poraba.znesek = vm.znesek;
       poraba.datum = vm.date;
-      poraba.user = $rootScope.user.id;
+      poraba.widget = vm.widget;
       poraba.vrsta = vm.izberiVrsto.id;
 
       var url = "template/php/addPoraba.php";
@@ -416,7 +418,7 @@
           vm.znesek = "";
           vm.date = "";
           vm.izberiVrsto.id = "";
-          $http.get("template/php/test.php")
+          $http.get("template/php/test.php?widget="+vm.widget+"&tMesec="+trenutniMesec)
             .then(function (res) {
               $scope.myChartObject.data = res.data;
               // POSODOBI PORABO
