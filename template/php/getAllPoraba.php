@@ -1,9 +1,9 @@
 <?php
 include '../../model.php';
 
-  
+    $widget=$_GET["widget"];
     $func = new userFunc();
-    $result = $func->getAllPoraba();  
+    $result = $func->getAllPoraba($widget);  
     echo json_encode($result);
 
 ?>

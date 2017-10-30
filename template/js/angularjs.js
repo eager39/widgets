@@ -321,19 +321,15 @@
       });
     $http.get("template/php/getGrafMonthAndYear.php?widget="+vm.widget)
       .then(function (res) {
-
-
         vm.zgodovina = res.data;
         console.log(res.data);
-
-
       });
 
 
       var trenutniMesec = $filter('date')(mesec, 'MM');
-
+    
     vm.whenZgoSelected = function () {
-
+   
       $http.get("template/php/test.php?mesec=" + vm.izberiZgo.mesec_id + "&leto=" + vm.izberiZgo.leto + "&widget="+vm.widget+"&tMesec="+trenutniMesec)
         .then(function (res) {
           $scope.myChartObject.options = {
@@ -403,27 +399,31 @@
 
     vm.editEnabled = false;
     vm.shraniPorabo = function (poraba) {
-
+      console.log(vm.izberiZgo);
       var poraba = {};
       poraba.znesek = vm.znesek;
-      poraba.datum = vm.date;
+      poraba.datum =  $filter('date')(vm.date, 'yyyy-MM-dd');
       poraba.widget = vm.widget;
       poraba.vrsta = vm.izberiVrsto.id;
-
+      trenutniMesec =  $filter('date')(poraba.datum, 'MM');
       var url = "template/php/addPoraba.php";
       var data = "poraba=" + JSON.stringify(poraba);
       PostService.Post(url, data)
         .then(function (res) {
 
-          vm.znesek = "";
-          vm.date = "";
-          vm.izberiVrsto.id = "";
+         // vm.znesek = "";
+       //   vm.date = "";
+        //  vm.izberiVrsto.id = "";
           $http.get("template/php/test.php?widget="+vm.widget+"&tMesec="+trenutniMesec)
             .then(function (res) {
-              $scope.myChartObject.data = res.data;
-              // POSODOBI PORABO
-
-              //POSODOBI PORABO
+              $scope.myChartObject.data = res.data; // POSODOBI PORABO
+             
+              $http.get("template/php/getGrafMonthAndYear.php?widget="+vm.widget) //POSODOBI ZGODOVINO
+              .then(function (res) {
+                vm.zgodovina = res.data;
+                console.log(res.data);
+              });
+              //POSODOBI ZGODOVINO
 
             });
 
@@ -482,8 +482,9 @@
     };
 
     vm.allPoraba = function () {
+ 
 
-      $http.get("template/php/getAllPoraba.php")
+      $http.get("template/php/getAllPoraba.php?widget="+vm.widget+ "&mesec="+vm.trenutniMesec)
         .then(function (res) {
 
           console.log(res.data);
