@@ -6,7 +6,11 @@ body{
 	
 	padding:0;
 	margin:0;
-	background-image: url("../images/test.jpg");
+	background: rgb(132, 123, 255); /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(rgb(63, 49, 255), yellow); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(red, yellow); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(red, yellow); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(rgb(112, 87, 255), rgb(36, 247, 99));
 background-size:100%;
 background-repeat: no-repeat;
   overflow-x: hidden;

@@ -2,7 +2,7 @@
 
   var app = angular.module('app', ['ngMessages', 'gridster', 'ngSanitize', 'angular.filter', 'googlechart', 'vcRecaptcha']);
 
-  app.run(function ($rootScope, $http) {
+  app.run(function ($rootScope, $http,PostService) {
 
     $http.get("template/php/preveriSejo.php")
       .then(function (odlicno) {
@@ -13,7 +13,32 @@
             .modal("toggle");
         }
       });
-
+      
+      var asd=[{}];
+      
+      $http.get("https://newsapi.org/v1/sources?language=en")
+      .then(function (res) {
+       console.log(res.data);
+       var a=0;
+        for(var i=0;i<res.data["sources"].length;i++){
+          asd[a]={};
+          asd[a]["name"]=res.data["sources"][i].name;
+          asd[a]["id"]=res.data["sources"][i].id;
+          asd[a]["category"]=res.data["sources"][i].category;
+          
+          a++;
+        }
+      console.log(asd);
+    //  console.log(res.data["sources"][0].id);
+   //   console.log(res.data["sources"][0].name);
+    //  console.log(res.data["sources"][0].category);
+    var url = "template/php/addSources.php";
+    var data = "sources="+JSON.stringify(asd);
+    PostService.Post(url, data).then(function(res){
+      console.log(res);
+    });
+      });
+       
   });
 
   app.service('todoUntil', function ($http) {
@@ -48,8 +73,8 @@
 
   });
   app.service('PostService', function ($http) {
-    var vm = this;
-    vm.Post = function (url, data) {
+  
+    this.Post = function (url, data) {
 
       return $http({
         method: "POST",

@@ -328,5 +328,13 @@ class userFunc
             return   $this->conn->query("INSERT INTO poraba_list (widget) SELECT id_widget FROM widgets WHERE user='$widget->user' ORDER BY id_widget DESC LIMIT 1");
         }
     }
+     function addSources($sources)
+    {
+        for($i=0;$i<sizeof($sources);$i++){
+   $result=$this->conn->query("INSERT INTO sources (type,id_source,name,dropdown_options_id) SELECT id_source_type,'".$sources[$i]->id ."','".$sources[$i]->name ."',14 FROM source_type WHERE name='".$sources[$i]->category."'");
     }
+    return $result;
+    }
+}
+   
 ?>
