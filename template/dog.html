@@ -1,0 +1,47 @@
+<ul  class="list-group dogodki">
+	<li class="list-group-item list-group-item"  ng-repeat="dogodek in vm.dogodki" data-toggle="tooltip" data-html="true" title="{{dogodek.event_opis}}"  id="dogodek.id">
+
+			<div class="bmd-list-group-col">
+					<span class="glyphicon glyphicon-trash"   ng-click="vm.deleteDogodek(dogodek)" aria-hidden="true"></span>
+					<p class="list-group-item-heading"><span class="glyphicon glyphicon-calendar"   aria-hidden="true"></span>{{dogodek.title}}</p>
+					
+					<p class="list-group-item-text">	<span class="	glyphicon glyphicon-time"   aria-hidden="true"></span>{{dogodek.start_date}}</p>
+				</div>
+
+	 
+	</li>
+	
+</ul>
+
+	<div id="dodajDogodek" class="modal fade" data-backdrop="" role="dialog">
+		<div class="modal-dialog">
+	  
+		  <!-- Modal content-->
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+			  <h4 class="modal-title">Dodaj dogodek</h4>
+			</div>
+			<div class="modal-body">
+					<ng-form name="dodajTodo" class="form-inline" >
+							<input  class="form-control" required type="text"  ng-model="vm.title" name="vm.title" placeholder="Vnesi naslov dogodek"/> 
+							<textarea  class="form-control" required type="text"  ng-model="vm.opis" name="vm.opis" placeholder="Vnesi opis"> </textarea>
+							  
+						   
+							<input class="form-control" required type="datetime-local"  ng-model="vm.start" name="datum"/>
+						   
+						</ng-form>
+			</div>
+			<div class="modal-footer">
+			<button class="btn btn-default"  ng-disabled="!dodajTodo.$valid" ng-click="vm.shraniDogodek()">Dodaj</button>
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Zapri</button>
+			</div>
+		  </div>
+	  
+		</div>
+	  </div>
+
+
+
+	 
+  <span id="plus-icon" class="glyphicon glyphicon-plus" data-toggle="modal" data-target="#dodajDogodek"  aria-hidden="true"></span>
