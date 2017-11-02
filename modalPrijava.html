@@ -1,0 +1,126 @@
+<div class="container">
+    <!-- Modal PRIJAVA / REGISTRACIJA -->
+    <div class="modal fade" data-backdrop="static" data-keyboard="false" id="regLog" ng-controller="LoginRegisterController as vm" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <!-- MODAL CONTENT -->
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a data-toggle="tab" href="#tab-prijava" id="prijavaTab">Prijava</a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#tab-regis">Registracija</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="tab-prijava">
+                            <!-- PRIJAVA PRIJAVA PRIJAVA PRIJAVA -->
+                            <div class="modalCon">
+                                <form class="form-horizontal" id="prijava" name="prijava" ng-submit="vm.prijava()" role="form">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="email">E-Pošta:</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" name="email" ng-change="vm.reset()" ng-model="vm.email" placeholder="Vnesi elektronski naslov" required="" type="email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" for="pwd">Geslo:</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" name="password" ng-change="vm.reset()" ng-model="vm.password" placeholder="Vnesi geslo" required="" type="password">
+                                        </div>
+                                    </div>
+                                    <div class="alert alert-danger" ng-if="vm.error">
+                                        {{vm.error}}
+                                    </div>
+                                    <div class="alert alert-success" id="uspesnoReg" style="display:none;">
+                                        Registracija je bila uspešna! Zdaj se lahko prijavite.
+                                    </div>
+                                  
+                                    <div class="modal-footer">
+                                    <div
+                                   
+                                    vc-recaptcha
+                                    key="'6LdW2jUUAAAAAJZxrQHMJiIYot5ge4La96eZIoxn'"
+                                    ng-model="vm.captchaRes"
+                                    on-create="setWidgetId(widgetId)"
+                                    
+                                ></div>
+                                        <button class="btn btn-default" ng-disabled="vm.error || prijava.$invalid" type="submit">Prijava</button>
+                                    </div>
+                                  
+                                </form>
+                            </div><!-- KONEC TAB PRIJAVA -->
+                        </div>
+                        <div class="tab-pane fade" id="tab-regis">
+                            <!-- TAB REGISTRACIJA -->
+                            <div class="modalCon">
+                                <form class="form-horizontal" id="register" name="regForm" ng-submit="vm.registracija()" role="form">
+                                    <div class="form-group" ng-class="{'has-error has-feedback': regForm.userEmail.$invalid && regForm.userEmail.$dirty, 'has-success has-feedback': regForm.userEmail.$valid}">
+                                        <label class="control-label col-sm-3" for="email">E-Pošta:</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" id="email2" name="userEmail" ng-change="vm.checkpass()" ng-model="vm.email" placeholder="Vnesi elektronski naslov" required="" type="email">
+                                            <div ng-if="regForm.userEmail.$dirty" ng-messages="regForm.userEmail.$error">
+                                                <div ng-message="required">
+                                                    Elektronski naslov je obvezen!
+                                                </div>
+                                                <div ng-message="email">
+                                                    Prosim popravite vaš naslov!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-class="{'has-error has-feedback': regForm.newPassword.$invalid && regForm.newPassword.$dirty, 'has-success has-feedback': regForm.newPassword.$valid}">
+                                        <label class="control-label col-sm-3" for="pwd">Geslo:</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" id="pwd1" name="newPassword" ng-change="vm.checkpass()" ng-minlength="3" ng-model="vm.newPass" placeholder="Vnesi geslo" required="" type="password">
+                                            <div ng-if="regForm.newPassword.$dirty" ng-messages="regForm.newPassword.$error">
+                                                <div ng-message="minlength">
+                                                    Vnesite vsaj 8 znakov
+                                                </div>
+                                                <div ng-message="required">
+                                                    Geslo je obvezno!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-class="{'has-error has-feedback':vm.newPass != vm.confPass, 'has-success has-feedback': vm.newPass == vm.confPass && regForm.confirmPassword.$valid}">
+                                        <label class="control-label col-sm-3" for="pwd">Ponovite geslo:</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" id="pwd2" name="confirmPassword" ng-change="vm.checkpass()" ng-minlength="3" ng-model="vm.confPass" placeholder="Ponovite geslo" required="" type="password">
+                                            <div ng-messages="regForm.confirmPassword.$error">
+                                                <div ng-if="vm.newPass!=vm.confPass">
+                                                    Gesli se ne ujemata!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="alert alert-danger" ng-if="vm.error">
+                                        {{vm.error}}
+                                    </div>
+                                    <div class="alert alert-danger" id="regNapaka" ng-show="vm.neuspeh">
+                                        {{vm.neuspeh}}
+                                    </div>
+                                    <div class="alert alert-success" id="uspesnoReg" ng-show="vm.uspeh">
+                                        Registracija je bila uspešna! Zdaj se lahko prijavite.
+                                    </div>
+                                    <div class="modal-footer">
+                                    <div
+                                   
+                                    vc-recaptcha
+                                    key="'6LdW2jUUAAAAAJZxrQHMJiIYot5ge4La96eZIoxn'"
+                                    ng-model="vm.captchaRes2"
+                                    on-create="setWidgetId(widgetId)"
+                                    
+                                ></div>
+                                        <button class="btn btn-default" ng-disabled="regForm.$invalid || vm.nomatch || vm.neuspeh" type="submit">Registracija</button>
+                                    </div>
+                                </form>
+                            </div><!-- KONEC TAB REGISTRACIJA -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
