@@ -29,7 +29,7 @@
         } else {
         
         
-        //  setTimeout(function(){  $("#regLog").modal("toggle"); }, 1);
+         setTimeout(function(){  $("#regLog").modal("toggle"); }, 1);
         }
       });
       
