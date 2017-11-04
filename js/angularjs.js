@@ -3,7 +3,7 @@
   var app = angular.module('app', ['ngMessages', 'gridster', 'ngSanitize', 'angular.filter', 'googlechart', 'vcRecaptcha','ui.router']);
 
   app.config(function($stateProvider) {
-    var helloState = {
+    var Widgets = {
       name: 'Widgets',
       url: '',
       templateUrl: 'main.html'
@@ -15,7 +15,7 @@
       templateUrl: 'test.html'
     }
   
-    $stateProvider.state(helloState);
+    $stateProvider.state(Widgets);
     $stateProvider.state(aboutState);
   });
 
@@ -29,12 +29,12 @@
         } else {
         
         
-        //  setTimeout(function(){  $("#regLog").modal("toggle"); }, 1);
+         setTimeout(function(){  $("#regLog").modal("toggle"); }, 1);
         }
       });
       
       var asd=[{}];
-      /*
+      
       $http.get("https://newsapi.org/v1/sources?language=en")
       .then(function (res) {
        console.log(res.data);
@@ -44,7 +44,7 @@
           asd[a]["name"]=res.data["sources"][i].name;
           asd[a]["id"]=res.data["sources"][i].id;
           asd[a]["category"]=res.data["sources"][i].category;
-          
+          asd[a]["sortBysAvailable"]=JSON.stringify(res.data["sources"][i].sortBysAvailable);
           a++;
         }
       console.log(asd);
@@ -57,7 +57,7 @@
       console.log(res);
     });
       });
-      */
+      
        
   });
 
@@ -364,6 +364,7 @@
     $http.get("php/getVrste.php")
       .then(function (res) {
         vm.vrste = res.data;
+        console.log(vm.vrste);
       });
     $http.get("php/getGrafMonthAndYear.php?widget="+vm.widget)
       .then(function (res) {
@@ -557,8 +558,9 @@
 
   });
 
-  app.controller("NoviceWidgetController", function ($http, $attrs, $rootScope) {
+  app.controller("NoviceWidgetController", function ($http, $attrs, $rootScope,$scope) {
     var vm = this;
+    vm.test=false;
     //api key d3a535b2afa9418b836401eb613f02e3,8fb771b1531b4b4b990a84eb12b46f0e
     https: //newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=d3a535b2afa9418b836401eb613f02e3
       initialize($attrs.widget);
@@ -593,6 +595,10 @@
 
         });
     }
+    $scope.izbrano = function (){
+     
+      alert("haha");
+    };
   });
 
   app.controller("TodoWidgetController", function ($http, $attrs, $rootScope, $scope, $filter, todoUntil, PostService) {
@@ -830,7 +836,7 @@
 
 
 
-  app.controller("NastavitveController", function ($http, $rootScope, $timeout, $filter, PostService) {
+  app.controller("NastavitveController", function ($http, $rootScope, $timeout, $filter, PostService,$scope) {
     var vm = this;
     vm.buttonName = "Odkleni polje";
     vm.widgetTypes = [];
@@ -842,7 +848,7 @@
       $http.get("php/listWidgetTypes.php")
         .then(function (res) {
           vm.widgetTypes = res.data;
-          //   console.log(res.data);
+            console.log(res.data);
 
         });
 
@@ -857,15 +863,27 @@
 
       item.selected = true;
     };
+   $scope.getSorting = function(opt){
+    $http.get("php/getSorting.php?id="+opt)
+    .then(function (res) {
+     console.log(vm.sort);
+      vm.sort=JSON.parse(res.data.sorting);
+       
+    });
+console.log(opt);
+vm.izbrano=true;
 
+   };
     vm.submitWidgetAdd = function (item) {
+      
       var widget = {};
-
       var config = {};
       item.options.forEach(function (el) {
         config[el.field] = vm.options[el.field];
       });
-
+      vm.qwe=true;
+     if(angular.isDefined(config.source)){
+      config["vrstni_red"]=vm.sorted;
       widget.config = JSON.stringify(config);
       widget.posX = 0;
       widget.posY = 0;
@@ -892,9 +910,13 @@
           $http.get("php/widgetinit.php")
             .then(function (res2) {
               $rootScope.widgets = res2.data;
+              console.log(res2.data);
             });
 
         });
+      }else{
+        vm.qwe=false;
+      }
 
     };
 
@@ -914,6 +936,7 @@
       for (var key in item.config) {
         config[key] = vm.options2[key];
       }
+      config.vrstni_red=vm.sorted;
 
       widget.config = JSON.stringify(config);
       widget.imeWidget = vm.updateName;

@@ -88,16 +88,22 @@ class userFunc
                         while ($row3 = mysqli_fetch_object($q3))
                             {
                             array_push($row->config->$key->options, $row3);
-                            if ($row3->option == "source")
-                                {
-                                $row->config->$key->source_option = [];
-                                $q3 = $this->conn->query("SELECT *,source_type.name as typeName,sources.name as sourceName FROM sources INNER JOIN source_type ON sources.type = source_type.id_source_type  WHERE dropdown_options_id=" . $row3->id);
+                          
+                            }
+                        }
+                             if ($row2->inputType == "dropdown_news")
+                        {
+                       
+                        
+                         
+                                 $row->config->$key->source_option = [];
+                                $q3 = $this->conn->query("SELECT id_source,sorting,sources.name,sources.type,source_type.name as typeName,sources.name as sourceName FROM sources INNER JOIN source_type ON sources.type = source_type.id_source_type  WHERE dropdown_options_id=14");
                                 while ($row4 = mysqli_fetch_object($q3))
                                     {
                                     array_push($row->config->$key->source_option, $row4);
                                     }
-                                }
-                            }
+                                
+                            
                         }
                     }
                 $row->config->$key->value = $value;
@@ -180,6 +186,11 @@ class userFunc
         {
         $q = $this->conn->query("SELECT * FROM widgets   where id_widget='$widget_id'  and user='$userid'");
         return mysqli_fetch_object($q);
+        }
+        function getSorting($id)
+        {
+        $q = $this->conn->query("SELECT sorting FROM sources   where id_source='$id'");
+        return mysqli_fetch_assoc($q);
         }
     function getVrste()
         {
@@ -331,7 +342,7 @@ class userFunc
      function addSources($sources)
     {
         for($i=0;$i<sizeof($sources);$i++){
-   $result=$this->conn->query("INSERT INTO sources (type,id_source,name,dropdown_options_id) SELECT id_source_type,'".$sources[$i]->id ."','".$sources[$i]->name ."',14 FROM source_type WHERE name='".$sources[$i]->category."'");
+   $result=$this->conn->query("INSERT INTO sources (type,id_source,name,dropdown_options_id,sorting) SELECT id_source_type,'".$sources[$i]->id ."','".$sources[$i]->name ."',14,'".$sources[$i]->sortBysAvailable ."' FROM source_type WHERE name='".$sources[$i]->category."'");
     }
     return $result;
     }
