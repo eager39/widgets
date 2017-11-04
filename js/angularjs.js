@@ -852,6 +852,8 @@
 
         });
 
+       
+
     }
 
     vm.loadWidgetOptions = function (item) {

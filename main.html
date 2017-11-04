@@ -224,9 +224,10 @@
                                                     </select>
                                                     
                                                     <div class="form-group" ng-init="getSorting(vm.options2[value.field])"  ng-show="!$first">
-                                                        <select class="form-control" ng-class="{'test':vm.qwe1==false}"  ng-init="vm.test ='top'" required ng-model="vm.test" ng-options="o  for o in  vm.sort">
+                                                        <select class="form-control" ng-class="{'test':vm.qwe1==false}"  ng-init="vm.sorted =item.config.vrstni_red.value" required ng-model="vm.sorted" ng-options="o  for o in  vm.sort">
                                                          
-                                                          </select>   
+                                                          </select>  
+                                                          
                                                           
                                                 </div>
                                                 </div>
