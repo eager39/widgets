@@ -880,9 +880,13 @@ vm.izbrano=true;
       
       var widget = {};
       var config = {};
+      
       item.options.forEach(function (el) {
         config[el.field] = vm.options[el.field];
+        
       });
+      config["source"]=vm.source.id_source;
+      console.log(config.source);
       vm.qwe=true;
      if(angular.isDefined(config.source)){
       config["vrstni_red"]=vm.sorted;
@@ -907,6 +911,7 @@ vm.izbrano=true;
         */
       var url = "php/addWidget.php";
       var data = "asd=" + JSON.stringify(widget);
+      
       PostService.Post(url, data)
         .then(function (res) {
           $http.get("php/widgetinit.php")
@@ -916,6 +921,7 @@ vm.izbrano=true;
             });
 
         });
+        
       }else{
         vm.qwe=false;
       }

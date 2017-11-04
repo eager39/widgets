@@ -124,15 +124,23 @@
                                                             </option>
                                                         </select>
                                                     </div>
-                                                    <div class="form-group" ng-if="option.inputType == 'dropdown_news'" ng-repeat="opt in option.dropdownOptions" ng-show="!$first">
-                                                        <label>{{option.name}}</label> <select ng-class="{'test':vm.qwe==false}" required class="form-control"   ng-change="getSorting(vm.options[option.field])" ng-model="vm.options[option.field]" >
+                                                    <div class="form-group" ng-if="option.inputType == 'dropdown_news'"  ng-repeat="opt in option.dropdownOptions" ng-show="!$first">
+                                                        <label>{{option.name}}</label>
+                                                        <!--
+                                                        <select ng-class="{'test':vm.qwe==false}" required class="form-control"   ng-change="getSorting(vm.options[option.field])" ng-model="vm.options[option.field]" >
                                                             <optgroup label="{{opt1.name}}" ng-repeat="opt1 in opt.source_option | unique:'typeName'">
                                                                 <option ng-repeat="opt in opt.source_option | filter:{typeName:opt1.typeName}" value="{{opt.id_source}}">
                                                                     {{opt.sourceName}}
                                                                 </option>
                                                             </optgroup>
+                                                        </select>-->
+                                                        <select class="form-control" required ng-change="getSorting(vm.source.id_source)" ng-options="x.sourceName group by x.name for x in opt.source_option" ng-model="vm.source">
+
                                                         </select>
+                                                        {{vm.source.sourceName}}
+
                                                         <div class="form-group" ng-show="vm.izbrano"  ng-show="!$first">
+                                                            <label>Razvrstitev novic za {{opt.name}}</label>
                                                             <select class="form-control" ng-class="{'test':vm.qwe1==false}" ng-init="vm.sorted = 'top'" required ng-model="vm.sorted" ng-options="o  for o in  vm.sort">
                                                              
                                                               </select>   
