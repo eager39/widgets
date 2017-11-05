@@ -885,11 +885,19 @@ vm.izbrano=true;
         config[el.field] = vm.options[el.field];
         
       });
-      config["source"]=vm.source.id_source;
-      console.log(config.source);
+      console.log(config);
+      if(angular.isDefined(vm.source)){
+        config["source"]=vm.source.id_source;
+      }else{
+        vm.qwe=false;
+      }
+    
       vm.qwe=true;
-     if(angular.isDefined(config.source)){
+     if(angular.isDefined(vm.sorted)){
       config["vrstni_red"]=vm.sorted;
+    }else{
+      vm.qwe=false;
+    }
       widget.config = JSON.stringify(config);
       widget.posX = 0;
       widget.posY = 0;
@@ -922,9 +930,7 @@ vm.izbrano=true;
 
         });
         
-      }else{
-        vm.qwe=false;
-      }
+      
 
     };
 
