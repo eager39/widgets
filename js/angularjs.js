@@ -562,16 +562,16 @@
     var vm = this;
     vm.test=false;
     //api key d3a535b2afa9418b836401eb613f02e3,8fb771b1531b4b4b990a84eb12b46f0e
-    https: //newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=d3a535b2afa9418b836401eb613f02e3
+  //  https: //newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=d3a535b2afa9418b836401eb613f02e3
       initialize($attrs.widget);
 
     function initialize(widget_id) {
       vm.id = widget_id;
 
-
-      $http.get("php/widgetConfig.php?id=" + vm.id + "&test=" + $rootScope.user.id + "")
+    
+      $http.get("php/widgetConfig.php?id=" + vm.id + "&test=" + $rootScope.user.id)
         .then(function (res) {
-
+         
           vm.widgetConfig = res.data;
           vm.config = JSON.parse(vm.widgetConfig.config);
           vm.datum = vm.config.date;
@@ -579,6 +579,8 @@
           vm.slika = vm.config.slika;
           vm.order = vm.config.vrstni_red;
           vm.source = vm.config.source;
+         
+          if(Object.keys(vm.config).length>0){
           $http.get("https://newsapi.org/v1/articles?source=" + vm.source + "&sortBy=" + vm.order + "&apiKey=8fb771b1531b4b4b990a84eb12b46f0e")
             .then(function (res) {
               //  console.log(res.data["articles"][0]["title"]);
@@ -591,6 +593,7 @@
 
 
             });
+          }
 
 
         });
@@ -887,17 +890,17 @@ vm.izbrano=true;
       });
       console.log(config);
       if(angular.isDefined(vm.source)){
+        if(angular.isDefined(vm.sorted)){
+          
+          config["vrstni_red"]=vm.sorted;
         config["source"]=vm.source.id_source;
+        }
       }else{
         vm.qwe=false;
       }
     
       vm.qwe=true;
-     if(angular.isDefined(vm.sorted)){
-      config["vrstni_red"]=vm.sorted;
-    }else{
-      vm.qwe=false;
-    }
+    
       widget.config = JSON.stringify(config);
       widget.posX = 0;
       widget.posY = 0;
@@ -926,6 +929,12 @@ vm.izbrano=true;
             .then(function (res2) {
               $rootScope.widgets = res2.data;
               console.log(res2.data);
+              delete vm.source;
+             delete vm.sorted;
+              vm.name="";
+              item.selected=false;
+            vm.izbrano=false;
+
             });
 
         });
