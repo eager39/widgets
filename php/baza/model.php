@@ -294,6 +294,8 @@ class userFunc
             $rezultat->name = $row->name;
             $rezultat->description = $row->description;
             $rezultat->options = array();
+            $rezultat->dposX=$row->dposX;
+            $rezultat->dposY=$row->dposY;
             $rezultat->selected = false;
             $q = $this->conn->query("SELECT * FROM widget_options WHERE widget_type = " . $rezultat->id);
             while ($row2 = mysqli_fetch_object($q))

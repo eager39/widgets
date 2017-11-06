@@ -902,8 +902,8 @@ vm.izbrano=true;
       vm.qwe=true;
     
       widget.config = JSON.stringify(config);
-      widget.posX = 0;
-      widget.posY = 0;
+      widget.posX = item.dposX;
+      widget.posY = item.dposY;
       widget.x = 10;
       widget.y = 10;
       widget.active = 1;
@@ -933,7 +933,7 @@ vm.izbrano=true;
              delete vm.sorted;
               vm.name="";
               item.selected=false;
-            vm.izbrano=false;
+            
 
             });
 
