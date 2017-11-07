@@ -1,4 +1,4 @@
-<span id="flip-icon" class="glyphicon glyphicon-trash" ng-click="vm.graf=!vm.graf;vm.allPoraba()"   aria-hidden="true"></span>
+<span id="flip-icon" class="glyphicon glyphicon-trash" ng-click="vm.graf=!vm.graf;vm.allPoraba(vm.graf)"   aria-hidden="true"></span>
 
 <div id="graf" ng-hide="vm.graf" >
     <select class="form-control" id="zgoGraf" ng-change="vm.whenZgoSelected()" required ng-model="vm.izberiZgo" ng-model-options="{ updateOn: 'change', debounce: { change: 0 } }" ng-options="x.mesec group by x.leto for x in vm.zgodovina">
@@ -20,7 +20,7 @@
 
 <span id="plus-icon"  class="glyphicon glyphicon-plus" ng-click="vm.edit()" aria-hidden="true"></span>
 </div>
-<div id="grafPoraba"  ng-show="vm.graf" ng-init="vm.allPoraba()" >
+<div id="grafPoraba"  ng-show="vm.graf" ng-click="vm.allPoraba()" >
  
 
   <ul class="list-group">

@@ -453,6 +453,8 @@
       poraba.widget = vm.widget;
       poraba.vrsta = vm.izberiVrsto.id;
       trenutniMesec =  $filter('date')(poraba.datum, 'MM');
+      trenutniMesecBeseda =  $filter('date')(poraba.datum, 'MMMM');
+      trenutnoLeto=$filter('date')(poraba.datum, 'yyyy');
       var url = "php/addPoraba.php";
       var data = "poraba=" + JSON.stringify(poraba);
       PostService.Post(url, data)
@@ -464,7 +466,11 @@
           $http.get("php/test.php?widget="+vm.widget+"&tMesec="+trenutniMesec)
             .then(function (res) {
               $scope.myChartObject.data = res.data; // POSODOBI PORABO
-             
+              $scope.myChartObject.options = {
+                'title': "Poraba za mesec " + trenutniMesecBeseda + " " + trenutnoLeto,
+          
+                backgroundColor: 'transparent'
+              };
               $http.get("php/getGrafMonthAndYear.php?widget="+vm.widget) //POSODOBI ZGODOVINO
               .then(function (res) {
                 vm.zgodovina = res.data;
@@ -503,7 +509,7 @@
         .then(function (res) {
           if (res.data == 1) {
             alert("uspešno");
-            $http.get("php/getAllPoraba.php")
+            $http.get("php/getAllPoraba.php?widget="+vm.widget+ "&mesec="+trenutniMesec)
               .then(function (res) {
 
                 console.log(res.data);
@@ -528,10 +534,14 @@
         });
     };
 
-    vm.allPoraba = function () {
- 
+    vm.allPoraba = function (graf) {
+      if(angular.isDefined(vm.izberiZgo)){
+        
+        trenutniMesec=vm.izberiZgo.mesec_id;
+      }
 
-      $http.get("php/getAllPoraba.php?widget="+vm.widget+ "&mesec="+vm.trenutniMesec)
+      if(graf){ //da ne kličemo funkcije dvakrat
+      $http.get("php/getAllPoraba.php?widget="+vm.widget+ "&mesec="+trenutniMesec)
         .then(function (res) {
 
           console.log(res.data);
@@ -552,11 +562,15 @@
 
 
         });
+      }
+
     };
 
 
 
   });
+
+  
 
   app.controller("NoviceWidgetController", function ($http, $attrs, $rootScope,$scope) {
     var vm = this;
@@ -939,9 +953,12 @@ vm.izbrano=true;
 
         });
         
+        
       
 
+
     };
+
 
     vm.loadWidgetSettings = function (item) {
 

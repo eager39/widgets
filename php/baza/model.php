@@ -142,7 +142,7 @@ class userFunc
                 'v' => (string)$row['ime_vrste']
             );
             $temp[] = array(
-                'v' => (int)$row['znesek']
+                'v' => (float)$row['znesek']
             );
             $rows[] = array(
                 'c' => $temp
@@ -202,11 +202,11 @@ class userFunc
             }
         return $array;
         }
-    function getAllPoraba($widget)
+    function getAllPoraba($widget,$mesec)
         {
         session_start();
         $array = [];
-        $q = $this->conn->query("SELECT znesek,ime_vrste,datum,id_poraba FROM poraba inner join vrsta on vrsta.id=poraba.vrsta  INNER JOIN poraba_list on poraba_list.id=poraba.poraba_list where poraba_list.widget='$widget'  ORDER BY id_poraba DESC");
+        $q = $this->conn->query("SELECT znesek,ime_vrste,datum,id_poraba FROM poraba inner join vrsta on vrsta.id=poraba.vrsta  INNER JOIN poraba_list on poraba_list.id=poraba.poraba_list where poraba_list.widget='$widget' and month(datum)='$mesec'  ORDER BY id_poraba DESC");
         while ($row = mysqli_fetch_assoc($q))
             {
             $array[] = $row;

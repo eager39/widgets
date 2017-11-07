@@ -78,7 +78,7 @@
                             </li>
                         </ul>
                         <div class="tab-content" ng-controller="NastavitveController as vm">
-                            <div class="tab-pane fade in active" id="splosnoTab">
+                            <div class="tab-pane fade in active"  id="splosnoTab">
                                 <div class="splosnoCon">
 
                                     <h1 ng-if="widgets.length == 0 || widgets=='error'">DODAJ WIDGETE</h1>
@@ -137,10 +137,10 @@
                                                         <select class="form-control" required ng-change="getSorting(vm.source.id_source)" ng-options="x.sourceName group by x.name for x in opt.source_option" ng-model="vm.source">
 
                                                         </select>
-                                                        {{vm.source.sourceName}}
+                                                      
 
                                                         <div class="form-group" ng-show="vm.izbrano"  ng-show="!$first">
-                                                            <label>Razvrstitev novic za {{opt.name}}</label>
+                                                            <label>Razvrstitev novic za {{vm.source.sourceName}}</label>
                                                             <select class="form-control" ng-class="{'test':vm.qwe1==false}" ng-init="vm.sorted = 'top'" required ng-model="vm.sorted" ng-options="o  for o in  vm.sort">
                                                              
                                                               </select>   
@@ -278,15 +278,7 @@
             </div>
 -->
                             <div class="tab-pane fade" id="PorabaTab" ng-init="vm.allPoraba()">
-                            <ul class="list-group" >
-                                <li class="list-group-item" ng-repeat="item in poraba  | limitTo:vm.pageSize:vm.currentPage*vm.pageSize">Znesek: {{item.znesek}} Datum: {{item.datum}} Vrsta:{{item.ime_vrste}}<span ng-click="vm.delPoraba(item)">DELETE</span></li>
-                            </ul>
-
-               
-
-    <ul class="pagination">
-  <li ng-repeat="item in vm.stevilo"><a ng-click="vm.currentPage=item.id"  href="#">{{item.text}}</a></li>
-</ul>
+           
 
 
 
