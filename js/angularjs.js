@@ -1,6 +1,6 @@
 (function () {
 
-  var app = angular.module('app', ['ngMessages', 'gridster', 'ngSanitize', 'angular.filter', 'googlechart', 'vcRecaptcha','ui.router']);
+  var app = angular.module('app', ['ngMessages', 'gridster', 'ngSanitize', 'angular.filter', 'googlechart', 'vcRecaptcha','ui.router','ngCookies']);
 
   app.config(function($stateProvider) {
     var Widgets = {
@@ -20,16 +20,27 @@
   });
 
 
-  app.run(function ($rootScope, $http,PostService) {
+  app.run(function ($rootScope, $http,PostService,$cookies) {
+  
+  
+  if($cookies.get("forever")){
+     var loginCookie = $cookies.get('forever');
+  }
 
     $http.get("php/preveriSejo.php")
       .then(function (odlicno) {
         if (odlicno.data != "gtfo") {
           $rootScope.user = odlicno.data;
-        } else {
+        } else if($cookies.get("forever")) {
+          $http.get("php/preveriCookie.php?cookie="+loginCookie)
+          .then(function (res) {
+           $rootScope.user=res.data;
+
+          });
         
         
-         setTimeout(function(){  $("#regLog").modal("toggle"); }, 1);
+        }else{
+          setTimeout(function(){  $("#regLog").modal("toggle"); }, 1);
         }
       });
       
@@ -108,7 +119,7 @@
 
   });
 
-  app.controller("LoginRegisterController", function ($http, $rootScope, $timeout, $scope, vcRecaptchaService, PostService) {
+  app.controller("LoginRegisterController", function ($http, $rootScope, $timeout, $scope, vcRecaptchaService, PostService,$cookies) {
     var vm = this;
     vm.nomatch = false;
     vm.captchaRes = "";
@@ -150,7 +161,7 @@
                   .then(function (res) {
                     if (res.data == "exist") {
                       vcRecaptchaService.reload(1);
-                      alert("reset PLS");
+                     
                       vm.neuspeh = "Uporabnik s to e-pošto že obstaja!";
 
                     } else if (res.data) {
@@ -199,6 +210,14 @@
           .then(function (res) {
 
             if (res.data.success) {
+              if(vm.cookie){
+                var now = new Date(),
+                // this will set the expiration to 12 months
+                exp = new Date(now.getFullYear(), now.getMonth()+1, now.getDate());
+                $cookies.put('forever', vm.email,{
+                  expires: exp
+                });
+              }
               /*
               $http({
                 method: "POST",
@@ -853,7 +872,7 @@
 
 
 
-  app.controller("NastavitveController", function ($http, $rootScope, $timeout, $filter, PostService,$scope) {
+  app.controller("NastavitveController", function ($http, $rootScope, $timeout, $filter, PostService,$scope,$cookies) {
     var vm = this;
     vm.buttonName = "Odkleni polje";
     vm.widgetTypes = [];
@@ -1118,6 +1137,7 @@ vm.izbrano=true;
         .then(function (res) {
           $rootScope.user = null;
           $rootScope.widgets = null;
+          $cookies.remove("forever");
           location.reload();
 
         });

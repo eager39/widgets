@@ -62,6 +62,23 @@ class userFunc
            return 3;
             }
         }
+        function preveriCookie($cookie)
+        {
+            session_start();
+        $q = $this->conn->query("SELECT * FROM users WHERE email='$cookie'");
+        if (mysqli_num_rows($q) == 1)
+            {
+            
+            $row = mysqli_fetch_object($q);
+         
+                $_SESSION['id'] = $row->id_user;
+                $_SESSION['user'] = $row->email;
+               return 1;
+                }else{
+                    return 2;
+                }
+           
+        }
     function widgetinit()
         {
         $q = $this->conn->query("SELECT * FROM widgets w,widget_types t  where w.widget_type = t.idwidget_types and user=" . $_SESSION['id']);
