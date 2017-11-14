@@ -22,7 +22,7 @@ background-repeat: no-repeat;
   }
 }
 .navbar-default{
-	background-color: #FFCC00;
+	
 	border:none;
 }
 
@@ -116,7 +116,7 @@ top:50%;
 	bottom:0;
 	right:0;
 	top:auto;
-	background-color: rgba(255, 255, 255, 0.05);
+	
 	-moz-border-radius: 15px; 
 	border-radius: 15px;
 
@@ -132,7 +132,7 @@ top:50%;
 	top:0;	
 	right:0;
 	top:auto;
-	background-color: rgba(255, 255, 255, 0.05);
+	
 	-moz-border-radius: 15px; 
 	border-radius: 15px;
 
@@ -150,20 +150,20 @@ top:50%;
 
 
 .gridster-item{
-	background-color:rgba(135, 174, 255, 0.3) ;
-	overflow-y: auto;
+	
+background:rgb(95, 95, 243);
 }
 .gridster>ul{
 	margin-top:50px;
 }
 .nav.navbar-nav.navbar-right li a{
-	color:black;
+	
 }
 .navbar-default .navbar-brand{
-	color:black;
+	
 }
 .navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover{
-	color:black;
+	
 }
 .splosnoCon{
 	
