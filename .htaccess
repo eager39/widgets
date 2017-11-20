@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# remove /index.html if entered directly in URL
+RewriteCond %{THE_REQUEST} /index\.html [NC]
+RewriteCond %{REQUEST_URI} ^(.*/)index\.html$ [NC]
+RewriteRule ^ %1 [L,R=301,NE]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(?!index\.html$|Pages)(.*)$ index.html?path=$1 [L,NC]
