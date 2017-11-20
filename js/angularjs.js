@@ -37,9 +37,43 @@
 
 
   app.run(function ($rootScope, $http,PostService,$cookies,$location,$state) {
+    if($cookies.get("forever")){
+      var loginCookie = $cookies.get('forever');
+   }
     
     $rootScope.$on('$locationChangeStart', function (event,next,current) {
       
+      $http.get("php/preveriSejo.php")
+      .then(function (odlicno) {
+        if (odlicno.data != "gtfo") {
+          $rootScope.user = odlicno.data;
+        
+        } else if($cookies.get("forever")) {
+          $http.get("php/preveriCookie.php?cookie="+loginCookie)
+          .then(function (res) {
+           $rootScope.user=res.data;
+            $state.go("home");
+          });
+        
+        
+        }else if($cookies.get("seja")){
+          alert("seja");
+          $rootScope.user = $cookies.get("seja");
+         
+          $state.go("home");
+
+        }
+        else{
+          alert($location.path());
+          if($location.path()=="/register"){
+            $state.go("register");
+          }else{
+      $state.go("login");
+          }
+       //   setTimeout(function(){  $("#regLog").modal("toggle"); }, 1);
+        }
+      });
+      /*
             if ($rootScope.user == null) {
               alert("null");
               if ($cookies.get("seja")) {
@@ -61,6 +95,7 @@
                 if ($location.path() == "/register") {
                   $state.go("register");
                 }else{
+                  
             $state.go("login");
                 }
               }
@@ -69,31 +104,13 @@
              
               $state.go("home");
             }
+            */
             
               });
   
-  if($cookies.get("forever")){
-     var loginCookie = $cookies.get('forever');
-  }
+ 
 
-    $http.get("php/preveriSejo.php")
-      .then(function (odlicno) {
-        if (odlicno.data != "gtfo") {
-          $rootScope.user = odlicno.data;
-        
-        } else if($cookies.get("forever")) {
-          $http.get("php/preveriCookie.php?cookie="+loginCookie)
-          .then(function (res) {
-           $rootScope.user=res.data;
-
-          });
-        
-        
-        }else{
-      
-       //   setTimeout(function(){  $("#regLog").modal("toggle"); }, 1);
-        }
-      });
+    
       
            /*
       var asd=[{}];
@@ -285,9 +302,10 @@
 
 
                   if (res.data == "1") {
-                    $rootScope.user = res.data;
+                    
                     $cookies.put('seja',vm.email);
                     $state.go("home");
+                    console.log($rootScope);
                   } else {
                     if (res.data == "3") {
                       vm.error = "Uporabnik ne obstaja!";
