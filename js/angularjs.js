@@ -32,30 +32,43 @@
 
     $locationProvider.html5Mode(true);
     $qProvider.errorOnUnhandledRejections(false);
-    $urlRouterProvider.otherwise('/home');
+    
   });
 
 
   app.run(function ($rootScope, $http,PostService,$cookies,$location,$state) {
+    
     $rootScope.$on('$locationChangeStart', function (event,next,current) {
       
             if ($rootScope.user == null) {
-
+              alert("null");
               if ($cookies.get("seja")) {
-
+                alert("seja");
                 $rootScope.user = $cookies.get("seja");
+               
                 $state.go("home");
 
-              } else {
+              }else if($cookies.get("forever")) {
+                $http.get("php/preveriCookie.php?cookie="+loginCookie)
+                .then(function (res) {
+                 $rootScope.user=res.data;
+                  $state.go("home");
+                });
+              }
+               else {
+                alert("nega seje");
 
                 if ($location.path() == "/register") {
                   $state.go("register");
                 }else{
-                  $state.go("login");
+            $state.go("login");
                 }
               }
 
-            } 
+            } else{
+             
+              $state.go("home");
+            }
             
               });
   
@@ -67,6 +80,7 @@
       .then(function (odlicno) {
         if (odlicno.data != "gtfo") {
           $rootScope.user = odlicno.data;
+        
         } else if($cookies.get("forever")) {
           $http.get("php/preveriCookie.php?cookie="+loginCookie)
           .then(function (res) {
@@ -76,11 +90,12 @@
         
         
         }else{
-         
+      
        //   setTimeout(function(){  $("#regLog").modal("toggle"); }, 1);
         }
       });
       
+           /*
       var asd=[{}];
       
       $http.get("https://newsapi.org/v1/sources?language=en")
@@ -88,7 +103,7 @@
        console.log(res.data);
        var a=0;
         for(var i=0;i<res.data["sources"].length;i++){
-          asd[a]={};
+          asd[a]={};                                                   ADDING NEWS SOURCES AUTOMATICLY FROM API
           asd[a]["name"]=res.data["sources"][i].name;
           asd[a]["id"]=res.data["sources"][i].id;
           asd[a]["category"]=res.data["sources"][i].category;
@@ -105,6 +120,7 @@
       console.log(res);
     });
       });
+      */
       
        
   });
@@ -311,7 +327,7 @@
     $http.get("php/widgetinit.php")
       .then(function (res2) {
         $rootScope.widgets = res2.data;
-       
+       console.log("asdasdasd",res2.data);
       });
 
     function updateXYpos() {
@@ -636,7 +652,7 @@
     function initialize(widget_id) {
       vm.id = widget_id;
 
-    
+    console.log($rootScope.user.id);
       $http.get("php/widgetConfig.php?id=" + vm.id + "&test=" + $rootScope.user.id)
         .then(function (res) {
          
@@ -647,8 +663,9 @@
           vm.slika = vm.config.slika;
           vm.order = vm.config.vrstni_red;
           vm.source = vm.config.source;
-         
+          alert(vm.source);
           if(Object.keys(vm.config).length>0){
+           
           $http.get("https://newsapi.org/v1/articles?source=" + vm.source + "&sortBy=" + vm.order + "&apiKey=8fb771b1531b4b4b990a84eb12b46f0e")
             .then(function (res) {
               //  console.log(res.data["articles"][0]["title"]);
@@ -907,7 +924,7 @@
 
 
 
-  app.controller("NastavitveController", function ($http, $rootScope, $timeout, $filter, PostService,$scope,$cookies,$state) {
+  app.controller("NastavitveController", function ($http, $rootScope, $timeout, $filter, PostService,$scope,$cookies,$state,$location) {
     var vm = this;
     vm.buttonName = "Odkleni polje";
     vm.widgetTypes = [];
@@ -978,6 +995,7 @@ vm.izbrano=true;
       widget.user = $rootScope.user.id;
       widget.widget_type = item.id;
       widget.imeWidget = vm.name;
+      
       /*
       $http({
           method: "POST",
@@ -997,8 +1015,9 @@ vm.izbrano=true;
             .then(function (res2) {
               $rootScope.widgets = res2.data;
               console.log(res2.data);
+              
               delete vm.source;
-             delete vm.sorted;
+            delete vm.sorted;
               vm.name="";
               item.selected=false;
             
