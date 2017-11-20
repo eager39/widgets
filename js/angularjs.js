@@ -2,26 +2,62 @@
 
   var app = angular.module('app', ['ngMessages', 'gridster', 'ngSanitize', 'angular.filter', 'googlechart', 'vcRecaptcha','ui.router','ngCookies']);
 
-  app.config(function($stateProvider) {
-    var Widgets = {
-      name: 'Widgets',
-      url: '',
+  app.config(function($stateProvider,$locationProvider,$urlRouterProvider,$qProvider) {
+    var home = {
+      name: 'home',
+      url: '/home',
       templateUrl: 'main.html'
     }
   
-    var aboutState = {
+    var login = {
+      name: 'login',
+      url: '/login',
+      templateUrl: 'login.html'
+    }
+    var register = {
+      name: 'register',
+      url: '/register',
+      templateUrl: 'register.html'
+    }
+    var test = {
       name: 'test',
       url: '/test',
-      templateUrl: 'test.html'
+      templateUrl: 'error.html'
     }
   
-    $stateProvider.state(Widgets);
-    $stateProvider.state(aboutState);
+    $stateProvider.state(home);
+    $stateProvider.state(login);
+    $stateProvider.state(register);
+    $stateProvider.state(test);
+
+    $locationProvider.html5Mode(true);
+    $qProvider.errorOnUnhandledRejections(false);
+    $urlRouterProvider.otherwise('/home');
   });
 
 
-  app.run(function ($rootScope, $http,PostService,$cookies) {
-  
+  app.run(function ($rootScope, $http,PostService,$cookies,$location,$state) {
+    $rootScope.$on('$locationChangeStart', function (event,next,current) {
+      
+            if ($rootScope.user == null) {
+
+              if ($cookies.get("seja")) {
+
+                $rootScope.user = $cookies.get("seja");
+                $state.go("home");
+
+              } else {
+
+                if ($location.path() == "/register") {
+                  $state.go("register");
+                }else{
+                  $state.go("login");
+                }
+              }
+
+            } 
+            
+              });
   
   if($cookies.get("forever")){
      var loginCookie = $cookies.get('forever');
@@ -40,7 +76,8 @@
         
         
         }else{
-          setTimeout(function(){  $("#regLog").modal("toggle"); }, 1);
+         
+       //   setTimeout(function(){  $("#regLog").modal("toggle"); }, 1);
         }
       });
       
@@ -119,7 +156,7 @@
 
   });
 
-  app.controller("LoginRegisterController", function ($http, $rootScope, $timeout, $scope, vcRecaptchaService, PostService,$cookies) {
+  app.controller("LoginRegisterController", function ($http, $rootScope, $timeout, $scope, vcRecaptchaService, PostService,$cookies,$state) {
     var vm = this;
     vm.nomatch = false;
     vm.captchaRes = "";
@@ -169,11 +206,8 @@
                       vm.neuspeh = false;
                       vm.uspeh = true;
                       vcRecaptchaService.reload(1);
-                      $timeout(function () {
-                        angular.element('#prijavaTab')
-                          .trigger('click');
-
-                      }, 1000);
+                      $state.go("login");
+                      
                     } else {
                       vm.neuspeh = true;
                       vcRecaptchaService.reload(1);
@@ -236,7 +270,8 @@
 
                   if (res.data == "1") {
                     $rootScope.user = res.data;
-                    location.reload();
+                    $cookies.put('seja',vm.email);
+                    $state.go("home");
                   } else {
                     if (res.data == "3") {
                       vm.error = "Uporabnik ne obstaja!";
@@ -872,7 +907,7 @@
 
 
 
-  app.controller("NastavitveController", function ($http, $rootScope, $timeout, $filter, PostService,$scope,$cookies) {
+  app.controller("NastavitveController", function ($http, $rootScope, $timeout, $filter, PostService,$scope,$cookies,$state) {
     var vm = this;
     vm.buttonName = "Odkleni polje";
     vm.widgetTypes = [];
@@ -1138,7 +1173,9 @@ vm.izbrano=true;
           $rootScope.user = null;
           $rootScope.widgets = null;
           $cookies.remove("forever");
-          location.reload();
+          $cookies.remove("seja");
+        
+          $state.go("login");
 
         });
     }
