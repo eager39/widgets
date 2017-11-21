@@ -46,7 +46,9 @@
       $http.get("php/preveriSejo.php")
       .then(function (odlicno) {
         if (odlicno.data != "gtfo") {
+          console.log(odlicno.data);
           $rootScope.user = odlicno.data;
+          $state.go("home");
         
         } else if($cookies.get("forever")) {
           $http.get("php/preveriCookie.php?cookie="+loginCookie)
@@ -470,7 +472,9 @@
           $scope.myChartObject.options = {
             'title': "Poraba za mesec " + vm.izberiZgo.mesec + " " + vm.izberiZgo.leto,
 
-            backgroundColor: 'transparent'
+            backgroundColor: 'transparent',
+             pieHole: 0.4,
+             legend: { position: 'bottom'}
 
           };
 
@@ -524,7 +528,9 @@
     $scope.myChartObject.options = {
       'title': "Poraba za mesec " + mesec + " " + leto,
 
-      backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
+      pieHole: 0.4,
+      legend: { position: 'bottom'}
     };
 
 
@@ -557,7 +563,9 @@
               $scope.myChartObject.options = {
                 'title': "Poraba za mesec " + trenutniMesecBeseda + " " + trenutnoLeto,
           
-                backgroundColor: 'transparent'
+                backgroundColor: 'transparent',
+                pieHole: 0.4,
+                legend: { position: 'bottom'}
               };
               $http.get("php/getGrafMonthAndYear.php?widget="+vm.widget) //POSODOBI ZGODOVINO
               .then(function (res) {
@@ -741,10 +749,15 @@
 
       // delo[i]["delo"]=vm.choice[i];
       //  delo[i]["cas"]=vm.choice2[i];
+      
+      
+      
       delo.delo = vm.name;
       delo.deadline = vm.date;
+      
       delo.id = vm.id;
       delo.level = vm.level;
+     
       // delo.push({delo:vm.choice[i],deadline:vm.choice2[i],level:1,id:vm.id})
       //}
       //  console.log(delo);
@@ -757,25 +770,30 @@
            'Content-Type': 'application/x-www-form-urlencoded'
          }
        })
-       */
-      var url = "php/addTodo.php";
-      var data = "delo=" + JSON.stringify(delo);
-      PostService.Post(url, data)
-        .then(function (res) {
+       */ if(vm.name && vm.date && vm.level ){
+        var url = "php/addTodo.php";
+        var data = "delo=" + JSON.stringify(delo);
+        PostService.Post(url, data)
+          .then(function (res) {
+          delete vm.napaka;
+  
+            $http.get("php/getTodo.php?id=" + vm.id)
+              .then(function (res) {
+                vm.todo = res.data;
+                vm.name = null;
+                vm.date = null;
+                vm.id = $attrs.widget;
+  
+                vm.todo = res.data;
+                vm.todo = todoUntil.Until(vm.todo);
+              }); //good old copy paste
+  
+          });
 
-
-          $http.get("php/getTodo.php?id=" + vm.id)
-            .then(function (res) {
-              vm.todo = res.data;
-              vm.name = null;
-              vm.date = null;
-              vm.id = $attrs.widget;
-
-              vm.todo = res.data;
-              vm.todo = todoUntil.Until(vm.todo);
-            }); //good old copy paste
-
-        });
+       }else{
+       vm.napaka="Izpolni vse!";
+       }
+    
 
 
     };
