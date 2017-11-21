@@ -46,24 +46,19 @@
       $http.get("php/preveriSejo.php")
       .then(function (odlicno) {
         if (odlicno.data != "gtfo") {
-          console.log(odlicno.data);
+          alert("SEJA ODLICNO");
           $rootScope.user = odlicno.data;
           $state.go("home");
         
         } else if($cookies.get("forever")) {
           $http.get("php/preveriCookie.php?cookie="+loginCookie)
           .then(function (res) {
+            alert("forever");
            $rootScope.user=res.data;
             $state.go("home");
           });
         
         
-        }else if($cookies.get("seja")){
-          alert("seja");
-          $rootScope.user = $cookies.get("seja");
-         
-          $state.go("home");
-
         }
         else{
           alert($location.path());
@@ -192,6 +187,7 @@
   });
 
   app.controller("LoginRegisterController", function ($http, $rootScope, $timeout, $scope, vcRecaptchaService, PostService,$cookies,$state) {
+    alert("TESTING CONTROLLERS LOGIN");
     var vm = this;
     vm.nomatch = false;
     vm.captchaRes = "";
@@ -304,10 +300,7 @@
 
 
                   if (res.data == "1") {
-                    
-                    $cookies.put('seja',vm.email);
                     $state.go("home");
-                    console.log($rootScope);
                   } else {
                     if (res.data == "3") {
                       vm.error = "Uporabnik ne obstaja!";
@@ -343,7 +336,7 @@
 
   app.controller("WidgetController", function ($http, $rootScope, $scope, PostService) {
     var vm = this;
-
+    alert("TESTING CONTROLLERS WIDGET");
     $http.get("php/widgetinit.php")
       .then(function (res2) {
         $rootScope.widgets = res2.data;
@@ -411,11 +404,13 @@
 
   app.controller("WeatherWidgetController", function ($http, $attrs, $rootScope) {
     var vm = this;
-
+    console.log("TESTING CONTROLLERS VREME");
+    console.log($rootScope);
     initialize($attrs.widget);
 
     function initialize(widget_id) {
       vm.id = widget_id;
+      alert(vm.id);
 
       $http.get("php/widgetConfig.php?id=" + vm.id + "&test=" + $rootScope.user.id + "")
         .then(function (res) {
@@ -446,6 +441,7 @@
   });
 
   app.controller("GrafWidgetController", function ($http,$attrs, $rootScope, $scope, $timeout, $filter, PostService) {
+    alert("TESTING CONTROLLERS GRAF");
     var vm = this;
     var skup = [];
     vm.widget=$attrs.widget;
@@ -668,20 +664,25 @@
 
   
 
-  app.controller("NoviceWidgetController", function ($http, $attrs, $rootScope,$scope) {
+  app.controller("NoviceWidgetController", function ($http, $attrs, $rootScope, $scope,$timeout) {
+    console.log("TESTING CONTROLLERS NOVICE");
+    console.log($rootScope);
     var vm = this;
-    vm.test=false;
+    vm.test = false;
     //api key d3a535b2afa9418b836401eb613f02e3,8fb771b1531b4b4b990a84eb12b46f0e
-  //  https: //newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=d3a535b2afa9418b836401eb613f02e3
-      initialize($attrs.widget);
-
-    function initialize(widget_id) {
+    //  https: //newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=d3a535b2afa9418b836401eb613f02e3
+   
+    alert("TEST SHOULD HAPPEN");
+  //  initialize($attrs.widget);
+var widget_id=$attrs.widget;
+  //  function initialize(widget_id) {
       vm.id = widget_id;
-
-    console.log($rootScope.user.id);
-      $http.get("php/widgetConfig.php?id=" + vm.id + "&test=" + $rootScope.user.id)
+      
+     
+      $timeout( function(){
+        $http.get("php/widgetConfig.php?id=" + vm.id + "&test=" + $rootScope.user.id)
         .then(function (res) {
-         
+
           vm.widgetConfig = res.data;
           vm.config = JSON.parse(vm.widgetConfig.config);
           vm.datum = vm.config.date;
@@ -690,32 +691,65 @@
           vm.order = vm.config.vrstni_red;
           vm.source = vm.config.source;
           alert(vm.source);
-          if(Object.keys(vm.config).length>0){
-           
-          $http.get("https://newsapi.org/v1/articles?source=" + vm.source + "&sortBy=" + vm.order + "&apiKey=8fb771b1531b4b4b990a84eb12b46f0e")
-            .then(function (res) {
-              //  console.log(res.data["articles"][0]["title"]);
+          if (Object.keys(vm.config).length > 0) {
 
-              vm.novice = res.data["articles"];
-            }, function (error) {
-              if (error.data["code"] == "sourceUnavailableSortedBy") {
-                vm.error = "Izbrana razvrstitev novic ni navoljo prosimo uredite pod Nastavitve->uredi"
-              }
+            $http.get("https://newsapi.org/v1/articles?source=" + vm.source + "&sortBy=" + vm.order + "&apiKey=8fb771b1531b4b4b990a84eb12b46f0e")
+              .then(function (res) {
+                //  console.log(res.data["articles"][0]["title"]);
+
+                vm.novice = res.data["articles"];
+              }, function (error) {
+                if (error.data["code"] == "sourceUnavailableSortedBy") {
+                  vm.error = "Izbrana razvrstitev novic ni navoljo prosimo uredite pod Nastavitve->uredi"
+                }
 
 
-            });
+              });
           }
 
 
         });
-    }
-    $scope.izbrano = function (){
-     
+        }, 0);
+        /*
+      $http.get("php/widgetConfig.php?id=" + vm.id + "&test=" + $rootScope.user.id)
+        .then(function (res) {
+
+          vm.widgetConfig = res.data;
+          vm.config = JSON.parse(vm.widgetConfig.config);
+          vm.datum = vm.config.date;
+          vm.opis = vm.config.opis;
+          vm.slika = vm.config.slika;
+          vm.order = vm.config.vrstni_red;
+          vm.source = vm.config.source;
+          alert(vm.source);
+          if (Object.keys(vm.config).length > 0) {
+
+            $http.get("https://newsapi.org/v1/articles?source=" + vm.source + "&sortBy=" + vm.order + "&apiKey=8fb771b1531b4b4b990a84eb12b46f0e")
+              .then(function (res) {
+                //  console.log(res.data["articles"][0]["title"]);
+
+                vm.novice = res.data["articles"];
+              }, function (error) {
+                if (error.data["code"] == "sourceUnavailableSortedBy") {
+                  vm.error = "Izbrana razvrstitev novic ni navoljo prosimo uredite pod Nastavitve->uredi"
+                }
+
+
+              });
+          }
+
+
+        });
+        */
+ //   }
+    $scope.izbrano = function () {
+
       alert("haha");
     };
   });
 
   app.controller("TodoWidgetController", function ($http, $attrs, $rootScope, $scope, $filter, todoUntil, PostService) {
+    alert("TESTING CONTROLLERS TODO");
     var vm = this;
     vm.editEnabled = false;
 
@@ -850,7 +884,7 @@
 
   });
   app.controller("EventWidgetController", function ($http, $attrs, $rootScope, $scope, $filter, todoUntil, PostService) {
-
+    alert("TESTING CONTROLLERS EVENT");
     var vm = this;
     vm.editEnabled = false;
 
@@ -961,6 +995,7 @@
 
 
   app.controller("NastavitveController", function ($http, $rootScope, $timeout, $filter, PostService,$scope,$cookies,$state,$location) {
+    alert("TESTING CONTROLLERS NAST");
     var vm = this;
     vm.buttonName = "Odkleni polje";
     vm.widgetTypes = [];
