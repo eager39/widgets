@@ -40,20 +40,20 @@
     if($cookies.get("forever")){
       var loginCookie = $cookies.get('forever');
    }
-    
+   
     $rootScope.$on('$locationChangeStart', function (event,next,current) {
       
       $http.get("php/preveriSejo.php")
       .then(function (odlicno) {
         if (odlicno.data != "gtfo") {
-          alert("SEJA ODLICNO");
+         
           $rootScope.user = odlicno.data;
           $state.go("home");
-        
+          return true;
         } else if($cookies.get("forever")) {
           $http.get("php/preveriCookie.php?cookie="+loginCookie)
           .then(function (res) {
-            alert("forever");
+           
            $rootScope.user=res.data;
             $state.go("home");
           });
@@ -61,7 +61,7 @@
         
         }
         else{
-          alert($location.path());
+          
           if($location.path()=="/register"){
             $state.go("register");
           }else{
@@ -187,7 +187,7 @@
   });
 
   app.controller("LoginRegisterController", function ($http, $rootScope, $timeout, $scope, vcRecaptchaService, PostService,$cookies,$state) {
-    alert("TESTING CONTROLLERS LOGIN");
+ 
     var vm = this;
     vm.nomatch = false;
     vm.captchaRes = "";
@@ -270,11 +270,11 @@
 
     vm.prijava = function () {
 
-      if (vm.captchaRes != "") {
-        $http.get("php/preveriCaptcho.php?response=" + vm.captchaRes)
-          .then(function (res) {
+   //   if (vm.captchaRes != "") {
+     //   $http.get("php/preveriCaptcho.php?response=" + vm.captchaRes)
+     //     .then(function (res) {
 
-            if (res.data.success) {
+           // if (res.data.success) {
               if(vm.cookie){
                 var now = new Date(),
                 // this will set the expiration to 12 months
@@ -314,17 +314,17 @@
 
                 });
 
-            } else {
+          //  } else {
 
 
-              vm.error = res.data["error-codes"][0];
-              vcRecaptchaService.reload(0);
-            }
+         //     vm.error = res.data["error-codes"][0];
+         //     vcRecaptchaService.reload(0);
+         //   }
 
-          });
-      } else {
-        vm.error = "Reši captcho!";
-      }
+        //  });
+     // } else {
+     //   vm.error = "Reši captcho!";
+   //   }
 
 
     };
@@ -336,7 +336,7 @@
 
   app.controller("WidgetController", function ($http, $rootScope, $scope, PostService) {
     var vm = this;
-    alert("TESTING CONTROLLERS WIDGET");
+   
     $http.get("php/widgetinit.php")
       .then(function (res2) {
         $rootScope.widgets = res2.data;
@@ -406,11 +406,12 @@
     var vm = this;
     console.log("TESTING CONTROLLERS VREME");
     console.log($rootScope);
-    initialize($attrs.widget);
-
-    function initialize(widget_id) {
-      vm.id = widget_id;
-      alert(vm.id);
+    initialize();
+   
+  vm.id = $attrs.widget;
+    function initialize() {
+    
+     
 
       $http.get("php/widgetConfig.php?id=" + vm.id + "&test=" + $rootScope.user.id + "")
         .then(function (res) {
@@ -441,7 +442,7 @@
   });
 
   app.controller("GrafWidgetController", function ($http,$attrs, $rootScope, $scope, $timeout, $filter, PostService) {
-    alert("TESTING CONTROLLERS GRAF");
+  
     var vm = this;
     var skup = [];
     vm.widget=$attrs.widget;
@@ -600,7 +601,7 @@
       PostService.Post(url, data)
         .then(function (res) {
           if (res.data == 1) {
-            alert("uspešno");
+        
             $http.get("php/getAllPoraba.php?widget="+vm.widget+ "&mesec="+trenutniMesec)
               .then(function (res) {
 
@@ -672,7 +673,7 @@
     //api key d3a535b2afa9418b836401eb613f02e3,8fb771b1531b4b4b990a84eb12b46f0e
     //  https: //newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=d3a535b2afa9418b836401eb613f02e3
    
-    alert("TEST SHOULD HAPPEN");
+   
   //  initialize($attrs.widget);
 var widget_id=$attrs.widget;
   //  function initialize(widget_id) {
@@ -690,7 +691,7 @@ var widget_id=$attrs.widget;
           vm.slika = vm.config.slika;
           vm.order = vm.config.vrstni_red;
           vm.source = vm.config.source;
-          alert(vm.source);
+         
           if (Object.keys(vm.config).length > 0) {
 
             $http.get("https://newsapi.org/v1/articles?source=" + vm.source + "&sortBy=" + vm.order + "&apiKey=8fb771b1531b4b4b990a84eb12b46f0e")
@@ -744,12 +745,12 @@ var widget_id=$attrs.widget;
  //   }
     $scope.izbrano = function () {
 
-      alert("haha");
+      
     };
   });
 
   app.controller("TodoWidgetController", function ($http, $attrs, $rootScope, $scope, $filter, todoUntil, PostService) {
-    alert("TESTING CONTROLLERS TODO");
+   
     var vm = this;
     vm.editEnabled = false;
 
@@ -884,7 +885,7 @@ var widget_id=$attrs.widget;
 
   });
   app.controller("EventWidgetController", function ($http, $attrs, $rootScope, $scope, $filter, todoUntil, PostService) {
-    alert("TESTING CONTROLLERS EVENT");
+   
     var vm = this;
     vm.editEnabled = false;
 
@@ -995,7 +996,7 @@ var widget_id=$attrs.widget;
 
 
   app.controller("NastavitveController", function ($http, $rootScope, $timeout, $filter, PostService,$scope,$cookies,$state,$location) {
-    alert("TESTING CONTROLLERS NAST");
+  
     var vm = this;
     vm.buttonName = "Odkleni polje";
     vm.widgetTypes = [];
@@ -1195,7 +1196,7 @@ vm.izbrano=true;
       var data = "id=" + $rootScope.user.id;
       PostService.Post(url, data)
         .then(function (res) {
-          alert(res.data);
+        
 
           location.reload();
 
