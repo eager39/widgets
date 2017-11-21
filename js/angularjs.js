@@ -41,6 +41,7 @@
       var loginCookie = $cookies.get('forever');
    }
    
+   
     $rootScope.$on('$locationChangeStart', function (event,next,current) {
       
       $http.get("php/preveriSejo.php")
@@ -65,11 +66,13 @@
           if($location.path()=="/register"){
             $state.go("register");
           }else{
+            
       $state.go("login");
           }
        //   setTimeout(function(){  $("#regLog").modal("toggle"); }, 1);
         }
       });
+    
       /*
             if ($rootScope.user == null) {
               alert("null");
@@ -340,7 +343,7 @@
     $http.get("php/widgetinit.php")
       .then(function (res2) {
         $rootScope.widgets = res2.data;
-       console.log("asdasdasd",res2.data);
+      
       });
 
     function updateXYpos() {
@@ -404,11 +407,13 @@
 
   app.controller("WeatherWidgetController", function ($http, $attrs, $rootScope) {
     var vm = this;
-    console.log("TESTING CONTROLLERS VREME");
-    console.log($rootScope);
+   
+    
+    
     initialize();
    
   vm.id = $attrs.widget;
+ 
     function initialize() {
     
      
@@ -447,16 +452,16 @@
     var skup = [];
     vm.widget=$attrs.widget;
     var mesec = new Date();
-    console.log(vm.widget);
+    
     $http.get("php/getVrste.php")
       .then(function (res) {
         vm.vrste = res.data;
-        console.log(vm.vrste);
+       
       });
     $http.get("php/getGrafMonthAndYear.php?widget="+vm.widget)
       .then(function (res) {
         vm.zgodovina = res.data;
-        console.log(res.data);
+        
       });
 
 
@@ -478,7 +483,7 @@
 
           if (res.data != "vnesi podatke") {
             $scope.myChartObject.data = res.data;
-            console.log(res.data);
+           
           } else {
             $scope.myChartObject.data = [
               ["ni podatkov", "ni podatkov"]
@@ -499,7 +504,7 @@
 
         if (res.data != "vnesi podatke") {
           $scope.myChartObject.data = res.data;
-          console.log(res);
+          
         } else {
           $scope.myChartObject.data = [
             ["ni podatkov", "ni podatkov"]
@@ -537,7 +542,7 @@
 
     vm.editEnabled = false;
     vm.shraniPorabo = function (poraba) {
-      console.log(vm.izberiZgo);
+     
       var poraba = {};
       poraba.znesek = vm.znesek;
       poraba.datum =  $filter('date')(vm.date, 'yyyy-MM-dd');
@@ -567,7 +572,7 @@
               $http.get("php/getGrafMonthAndYear.php?widget="+vm.widget) //POSODOBI ZGODOVINO
               .then(function (res) {
                 vm.zgodovina = res.data;
-                console.log(res.data);
+               
               });
               //POSODOBI ZGODOVINO
 
@@ -605,7 +610,7 @@
             $http.get("php/getAllPoraba.php?widget="+vm.widget+ "&mesec="+trenutniMesec)
               .then(function (res) {
 
-                console.log(res.data);
+               
                 $rootScope.poraba = res.data;
                 vm.currentPage = 0;
                 vm.pageSize = 3;
@@ -637,7 +642,7 @@
       $http.get("php/getAllPoraba.php?widget="+vm.widget+ "&mesec="+trenutniMesec)
         .then(function (res) {
 
-          console.log(res.data);
+          
           $rootScope.poraba = res.data;
           vm.currentPage = 0;
           vm.pageSize = 3;
@@ -666,8 +671,7 @@
   
 
   app.controller("NoviceWidgetController", function ($http, $attrs, $rootScope, $scope,$timeout) {
-    console.log("TESTING CONTROLLERS NOVICE");
-    console.log($rootScope);
+   
     var vm = this;
     vm.test = false;
     //api key d3a535b2afa9418b836401eb613f02e3,8fb771b1531b4b4b990a84eb12b46f0e
@@ -680,7 +684,7 @@ var widget_id=$attrs.widget;
       vm.id = widget_id;
       
      
-      $timeout( function(){
+   
         $http.get("php/widgetConfig.php?id=" + vm.id + "&test=" + $rootScope.user.id)
         .then(function (res) {
 
@@ -710,7 +714,7 @@ var widget_id=$attrs.widget;
 
 
         });
-        }, 0);
+      
         /*
       $http.get("php/widgetConfig.php?id=" + vm.id + "&test=" + $rootScope.user.id)
         .then(function (res) {
@@ -1008,7 +1012,7 @@ var widget_id=$attrs.widget;
       $http.get("php/listWidgetTypes.php")
         .then(function (res) {
           vm.widgetTypes = res.data;
-            console.log(res.data);
+         
 
         });
 
@@ -1028,11 +1032,11 @@ var widget_id=$attrs.widget;
    $scope.getSorting = function(opt){
     $http.get("php/getSorting.php?id="+opt)
     .then(function (res) {
-     console.log(vm.sort);
+    
       vm.sort=JSON.parse(res.data.sorting);
        
     });
-console.log(opt);
+
 vm.izbrano=true;
 
    };
@@ -1045,7 +1049,7 @@ vm.izbrano=true;
         config[el.field] = vm.options[el.field];
         
       });
-      console.log(config);
+    
       if(angular.isDefined(vm.source)){
         if(angular.isDefined(vm.sorted)){
           
@@ -1086,7 +1090,7 @@ vm.izbrano=true;
           $http.get("php/widgetinit.php")
             .then(function (res2) {
               $rootScope.widgets = res2.data;
-              console.log(res2.data);
+              
               
               delete vm.source;
             delete vm.sorted;
@@ -1111,7 +1115,7 @@ vm.izbrano=true;
         el.selected = false;
       });
       item.selected = true;
-      console.log($rootScope.widgets);
+     
     };
 
     vm.updateWidgetConfig = function (item) {
@@ -1261,11 +1265,12 @@ vm.izbrano=true;
     vm.odjava = function () {
       $http.get("php/odjava.php")
         .then(function (res) {
-          $rootScope.user = null;
-          $rootScope.widgets = null;
+      //    $rootScope.user = null;
+        //  $rootScope.widgets = null;
+       
           $cookies.remove("forever");
           $cookies.remove("seja");
-        
+       
           $state.go("login");
 
         });
