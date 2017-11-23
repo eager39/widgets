@@ -210,7 +210,7 @@
 
 
       if (vm.captchaRes2 != "") {
-        $http.get("/php/preveriCaptcho.php?response=" + vm.captchaRes2)
+        $http.get("php/preveriCaptcho.php?response=" + vm.captchaRes2)
           .then(function (res) {
 
             if (res.data.success) {
@@ -236,11 +236,13 @@
                       vm.neuspeh = "Uporabnik s to e-pošto že obstaja!";
 
                     } else if (res.data) {
-
+                      
                       vm.neuspeh = false;
                       vm.uspeh = true;
-                      vcRecaptchaService.reload(1);
+                      $timeout(function(){
                       $state.go("login");
+                    },2000);
+                      vcRecaptchaService.reload(1);
                       
                     } else {
                       vm.neuspeh = true;
