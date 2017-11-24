@@ -15,13 +15,11 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#/!">Dashboard</a>
+            <a class="navbar-brand" ui-sref="home">Dashboard</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#">About</a></li>
-              <li><a href="#">Contact</a></li>
+              <li class="active"><a ui-sref="test">Home</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right" ng-controller="NastavitveController as vm">
             <li>
@@ -31,9 +29,7 @@
             <li ng-if="user">
                 <a href="#" ng-click="vm.odjava()">Odjava</a>
             </li>
-            <li ng-if="!user">
-                <a data-target="#regLog" data-toggle="modal" href="#"><i class="glyphicon glyphicon-user"></i> Prijava</a>
-            </li>
+           
         </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
@@ -65,16 +61,16 @@
                         <!-- NASTAVITVE CONTENT -->
                         <ul class="nav nav-tabs">
                             <li class="active">
-                                <a data-toggle="tab" href="#splosnoTab">Splošno</a>
+                                <a data-toggle="tab" href="/#splosnoTab">Splošno</a>
                             </li>
                             <li>
-                                <a data-toggle="tab" href="#dodajTab">Dodaj</a>
+                                <a data-toggle="tab" href="/#dodajTab">Dodaj</a>
                             </li>
                             <li>
-                                <a data-toggle="tab" href="#vremeTab">Uredi</a>
+                                <a data-toggle="tab" href="/#vremeTab">Uredi</a>
                             </li>
                             <li>
-                                <a data-toggle="tab" href="#PorabaTab">Poraba</a>
+                                <a data-toggle="tab" href="/#PorabaTab">Poraba</a>
                             </li>
                         </ul>
                         <div class="tab-content" ng-controller="NastavitveController as vm">
@@ -291,13 +287,14 @@
             </div>
         </div>
     </div>
+ <!--
     <div class="container">
-        <!-- Modal PRIJAVA / REGISTRACIJA -->
+         Modal PRIJAVA / REGISTRACIJA 
         <div class="modal fade" data-backdrop="static" data-keyboard="false" id="regLog" ng-controller="LoginRegisterController as vm" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <!-- MODAL CONTENT -->
+                        MODAL CONTENT 
                         <ul class="nav nav-tabs">
                             <li class="active">
                                 <a data-toggle="tab" href="#tab-prijava" id="prijavaTab">Prijava</a>
@@ -308,7 +305,7 @@
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane fade in active" id="tab-prijava">
-                                <!-- PRIJAVA PRIJAVA PRIJAVA PRIJAVA -->
+                               PRIJAVA PRIJAVA PRIJAVA PRIJAVA
                                 <div class="modalCon">
                                     <form class="form-horizontal" id="prijava" name="prijava" ng-submit="vm.prijava()" role="form">
                                         <div class="form-group">
@@ -349,10 +346,10 @@
                                         </div>
                                       
                                     </form>
-                                </div><!-- KONEC TAB PRIJAVA -->
+                                </div> KONEC TAB PRIJAVA 
                             </div>
                             <div class="tab-pane fade" id="tab-regis">
-                                <!-- TAB REGISTRACIJA -->
+                                 TAB REGISTRACIJA 
                                 <div class="modalCon">
                                     <form class="form-horizontal" id="register" name="regForm" ng-submit="vm.registracija()" role="form">
                                         <div class="form-group" ng-class="{'has-error has-feedback': regForm.userEmail.$invalid && regForm.userEmail.$dirty, 'has-success has-feedback': regForm.userEmail.$valid}">
@@ -415,10 +412,12 @@
                                             <button class="btn btn-default" ng-disabled="regForm.$invalid || vm.nomatch || vm.neuspeh" type="submit">Registracija</button>
                                         </div>
                                     </form>
-                                </div><!-- KONEC TAB REGISTRACIJA -->
+                                </div> KONEC TAB REGISTRACIJA 
                             </div>
                         </div>
-                    </div>
+                    </div>-->
+    
+                   
                 </div>
             </div>
         </div>

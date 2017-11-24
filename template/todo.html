@@ -6,7 +6,7 @@
   
   <fieldset  ng-if="vm.editEnabled">
       <ng-form name="dodajTodo" class="form-inline" >
-        <input name="" class="form-control" required type="text"  ng-model="vm.name" name="delo" placeholder="Vnesi delo"> 
+        <input name="" class="form-control" required type="text"  ng-model="vm.name" placeholder="Vnesi delo"> 
            <select class="form-control" ng-model="vm.level">
             <option class="bg-success" value="1">1</option>
             <option  class="bg-info" value="2">2</option>
@@ -14,10 +14,11 @@
             <option class="bg-danger" value="4">4</option>
           </select> 
        
-        <input class="form-control" required type="datetime-local"  ng-model="vm.date" name="">
+        <input class="form-control" required type="datetime-local"  ng-model="vm.date" >
        
     </ng-form>
-    <button class="form-control" ng-disabled="!dodajTodo.$dirty" ng-click="vm.shraniNovaDela()">Shrani</button>
+    <button class="form-control" ng-disabled="!dodajTodo.$valid" ng-click="vm.shraniNovaDela()">Shrani</button>
+    <div ng-show="vm.napaka" class="alert alert-errro">{{vm.napaka}}</div>
   </fieldset>
 </ul>
 <span id="plus-icon" class="glyphicon glyphicon-plus" ng-click="vm.edit()" aria-hidden="true"></span>

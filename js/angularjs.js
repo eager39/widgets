@@ -2,48 +2,117 @@
 
   var app = angular.module('app', ['ngMessages', 'gridster', 'ngSanitize', 'angular.filter', 'googlechart', 'vcRecaptcha','ui.router','ngCookies']);
 
-  app.config(function($stateProvider) {
-    var Widgets = {
-      name: 'Widgets',
-      url: '',
+  app.config(function($stateProvider,$locationProvider,$urlRouterProvider,$qProvider) {
+    var home = {
+      name: 'home',
+      url: '/home',
       templateUrl: 'main.html'
     }
   
-    var aboutState = {
+    var login = {
+      name: 'login',
+      url: '/login',
+      templateUrl: 'login.html'
+    }
+    var register = {
+      name: 'register',
+      url: '/register',
+      templateUrl: 'register.html'
+    }
+    var test = {
       name: 'test',
       url: '/test',
-      templateUrl: 'test.html'
+      templateUrl: 'error.html'
     }
   
-    $stateProvider.state(Widgets);
-    $stateProvider.state(aboutState);
+    $stateProvider.state(home);
+    $stateProvider.state(login);
+    $stateProvider.state(register);
+    $stateProvider.state(test);
+
+    $locationProvider.html5Mode(true);
+    $qProvider.errorOnUnhandledRejections(false);
+    
   });
 
 
-  app.run(function ($rootScope, $http,PostService,$cookies) {
-  
-  
-  if($cookies.get("forever")){
-     var loginCookie = $cookies.get('forever');
-  }
-
-    $http.get("php/preveriSejo.php")
+  app.run(function ($rootScope, $http,PostService,$cookies,$location,$state) {
+    if($cookies.get("forever")){
+      var loginCookie = $cookies.get('forever');
+   }
+   
+   
+    $rootScope.$on('$locationChangeStart', function (event,next,current) {
+      
+      $http.get("php/preveriSejo.php")
       .then(function (odlicno) {
         if (odlicno.data != "gtfo") {
+         
           $rootScope.user = odlicno.data;
+          $state.go("home");
+          return true;
         } else if($cookies.get("forever")) {
           $http.get("php/preveriCookie.php?cookie="+loginCookie)
           .then(function (res) {
+           
            $rootScope.user=res.data;
-
+            $state.go("home");
           });
         
         
-        }else{
-          setTimeout(function(){  $("#regLog").modal("toggle"); }, 1);
+        }
+        else{
+          
+          if($location.path()=="/register"){
+            $state.go("register");
+          }else{
+            
+      $state.go("login");
+          }
+       //   setTimeout(function(){  $("#regLog").modal("toggle"); }, 1);
         }
       });
+    
+      /*
+            if ($rootScope.user == null) {
+              alert("null");
+              if ($cookies.get("seja")) {
+                alert("seja");
+                $rootScope.user = $cookies.get("seja");
+               
+                $state.go("home");
+
+              }else if($cookies.get("forever")) {
+                $http.get("php/preveriCookie.php?cookie="+loginCookie)
+                .then(function (res) {
+                 $rootScope.user=res.data;
+                  $state.go("home");
+                });
+              }
+               else {
+                alert("nega seje");
+
+                if ($location.path() == "/register") {
+                  $state.go("register");
+                }else{
+                  
+            $state.go("login");
+                }
+              }
+
+            } else{
+             
+              $state.go("home");
+            }
+            */
+            
+              });
+  
+ 
+
+    
       
+           /*
       var asd=[{}];
       
       $http.get("https://newsapi.org/v1/sources?language=en")
@@ -51,7 +120,7 @@
        console.log(res.data);
        var a=0;
         for(var i=0;i<res.data["sources"].length;i++){
-          asd[a]={};
+          asd[a]={};                                                   ADDING NEWS SOURCES AUTOMATICLY FROM API
           asd[a]["name"]=res.data["sources"][i].name;
           asd[a]["id"]=res.data["sources"][i].id;
           asd[a]["category"]=res.data["sources"][i].category;
@@ -68,6 +137,7 @@
       console.log(res);
     });
       });
+      */
       
        
   });
@@ -119,7 +189,8 @@
 
   });
 
-  app.controller("LoginRegisterController", function ($http, $rootScope, $timeout, $scope, vcRecaptchaService, PostService,$cookies) {
+  app.controller("LoginRegisterController", function ($http, $rootScope, $timeout, $scope, vcRecaptchaService, PostService,$cookies,$state) {
+ 
     var vm = this;
     vm.nomatch = false;
     vm.captchaRes = "";
@@ -139,7 +210,7 @@
 
 
       if (vm.captchaRes2 != "") {
-        $http.get("/php/preveriCaptcho.php?response=" + vm.captchaRes2)
+        $http.get("php/preveriCaptcho.php?response=" + vm.captchaRes2)
           .then(function (res) {
 
             if (res.data.success) {
@@ -165,15 +236,14 @@
                       vm.neuspeh = "Uporabnik s to e-pošto že obstaja!";
 
                     } else if (res.data) {
-
+                      
                       vm.neuspeh = false;
                       vm.uspeh = true;
+                      $timeout(function(){
+                      $state.go("login");
+                    },2000);
                       vcRecaptchaService.reload(1);
-                      $timeout(function () {
-                        angular.element('#prijavaTab')
-                          .trigger('click');
-
-                      }, 1000);
+                      
                     } else {
                       vm.neuspeh = true;
                       vcRecaptchaService.reload(1);
@@ -205,11 +275,11 @@
 
     vm.prijava = function () {
 
-      if (vm.captchaRes != "") {
-        $http.get("php/preveriCaptcho.php?response=" + vm.captchaRes)
-          .then(function (res) {
+   //   if (vm.captchaRes != "") {
+     //   $http.get("php/preveriCaptcho.php?response=" + vm.captchaRes)
+     //     .then(function (res) {
 
-            if (res.data.success) {
+           // if (res.data.success) {
               if(vm.cookie){
                 var now = new Date(),
                 // this will set the expiration to 12 months
@@ -235,8 +305,7 @@
 
 
                   if (res.data == "1") {
-                    $rootScope.user = res.data;
-                    location.reload();
+                    $state.go("home");
                   } else {
                     if (res.data == "3") {
                       vm.error = "Uporabnik ne obstaja!";
@@ -250,17 +319,17 @@
 
                 });
 
-            } else {
+          //  } else {
 
 
-              vm.error = res.data["error-codes"][0];
-              vcRecaptchaService.reload(0);
-            }
+         //     vm.error = res.data["error-codes"][0];
+         //     vcRecaptchaService.reload(0);
+         //   }
 
-          });
-      } else {
-        vm.error = "Reši captcho!";
-      }
+        //  });
+     // } else {
+     //   vm.error = "Reši captcho!";
+   //   }
 
 
     };
@@ -272,11 +341,11 @@
 
   app.controller("WidgetController", function ($http, $rootScope, $scope, PostService) {
     var vm = this;
-
+   
     $http.get("php/widgetinit.php")
       .then(function (res2) {
         $rootScope.widgets = res2.data;
-       
+      
       });
 
     function updateXYpos() {
@@ -340,11 +409,16 @@
 
   app.controller("WeatherWidgetController", function ($http, $attrs, $rootScope) {
     var vm = this;
-
-    initialize($attrs.widget);
-
-    function initialize(widget_id) {
-      vm.id = widget_id;
+   
+    
+    
+    initialize();
+   
+  vm.id = $attrs.widget;
+ 
+    function initialize() {
+    
+     
 
       $http.get("php/widgetConfig.php?id=" + vm.id + "&test=" + $rootScope.user.id + "")
         .then(function (res) {
@@ -375,20 +449,21 @@
   });
 
   app.controller("GrafWidgetController", function ($http,$attrs, $rootScope, $scope, $timeout, $filter, PostService) {
+  
     var vm = this;
     var skup = [];
     vm.widget=$attrs.widget;
     var mesec = new Date();
-    console.log(vm.widget);
+    
     $http.get("php/getVrste.php")
       .then(function (res) {
         vm.vrste = res.data;
-        console.log(vm.vrste);
+       
       });
     $http.get("php/getGrafMonthAndYear.php?widget="+vm.widget)
       .then(function (res) {
         vm.zgodovina = res.data;
-        console.log(res.data);
+        
       });
 
 
@@ -401,14 +476,16 @@
           $scope.myChartObject.options = {
             'title': "Poraba za mesec " + vm.izberiZgo.mesec + " " + vm.izberiZgo.leto,
 
-            backgroundColor: 'transparent'
+            backgroundColor: 'transparent',
+             pieHole: 0.4,
+             legend: { position: 'bottom'}
 
           };
 
 
           if (res.data != "vnesi podatke") {
             $scope.myChartObject.data = res.data;
-            console.log(res.data);
+           
           } else {
             $scope.myChartObject.data = [
               ["ni podatkov", "ni podatkov"]
@@ -429,7 +506,7 @@
 
         if (res.data != "vnesi podatke") {
           $scope.myChartObject.data = res.data;
-          console.log(res);
+          
         } else {
           $scope.myChartObject.data = [
             ["ni podatkov", "ni podatkov"]
@@ -455,7 +532,9 @@
     $scope.myChartObject.options = {
       'title': "Poraba za mesec " + mesec + " " + leto,
 
-      backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
+      pieHole: 0.4,
+      legend: { position: 'bottom'}
     };
 
 
@@ -465,7 +544,7 @@
 
     vm.editEnabled = false;
     vm.shraniPorabo = function (poraba) {
-      console.log(vm.izberiZgo);
+     
       var poraba = {};
       poraba.znesek = vm.znesek;
       poraba.datum =  $filter('date')(vm.date, 'yyyy-MM-dd');
@@ -488,12 +567,14 @@
               $scope.myChartObject.options = {
                 'title': "Poraba za mesec " + trenutniMesecBeseda + " " + trenutnoLeto,
           
-                backgroundColor: 'transparent'
+                backgroundColor: 'transparent',
+                pieHole: 0.4,
+                legend: { position: 'bottom'}
               };
               $http.get("php/getGrafMonthAndYear.php?widget="+vm.widget) //POSODOBI ZGODOVINO
               .then(function (res) {
                 vm.zgodovina = res.data;
-                console.log(res.data);
+               
               });
               //POSODOBI ZGODOVINO
 
@@ -527,11 +608,11 @@
       PostService.Post(url, data)
         .then(function (res) {
           if (res.data == 1) {
-            alert("uspešno");
+        
             $http.get("php/getAllPoraba.php?widget="+vm.widget+ "&mesec="+trenutniMesec)
               .then(function (res) {
 
-                console.log(res.data);
+               
                 $rootScope.poraba = res.data;
                 vm.currentPage = 0;
                 vm.pageSize = 3;
@@ -563,7 +644,7 @@
       $http.get("php/getAllPoraba.php?widget="+vm.widget+ "&mesec="+trenutniMesec)
         .then(function (res) {
 
-          console.log(res.data);
+          
           $rootScope.poraba = res.data;
           vm.currentPage = 0;
           vm.pageSize = 3;
@@ -591,20 +672,24 @@
 
   
 
-  app.controller("NoviceWidgetController", function ($http, $attrs, $rootScope,$scope) {
+  app.controller("NoviceWidgetController", function ($http, $attrs, $rootScope, $scope,$timeout) {
+   
     var vm = this;
-    vm.test=false;
+    vm.test = false;
     //api key d3a535b2afa9418b836401eb613f02e3,8fb771b1531b4b4b990a84eb12b46f0e
-  //  https: //newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=d3a535b2afa9418b836401eb613f02e3
-      initialize($attrs.widget);
-
-    function initialize(widget_id) {
+    //  https: //newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=d3a535b2afa9418b836401eb613f02e3
+   
+   
+  //  initialize($attrs.widget);
+var widget_id=$attrs.widget;
+  //  function initialize(widget_id) {
       vm.id = widget_id;
-
-    
-      $http.get("php/widgetConfig.php?id=" + vm.id + "&test=" + $rootScope.user.id)
+      
+     
+   
+        $http.get("php/widgetConfig.php?id=" + vm.id + "&test=" + $rootScope.user.id)
         .then(function (res) {
-         
+
           vm.widgetConfig = res.data;
           vm.config = JSON.parse(vm.widgetConfig.config);
           vm.datum = vm.config.date;
@@ -613,31 +698,65 @@
           vm.order = vm.config.vrstni_red;
           vm.source = vm.config.source;
          
-          if(Object.keys(vm.config).length>0){
-          $http.get("https://newsapi.org/v1/articles?source=" + vm.source + "&sortBy=" + vm.order + "&apiKey=8fb771b1531b4b4b990a84eb12b46f0e")
-            .then(function (res) {
-              //  console.log(res.data["articles"][0]["title"]);
+          if (Object.keys(vm.config).length > 0) {
 
-              vm.novice = res.data["articles"];
-            }, function (error) {
-              if (error.data["code"] == "sourceUnavailableSortedBy") {
-                vm.error = "Izbrana razvrstitev novic ni navoljo prosimo uredite pod Nastavitve->uredi"
-              }
+            $http.get("https://newsapi.org/v1/articles?source=" + vm.source + "&sortBy=" + vm.order + "&apiKey=8fb771b1531b4b4b990a84eb12b46f0e")
+              .then(function (res) {
+                //  console.log(res.data["articles"][0]["title"]);
+
+                vm.novice = res.data["articles"];
+              }, function (error) {
+                if (error.data["code"] == "sourceUnavailableSortedBy") {
+                  vm.error = "Izbrana razvrstitev novic ni navoljo prosimo uredite pod Nastavitve->uredi"
+                }
 
 
-            });
+              });
           }
 
 
         });
-    }
-    $scope.izbrano = function (){
-     
-      alert("haha");
+      
+        /*
+      $http.get("php/widgetConfig.php?id=" + vm.id + "&test=" + $rootScope.user.id)
+        .then(function (res) {
+
+          vm.widgetConfig = res.data;
+          vm.config = JSON.parse(vm.widgetConfig.config);
+          vm.datum = vm.config.date;
+          vm.opis = vm.config.opis;
+          vm.slika = vm.config.slika;
+          vm.order = vm.config.vrstni_red;
+          vm.source = vm.config.source;
+          alert(vm.source);
+          if (Object.keys(vm.config).length > 0) {
+
+            $http.get("https://newsapi.org/v1/articles?source=" + vm.source + "&sortBy=" + vm.order + "&apiKey=8fb771b1531b4b4b990a84eb12b46f0e")
+              .then(function (res) {
+                //  console.log(res.data["articles"][0]["title"]);
+
+                vm.novice = res.data["articles"];
+              }, function (error) {
+                if (error.data["code"] == "sourceUnavailableSortedBy") {
+                  vm.error = "Izbrana razvrstitev novic ni navoljo prosimo uredite pod Nastavitve->uredi"
+                }
+
+
+              });
+          }
+
+
+        });
+        */
+ //   }
+    $scope.izbrano = function () {
+
+      
     };
   });
 
   app.controller("TodoWidgetController", function ($http, $attrs, $rootScope, $scope, $filter, todoUntil, PostService) {
+   
     var vm = this;
     vm.editEnabled = false;
 
@@ -671,10 +790,15 @@
 
       // delo[i]["delo"]=vm.choice[i];
       //  delo[i]["cas"]=vm.choice2[i];
+      
+      
+      
       delo.delo = vm.name;
       delo.deadline = vm.date;
+      
       delo.id = vm.id;
       delo.level = vm.level;
+     
       // delo.push({delo:vm.choice[i],deadline:vm.choice2[i],level:1,id:vm.id})
       //}
       //  console.log(delo);
@@ -687,25 +811,30 @@
            'Content-Type': 'application/x-www-form-urlencoded'
          }
        })
-       */
-      var url = "php/addTodo.php";
-      var data = "delo=" + JSON.stringify(delo);
-      PostService.Post(url, data)
-        .then(function (res) {
+       */ if(vm.name && vm.date && vm.level ){
+        var url = "php/addTodo.php";
+        var data = "delo=" + JSON.stringify(delo);
+        PostService.Post(url, data)
+          .then(function (res) {
+          delete vm.napaka;
+  
+            $http.get("php/getTodo.php?id=" + vm.id)
+              .then(function (res) {
+                vm.todo = res.data;
+                vm.name = null;
+                vm.date = null;
+                vm.id = $attrs.widget;
+  
+                vm.todo = res.data;
+                vm.todo = todoUntil.Until(vm.todo);
+              }); //good old copy paste
+  
+          });
 
-
-          $http.get("php/getTodo.php?id=" + vm.id)
-            .then(function (res) {
-              vm.todo = res.data;
-              vm.name = null;
-              vm.date = null;
-              vm.id = $attrs.widget;
-
-              vm.todo = res.data;
-              vm.todo = todoUntil.Until(vm.todo);
-            }); //good old copy paste
-
-        });
+       }else{
+       vm.napaka="Izpolni vse!";
+       }
+    
 
 
     };
@@ -762,7 +891,7 @@
 
   });
   app.controller("EventWidgetController", function ($http, $attrs, $rootScope, $scope, $filter, todoUntil, PostService) {
-
+   
     var vm = this;
     vm.editEnabled = false;
 
@@ -872,7 +1001,8 @@
 
 
 
-  app.controller("NastavitveController", function ($http, $rootScope, $timeout, $filter, PostService,$scope,$cookies) {
+  app.controller("NastavitveController", function ($http, $rootScope, $timeout, $filter, PostService,$scope,$cookies,$state,$location) {
+  
     var vm = this;
     vm.buttonName = "Odkleni polje";
     vm.widgetTypes = [];
@@ -884,7 +1014,7 @@
       $http.get("php/listWidgetTypes.php")
         .then(function (res) {
           vm.widgetTypes = res.data;
-            console.log(res.data);
+         
 
         });
 
@@ -904,11 +1034,11 @@
    $scope.getSorting = function(opt){
     $http.get("php/getSorting.php?id="+opt)
     .then(function (res) {
-     console.log(vm.sort);
+    
       vm.sort=JSON.parse(res.data.sorting);
        
     });
-console.log(opt);
+
 vm.izbrano=true;
 
    };
@@ -921,7 +1051,7 @@ vm.izbrano=true;
         config[el.field] = vm.options[el.field];
         
       });
-      console.log(config);
+    
       if(angular.isDefined(vm.source)){
         if(angular.isDefined(vm.sorted)){
           
@@ -943,6 +1073,7 @@ vm.izbrano=true;
       widget.user = $rootScope.user.id;
       widget.widget_type = item.id;
       widget.imeWidget = vm.name;
+      
       /*
       $http({
           method: "POST",
@@ -961,9 +1092,10 @@ vm.izbrano=true;
           $http.get("php/widgetinit.php")
             .then(function (res2) {
               $rootScope.widgets = res2.data;
-              console.log(res2.data);
+              
+              
               delete vm.source;
-             delete vm.sorted;
+            delete vm.sorted;
               vm.name="";
               item.selected=false;
             
@@ -985,7 +1117,7 @@ vm.izbrano=true;
         el.selected = false;
       });
       item.selected = true;
-      console.log($rootScope.widgets);
+     
     };
 
     vm.updateWidgetConfig = function (item) {
@@ -1070,7 +1202,7 @@ vm.izbrano=true;
       var data = "id=" + $rootScope.user.id;
       PostService.Post(url, data)
         .then(function (res) {
-          alert(res.data);
+        
 
           location.reload();
 
@@ -1135,10 +1267,13 @@ vm.izbrano=true;
     vm.odjava = function () {
       $http.get("php/odjava.php")
         .then(function (res) {
-          $rootScope.user = null;
-          $rootScope.widgets = null;
+      //    $rootScope.user = null;
+        //  $rootScope.widgets = null;
+       
           $cookies.remove("forever");
-          location.reload();
+          $cookies.remove("seja");
+       
+          $state.go("login");
 
         });
     }
