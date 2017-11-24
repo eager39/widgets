@@ -455,11 +455,11 @@
     vm.widget=$attrs.widget;
     var mesec = new Date();
     
-    $http.get("php/getVrste.php")
-      .then(function (res) {
-        vm.vrste = res.data;
+   // $http.get("php/getVrste.php")
+     // .then(function (res) {
+    //    vm.vrste = res.data;
        
-      });
+   //   });
     $http.get("php/getGrafMonthAndYear.php?widget="+vm.widget)
       .then(function (res) {
         vm.zgodovina = res.data;
@@ -549,7 +549,7 @@
       poraba.znesek = vm.znesek;
       poraba.datum =  $filter('date')(vm.date, 'yyyy-MM-dd');
       poraba.widget = vm.widget;
-      poraba.vrsta = vm.izberiVrsto.id;
+      poraba.vrsta = angular.lowercase(vm.izberiVrsto);
       trenutniMesec =  $filter('date')(poraba.datum, 'MM');
       trenutniMesecBeseda =  $filter('date')(poraba.datum, 'MMMM');
       trenutnoLeto=$filter('date')(poraba.datum, 'yyyy');

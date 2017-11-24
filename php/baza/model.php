@@ -146,17 +146,17 @@ class userFunc
         );
         if ($mesec != "")
             {
-            $q = $this->conn->query("SELECT SUM(znesek) as znesek,ime_vrste FROM poraba inner join vrsta on vrsta.id=poraba.vrsta INNER JOIN poraba_list on poraba_list.id=poraba.poraba_list where widget='$widget'  and year(datum) =$leto and month(datum)=$mesec GROUP BY vrsta");
+            $q = $this->conn->query("SELECT SUM(znesek) as znesek,vrsta FROM poraba INNER JOIN poraba_list on poraba_list.id=poraba.poraba_list where widget='$widget'  and year(datum) =$leto and month(datum)=$mesec GROUP BY vrsta");
             }
         else
             {
-            $q = $this->conn->query("SELECT SUM(znesek) as znesek,ime_vrste FROM poraba inner join vrsta on vrsta.id=poraba.vrsta  INNER JOIN poraba_list on poraba_list.id=poraba.poraba_list  where widget='$widget' and month(datum)='$tMesec'  GROUP BY vrsta");
+            $q = $this->conn->query("SELECT SUM(znesek) as znesek,vrsta FROM poraba   INNER JOIN poraba_list on poraba_list.id=poraba.poraba_list  where widget='$widget' and month(datum)='$tMesec'  GROUP BY vrsta");
             }
         while ($row = mysqli_fetch_array($q))
             {
             $temp = array();
             $temp[] = array(
-                'v' => (string)$row['ime_vrste']
+                'v' => (string)$row['vrsta']
             );
             $temp[] = array(
                 'v' => (float)$row['znesek']
@@ -223,7 +223,7 @@ class userFunc
         {
         session_start();
         $array = [];
-        $q = $this->conn->query("SELECT znesek,ime_vrste,datum,id_poraba FROM poraba inner join vrsta on vrsta.id=poraba.vrsta  INNER JOIN poraba_list on poraba_list.id=poraba.poraba_list where poraba_list.widget='$widget' and month(datum)='$mesec'  ORDER BY id_poraba DESC");
+        $q = $this->conn->query("SELECT znesek,vrsta,datum,id_poraba FROM poraba   INNER JOIN poraba_list on poraba_list.id=poraba.poraba_list where poraba_list.widget='$widget' and month(datum)='$mesec'  ORDER BY id_poraba DESC");
         while ($row = mysqli_fetch_assoc($q))
             {
             $array[] = $row;

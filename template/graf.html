@@ -10,9 +10,11 @@
     <ng-form name="dodajTodo" class="form-inline" >
       <input  class="form-control" required type="text"  ng-model="vm.znesek" name="znesek" placeholder="Vnesi znesek"> 
       <input class="form-control" required type="date"  ng-model="vm.date" name="datum">
-      <select class="form-control" required ng-model="vm.izberiVrsto" ng-options="x.ime_vrste for x in vm.vrste">
+      <input class="form-control" required type="text"  ng-model="vm.izberiVrsto" name="vrsta">
+
+      <!--<select class="form-control" required ng-model="vm.izberiVrsto" ng-options="x.ime_vrste for x in vm.vrste">
         
-      </select>
+      </select>-->
      
   </ng-form>
   <button class="form-control" ng-disabled="!dodajTodo.$valid" ng-click="vm.shraniPorabo()">Shrani</button>
@@ -24,7 +26,7 @@
  
 
   <ul class="list-group">
-    <li class="list-group-item" ng-repeat="item in poraba  | limitTo:vm.pageSize:vm.currentPage*vm.pageSize">Znesek: {{item.znesek}} Datum: {{item.datum}} Vrsta:{{item.ime_vrste}}<span ng-click="vm.delPoraba(item)">DELETE</span></li>
+    <li class="list-group-item" ng-repeat="item in poraba  | limitTo:vm.pageSize:vm.currentPage*vm.pageSize">Znesek: {{item.znesek}} Datum: {{item.datum}} Vrsta:{{item.vrsta}}<span ng-click="vm.delPoraba(item)">DELETE</span></li>
 </ul>
 
 
