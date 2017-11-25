@@ -1,17 +1,24 @@
 <div class="vremeB" ng-style="{'background-image':'url('+vm.test+')','background-repeat':'no-repeat','background-size': 'cover'}" >
-<div class="row">
-        <div class="col-md-6" id="kraj" >
-            {{vm.mesto}}
+
+
+        <div id="mesto">{{vm.mesto}}</div>
+        <div id="temp">{{vm.temp}}</div>
+      
+        <div id="stanje">
+            <p> {{vm.stanje}}</p> <i class="{{vm.ikona}}"></i>
         </div>
-        <div class="col-md-6" id="mesto" >
-           {{vm.temp}}
-        </div>
-    </div>
-    <div class="sredinaDiv">
-        <span class="align-middle" id="stanje"><h1>{{vm.stanje}}</h1></span>
-        <img src={{vm.ikona}} height="200px" width="200px" >
+      
+           
+      
+       
+         
+    
+ 
+  
+        
+       
       
        
     </div>
-    <img src="images/google.png" style="position: bottom">
-</div>
+   <!-- <img src="images/google.png" style="position: bottom"> -->
+
