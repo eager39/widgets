@@ -49,8 +49,12 @@
         if (odlicno.data != "gtfo") {
          
           $rootScope.user = odlicno.data;
+          if($location.path()!="/home"){
+           $state.go($location.path());
+          }else{
           $state.go("home");
-          return true;
+          }
+          
         } else if($cookies.get("forever")) {
           $http.get("php/preveriCookie.php?cookie="+loginCookie)
           .then(function (res) {
@@ -62,12 +66,15 @@
         
         }
         else{
-          
+         
           if($location.path()=="/register"){
             $state.go("register");
           }else{
-            
-      $state.go("login");
+           
+            if($location.path()!="/login"){
+              
+              $state.go("login");
+                    }
           }
        //   setTimeout(function(){  $("#regLog").modal("toggle"); }, 1);
         }
@@ -412,11 +419,11 @@
    
     
     
-    initialize();
+  
    
   vm.id = $attrs.widget;
  
-    function initialize() {
+ 
     
      
 
@@ -425,13 +432,24 @@
           vm.widgetConfig = res.data;
           vm.config = JSON.parse(vm.widgetConfig.config);
           vm.kraj = vm.config.kraj;
-          $http.get("http://api.openweathermap.org/data/2.5/weather?q=" + vm.kraj + "&units=metric&APPID=7aca27cc40dfc3d5208fc94b6afda6db")
+          //AIzaSyCUi_xtONMcAhv--hJBhLq0sEYw8s3Q6l4
+          $http.get("php/getIDSlika.php?kraj="+vm.kraj)
+          .then(function(slika){
+            console.log(slika.data);
+            $http.get("php/getSlika.php?id="+slika.data.results[0].photos[0].photo_reference)
+           .then(function(slika){
+           //  console.log(slika.data);
+              vm.test=slika.data;
+              
+           });
+          });
+          $http.get("http://api.openweathermap.org/data/2.5/weather?q=" + vm.kraj + "&units=metric&APPID=7aca27cc40dfc3d5208fc94b6afda6db&lang=sl")
             .then(function (vreme) {
-              if (vreme.data.cod == "404") {
-                vm.mesto = "Mesto ne obstaja gtfo";
-              } else {
+            
+             console.log(vreme.data);
                 vm.vreme = vreme.data;
                 vm.mesto = vm.vreme['name'];
+                vm.ikona="http://openweathermap.org/img/w/"+vm.vreme['weather'][0]['icon']+".png";
                 vm.temp = Math.round(vm.vreme['main']['temp']);
                 if (vm.config.enota == "kelvin") {
                   vm.temp = vm.temp + 273 + " K";
@@ -440,12 +458,17 @@
                 } else {
                   vm.temp += " °C";
                 }
-                vm.stanje = vm.vreme['weather'][0]['main'];
-              }
+                vm.stanje = vm.vreme['weather'][0]['description'];
+              
 
-            });
+            }, function error(vreme) {
+              if (vreme.data.cod == "404") {
+                vm.mesto = "Mesto ne obstaja gtfo";
+                alert("haha");
+              }
+             });
         });
-    }
+    
   });
 
   app.controller("GrafWidgetController", function ($http,$attrs, $rootScope, $scope, $timeout, $filter, PostService) {

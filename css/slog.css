@@ -146,12 +146,15 @@ top:50%;
 	height: 100%;
 	width: 100%;
 }
+.vremeB{
+	height: 100%;
+	width: 100%;
+}
 
 
 
 .gridster-item{
-	
-background:rgb(95, 95, 243);
+
 }
 .gridster>ul{
 	margin-top:50px;
