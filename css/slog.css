@@ -40,27 +40,43 @@ margin-top:10px;
 	width:100%;
 }
 
-
-
-#kraj{
-	text-align: left;
-	font-size:20px;
-}
-#mesto{
-	text-align: right;
-	font-size:20px;
-}
-.sredinaDiv{
-
-	height:60%;
-	width:100%;
-	text-align: center;
-
+.vremeB{
+	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	position: relative; /* new */
 }
 #stanje{
-display: block;
-position: relative;
-top:50%;
+	max-width: 50%;
+	max-height: 50%;
+
+	text-align: center;
+}
+#stanje p{
+	font-size: 40px;
+	font-weight: bold;
+	color:green;
+	text-transform: capitalize;
+}
+#temp{
+	align-self: flex-start;
+	right: 0; /* new */
+	top: 0; /* new */
+	position: absolute; /* new */
+	padding:10px;
+	font-size: 40px;
+	font-weight: bold;
+}
+#mesto{
+	align-self: flex-start;
+	left: 0; /* new */
+	top: 0; /* new */
+	position: absolute; /* new */
+	padding:10px;
+	font-weight: bold;
+	font-size: 40px;
 }
 
 
@@ -137,6 +153,9 @@ top:50%;
 	border-radius: 15px;
 
 }
+.owf-5x{
+	font-size:8em;
+}
 #graf{
 	height: 100%;
 	width: 100%;
@@ -146,14 +165,12 @@ top:50%;
 	height: 100%;
 	width: 100%;
 }
-.vremeB{
-	height: 100%;
-	width: 100%;
-}
+
 
 
 
 .gridster-item{
+border: solid 1px red;
 
 }
 .gridster>ul{

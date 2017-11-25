@@ -32,6 +32,7 @@
 
     $locationProvider.html5Mode(true);
     $qProvider.errorOnUnhandledRejections(false);
+   // $urlRouterProvider.otherwise("/home");
     
   });
 
@@ -47,10 +48,15 @@
       $http.get("php/preveriSejo.php")
       .then(function (odlicno) {
         if (odlicno.data != "gtfo") {
-         
+          
           $rootScope.user = odlicno.data;
           if($location.path()!="/home"){
+            if($location.path()=="/"){
+              
+               $state.go("home");
+             }else{
            $state.go($location.path());
+             }
           }else{
           $state.go("home");
           }
@@ -66,7 +72,7 @@
         
         }
         else{
-         
+        
           if($location.path()=="/register"){
             $state.go("register");
           }else{
@@ -377,7 +383,7 @@
     }
 
     $rootScope.gridsterOpts = {
-      columns: 50, // the width of the grid, in columns
+      columns: 20, // the width of the grid, in columns
       pushing: true, // whether to push other items out of the way on move or resize
       floating: true, // whether to automatically float items up so they stack (you can temporarily disable if you are adding unsorted items with ng-repeat)
       width: 'auto', // can be an integer or 'auto'. 'auto' scales gridster to be the full width of its containing element
@@ -389,7 +395,10 @@
       isMobile: false, // stacks the grid items if true
       mobileBreakPoint: 600, // if the screen is not wider that this, remove the grid layout and stack the items
       mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
-      maxRows: 50,
+      minSizeX: 5, // minimum column width of an item
+      maxSizeX: null, // maximum column width of an item
+      minSizeY: 5, // minumum row height of an item
+      maxRows: 40,
       resizable: {
         enabled: false,
         handles: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw'],
@@ -433,6 +442,7 @@
           vm.config = JSON.parse(vm.widgetConfig.config);
           vm.kraj = vm.config.kraj;
           //AIzaSyCUi_xtONMcAhv--hJBhLq0sEYw8s3Q6l4
+          /*
           $http.get("php/getIDSlika.php?kraj="+vm.kraj)
           .then(function(slika){
             console.log(slika.data);
@@ -443,13 +453,14 @@
               
            });
           });
+          */
           $http.get("http://api.openweathermap.org/data/2.5/weather?q=" + vm.kraj + "&units=metric&APPID=7aca27cc40dfc3d5208fc94b6afda6db&lang=sl")
             .then(function (vreme) {
             
              console.log(vreme.data);
                 vm.vreme = vreme.data;
                 vm.mesto = vm.vreme['name'];
-                vm.ikona="http://openweathermap.org/img/w/"+vm.vreme['weather'][0]['icon']+".png";
+                vm.ikona="owf owf-"+vm.vreme['weather'][0]['id']+" owf-5x";
                 vm.temp = Math.round(vm.vreme['main']['temp']);
                 if (vm.config.enota == "kelvin") {
                   vm.temp = vm.temp + 273 + " K";
