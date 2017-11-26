@@ -1,4 +1,5 @@
 <div class="overflow">
+  
   <h1>{{vm.error}}</h1>
 <div ng-repeat="item in vm.novice" class="media">
     <div ng-show="vm.datum">{{item.publishedAt | date : 'dd MMMM yyyy HH mm ss Z'}}</div>
@@ -12,4 +13,6 @@
    <span ng-show="vm.opis" > {{item.description}}</span>
     </div>
   </div>
+
+
 </div>

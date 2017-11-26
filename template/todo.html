@@ -1,12 +1,15 @@
+<div class="overflow">
+
 <ul  class="list-group todo">
   <li class="list-group-item list-group-item"  ng-repeat="todo in vm.todo" ng-class="{'list-group-item-danger':todo.level==4,'list-group-item-success':todo.level==1,'list-group-item-info':todo.level==2,'list-group-item-warning':todo.level==3}" id="todo.id_todo">
     <input ng-click="vm.doneTodo(todo)"  type="checkbox"/>
-    <label>{{todo.delo}}</label> Ostane: {{todo.until}}<span class="glyphicon glyphicon-trash" ng-if="vm.editEnabled" ng-click="vm.deleteTodo(todo)" aria-hidden="true"></span>
+    <label>{{todo.delo}}</label> <label id="ostane" ng-if="!vm.editEnabled"> Ostane: {{todo.until}}</label><span class="glyphicon glyphicon-trash" ng-if="vm.editEnabled" ng-click="vm.deleteTodo(todo)" aria-hidden="true"></span>
   </li>
   
   <fieldset  ng-if="vm.editEnabled">
       <ng-form name="dodajTodo" class="form-inline" >
-        <input name="" class="form-control" required type="text"  ng-model="vm.name" placeholder="Vnesi delo"> 
+        <input name="" class="form-control" required type="text" maxlength="20"  ng-model="vm.name" placeholder="Vnesi delo">
+           <input class="form-control" required type="datetime-local"  ng-model="vm.date" >
            <select class="form-control" ng-model="vm.level">
             <option class="bg-success" value="1">1</option>
             <option  class="bg-info" value="2">2</option>
@@ -14,11 +17,11 @@
             <option class="bg-danger" value="4">4</option>
           </select> 
        
-        <input class="form-control" required type="datetime-local"  ng-model="vm.date" >
+      
        
     </ng-form>
-    <button class="form-control" ng-disabled="!dodajTodo.$valid" ng-click="vm.shraniNovaDela()">Shrani</button>
+    <button type="button"   class="btn btn-success btn-sm" ng-disabled="!dodajTodo.$valid" ng-click="vm.shraniNovaDela()">Shrani</button>
     <div ng-show="vm.napaka" class="alert alert-errro">{{vm.napaka}}</div>
   </fieldset>
-</ul>
+</ul></div>
 <span id="plus-icon" class="glyphicon glyphicon-plus" ng-click="vm.edit()" aria-hidden="true"></span>

@@ -48,6 +48,9 @@ margin-top:10px;
 	height: 100%;
 	position: relative; /* new */
 }
+.todo .list-group-item{
+margin-bottom:5px;
+}
 #stanje{
 	max-width: 50%;
 	max-height: 50%;
@@ -55,7 +58,7 @@ margin-top:10px;
 	text-align: center;
 }
 #stanje p{
-	font-size: 40px;
+	font-size: 4vh;
 	font-weight: bold;
 	color:green;
 	text-transform: capitalize;
@@ -102,8 +105,18 @@ margin-top:10px;
 	position: relative;
 	height: 100%;
 	width: auto;
-
+	overflow-y: scroll;
 }
+#ostane{
+	
+	float:right;
+}
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+
+
 .todo .glyphicon-trash{
 	float:right;
 	font-size: 25px;
@@ -170,7 +183,7 @@ margin-top:10px;
 
 
 .gridster-item{
-border: solid 1px red;
+
 
 }
 .gridster>ul{

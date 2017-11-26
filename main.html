@@ -42,7 +42,7 @@
 
     <div ng-controller="WidgetController as vm">
         <div gridster="gridsterOpts">
-            
+                
                 <li col="item.position[1]" dynamic-controller="{{item.controller}} as vm" gridster-item="" ng-hide="item.active == 0" ng-include='item.template' ng-repeat="item in widgets track by $index" row="item.position[0]" size-x="item.size.x" size-y="item.size.y" widget="{{item.id_widget}}"></li>
            
         </div>
