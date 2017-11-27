@@ -4,9 +4,12 @@
     <select class="form-control" id="zgoGraf" ng-change="vm.whenZgoSelected()" required ng-model="vm.izberiZgo" ng-model-options="{ updateOn: 'change', debounce: { change: 0 } }" ng-options="x.mesec group by x.leto for x in vm.zgodovina">
         
        </select>
-<div google-chart chart="myChartObject" style="height:100%; width:100%;"></div>
+<div google-chart chart="myChartObject" style="height:90%; width:90%;"></div>
 
-<fieldset  ng-if="vm.editEnabled">
+
+
+
+<fieldset  ng-if="vm.editEnabled2">
     <ng-form name="dodajTodo" class="form-inline" >
       <input  class="form-control" required type="text"  ng-model="vm.znesek" name="znesek" placeholder="Vnesi znesek"> 
       <input class="form-control" required type="date"  ng-model="vm.date" name="datum">
@@ -34,4 +37,29 @@
 <ul class="pagination">
 <li ng-repeat="item in vm.stevilo"><a ng-click="vm.currentPage=item.id"  href="#">{{item.text}}</a></li>
 </ul>
+</div>
+
+<div ng-if="vm.editEnabled" id="grafinput">
+  <ng-form  class="form"  >
+      <div class="input-group">
+      <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span> 
+         <input  class="form-control input-sm"  required type="text"  ng-model="vm.znesek" name="znesek" placeholder="Vnesi znesek"> 
+      </div>
+      <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span> 
+    <input class="form-control input-sm" required type="date"  ng-model="vm.date" name="datum">
+      </div>
+      <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span> 
+    <input class="form-control input-sm" required type="text"  ng-model="vm.izberiVrsto" name="vrsta">
+
+      </div>
+
+    <!--<select class="form-control" required ng-model="vm.izberiVrsto" ng-options="x.ime_vrste for x in vm.vrste">
+      
+    </select>-->
+   <button class="btn btn-success btn-sm" ng-disabled="!dodajTodo.$valid" ng-click="vm.shraniPorabo()">Vnesi</button>
+</ng-form>
+
+
 </div>

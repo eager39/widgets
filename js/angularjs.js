@@ -454,6 +454,7 @@
            });
           });
           */
+          if(angular.isDefined(vm.kraj)){
           $http.get("http://api.openweathermap.org/data/2.5/weather?q=" + vm.kraj + "&units=metric&APPID=7aca27cc40dfc3d5208fc94b6afda6db&lang=sl")
             .then(function (vreme) {
             
@@ -478,6 +479,7 @@
                 alert("haha");
               }
              });
+            }
         });
     
   });
@@ -732,7 +734,7 @@ var widget_id=$attrs.widget;
           vm.order = vm.config.vrstni_red;
           vm.source = vm.config.source;
          
-          if (Object.keys(vm.config).length > 0) {
+        if(angular.isDefined(vm.source)){
 
             $http.get("https://newsapi.org/v1/articles?source=" + vm.source + "&sortBy=" + vm.order + "&apiKey=8fb771b1531b4b4b990a84eb12b46f0e")
               .then(function (res) {
@@ -744,9 +746,11 @@ var widget_id=$attrs.widget;
                   vm.error = "Izbrana razvrstitev novic ni navoljo prosimo uredite pod Nastavitve->uredi"
                 }
 
-
+              
               });
-          }
+            }
+            
+          
 
 
         });
@@ -1127,7 +1131,7 @@ vm.izbrano=true;
             .then(function (res2) {
               $rootScope.widgets = res2.data;
               
-              
+              delete vm.options;
               delete vm.source;
             delete vm.sorted;
               vm.name="";
