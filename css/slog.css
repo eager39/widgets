@@ -8,7 +8,7 @@ body{
 	margin:0;
 
 position: relative;
-z-index: -2;
+
 background-size:100%;
 background-repeat: no-repeat;
   overflow-x: hidden;
@@ -106,6 +106,7 @@ margin-bottom:5px;
 	position: relative;
 	height: 100%;
 	width: auto;
+	
 	overflow-y: scroll;
 }
 #ostane{
@@ -182,7 +183,7 @@ margin-bottom:5px;
 	width: 100%;
 	margin:0;
 	padding: 0;
-	background-color: grey;
+	background-color: #375a7f;
 }
 #grafPoraba{
 	height: 100%;
@@ -192,8 +193,9 @@ margin-bottom:5px;
 	height:100px;
 	
 	position: relative;
-	top:0;
-	background-color: red;
+	
+	bottom: 0;
+	
 	
 }
 
@@ -203,7 +205,7 @@ margin-bottom:5px;
 
 .gridster-item{
 
-
+background-color:#375a7f;
 }
 .gridster>ul{
 	margin-top:50px;
