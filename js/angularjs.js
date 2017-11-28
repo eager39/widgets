@@ -32,12 +32,13 @@
 
     $locationProvider.html5Mode(true);
     $qProvider.errorOnUnhandledRejections(false);
-   // $urlRouterProvider.otherwise("/home");
+    
+    $urlRouterProvider.otherwise("/home");
     
   });
 
 
-  app.run(function ($rootScope, $http,PostService,$cookies,$location,$state) {
+  app.run(function ($rootScope, $http,PostService,$cookies,$location,$state,$timeout) {
     if($cookies.get("forever")){
       var loginCookie = $cookies.get('forever');
    }
@@ -47,19 +48,20 @@
       
       $http.get("php/preveriSejo.php")
       .then(function (odlicno) {
-        if (odlicno.data != "gtfo") {
+        if (odlicno.data != 0) {
           
           $rootScope.user = odlicno.data;
-          if($location.path()!="/home"){
-            if($location.path()=="/"){
-              
-               $state.go("home");
-             }else{
-           $state.go($location.path());
-             }
-          }else{
-          $state.go("home");
+          if($location.path()=="/"){
+            $state.go("home");
           }
+          else if($location.path()=="/login" || $location.path()=="/register"){
+           
+            $timeout(function(){
+              $state.go("home");
+           });
+            
+          }
+         
           
         } else if($cookies.get("forever")) {
           $http.get("php/preveriCookie.php?cookie="+loginCookie)
@@ -74,50 +76,17 @@
         else{
         
           if($location.path()=="/register"){
-            $state.go("register");
+           $state.go("register");
           }else{
            
-            if($location.path()!="/login"){
-              
+          
+              $timeout(function(){
               $state.go("login");
-                    }
+              });
           }
-       //   setTimeout(function(){  $("#regLog").modal("toggle"); }, 1);
+      
         }
       });
-    
-      /*
-            if ($rootScope.user == null) {
-              alert("null");
-              if ($cookies.get("seja")) {
-                alert("seja");
-                $rootScope.user = $cookies.get("seja");
-               
-                $state.go("home");
-
-              }else if($cookies.get("forever")) {
-                $http.get("php/preveriCookie.php?cookie="+loginCookie)
-                .then(function (res) {
-                 $rootScope.user=res.data;
-                  $state.go("home");
-                });
-              }
-               else {
-                alert("nega seje");
-
-                if ($location.path() == "/register") {
-                  $state.go("register");
-                }else{
-                  
-            $state.go("login");
-                }
-              }
-
-            } else{
-             
-              $state.go("home");
-            }
-            */
             
               });
   
@@ -127,7 +96,6 @@
       
            /*
       var asd=[{}];
-      
       $http.get("https://newsapi.org/v1/sources?language=en")
       .then(function (res) {
        console.log(res.data);
@@ -220,7 +188,6 @@
       $scope.widgetId = widgetId;
     };
     vm.registracija = function () {
-
 
       if (vm.captchaRes2 != "") {
         $http.get("php/preveriCaptcho.php?response=" + vm.captchaRes2)
@@ -362,23 +329,12 @@
       });
 
     function updateXYpos() {
-      /*
-               $http({
-                   method: "POST",
-                   url: "php/widgetupdate.php",
-                   data: "asd=" + JSON.stringify($rootScope.widgets),
-                   headers: {
-                     'Content-Type': 'application/x-www-form-urlencoded'
-                   }
-                 })
-                 */
+   
       var url = "php/widgetupdate.php";
-      var data = "asd=" + JSON.stringify($rootScope.widgets);
+      var data = "widgetData=" + JSON.stringify($rootScope.widgets);
       PostService.Post(url, data)
         .then(function (res) {
-          if (res.data != "error") {
-
-          }
+         //do nothing,has to always work
         });
     }
 
@@ -425,18 +381,8 @@
 
   app.controller("WeatherWidgetController", function ($http, $attrs, $rootScope) {
     var vm = this;
-   
-    
-    
-  
-   
   vm.id = $attrs.widget;
- 
- 
-    
-     
-
-      $http.get("php/widgetConfig.php?id=" + vm.id + "&test=" + $rootScope.user.id + "")
+      $http.get("php/widgetConfig.php?id=" + vm.id)
         .then(function (res) {
           vm.widgetConfig = res.data;
           vm.config = JSON.parse(vm.widgetConfig.config);

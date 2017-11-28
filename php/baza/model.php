@@ -199,9 +199,10 @@ class userFunc
             session_start();
         return $this->conn->query("UPDATE poraba SET used=0  WHERE poraba_list=(SELECT id FROM poraba_list WHERE user='$_SESSION[id]')");
         }
-    function widgetConfig($widget_id, $userid)
+    function widgetConfig($widget_id)
         {
-        $q = $this->conn->query("SELECT * FROM widgets   where id_widget='$widget_id'  and user='$userid'");
+            session_start();
+        $q = $this->conn->query("SELECT * FROM widgets   where id_widget='$widget_id'  and user='$_SESSION[id]'");
         return mysqli_fetch_object($q);
         }
         function getSorting($id)

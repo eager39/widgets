@@ -4,7 +4,7 @@
     if(isset($_SESSION['user'])) {
         echo json_encode($_SESSION);
     } else {
-        echo "gtfo";
+        echo 0;
     }
    
 ?>
