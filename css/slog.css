@@ -70,7 +70,7 @@ margin-bottom:5px;
 	top: 0; /* new */
 	position: absolute; /* new */
 	padding:10px;
-	font-size: 40px;
+	font-size: 4vh;
 	font-weight: bold;
 }
 #mesto{
@@ -80,7 +80,7 @@ margin-bottom:5px;
 	position: absolute; /* new */
 	padding:10px;
 	font-weight: bold;
-	font-size: 40px;
+	font-size: 4vh;
 }
 
 
