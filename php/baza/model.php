@@ -194,11 +194,7 @@ class userFunc
             
         return $array;
         }
-    function resetPoraba()
-        {
-            session_start();
-        return $this->conn->query("UPDATE poraba SET used=0  WHERE poraba_list=(SELECT id FROM poraba_list WHERE user='$_SESSION[id]')");
-        }
+    
     function widgetConfig($widget_id)
         {
             session_start();

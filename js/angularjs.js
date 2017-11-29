@@ -196,16 +196,7 @@
             if (res.data.success) {
 
               if (vm.newPass == vm.confPass) {
-                /*
-                $http({
-                    method: "POST",
-                    url: "php/registracija.php",
-                    data: "email=" + vm.email + "&password=" + vm.newPass + "&password2=" + vm.confPass,
-                    headers: {
-                      'Content-Type': 'application/x-www-form-urlencoded'
-                    }
-                  })
-                  */
+  
                 var url = "php/registracija.php";
                 var data = "email=" + vm.email + "&password=" + vm.newPass + "&password2=" + vm.confPass;
                 PostService.Post(url, data)
@@ -453,7 +444,7 @@
     
     vm.whenZgoSelected = function () {
    
-      $http.get("php/test.php?mesec=" + vm.izberiZgo.mesec_id + "&leto=" + vm.izberiZgo.leto + "&widget="+vm.widget+"&tMesec="+trenutniMesec)
+      $http.get("php/getPoraba.php?mesec=" + vm.izberiZgo.mesec_id + "&leto=" + vm.izberiZgo.leto + "&widget="+vm.widget+"&tMesec="+trenutniMesec)
         .then(function (res) {
           $scope.myChartObject.options = {
             'title': "Poraba za mesec " + vm.izberiZgo.mesec + " " + vm.izberiZgo.leto,
@@ -482,7 +473,7 @@
 
    
     
-    $http.get("php/test.php?widget="+vm.widget+"&tMesec="+trenutniMesec)
+    $http.get("php/getPoraba.php?widget="+vm.widget+"&tMesec="+trenutniMesec)
       .then(function (res) {
 
 
@@ -543,7 +534,7 @@
          // vm.znesek = "";
        //   vm.date = "";
         //  vm.izberiVrsto.id = "";
-          $http.get("php/test.php?widget="+vm.widget+"&tMesec="+trenutniMesec)
+          $http.get("php/getPoraba.php?widget="+vm.widget+"&tMesec="+trenutniMesec)
             .then(function (res) {
               $scope.myChartObject.data = res.data; // POSODOBI PORABO
               $scope.myChartObject.options = {
@@ -575,24 +566,37 @@
     };
 
     vm.delPoraba = function (item) {
-      /*
-          $http({
-           method: "POST",
-           url: "php/deletePoraba.php",
-           data: "id=" + item.id_poraba,
-           headers: {
-             'Content-Type': 'application/x-www-form-urlencoded'
-           }
-         })
-         */
+     
       var url = "php/deletePoraba.php";
       var data = "id=" + item.id_poraba;
       PostService.Post(url, data)
         .then(function (res) {
           if (res.data == 1) {
         
-            $http.get("php/getAllPoraba.php?widget="+vm.widget+ "&mesec="+trenutniMesec)
+            $http.get("php/getAllPoraba.php?widget="+vm.widget+ "&mesec="+trenutniMesec) // posodobi prikazano porabo za urejanje
               .then(function (res) {
+
+                $http.get("php/getPoraba.php?widget="+vm.widget+"&tMesec="+trenutniMesec) // posodobi graf
+                .then(function (res) {
+          
+          
+                  if (res.data != "vnesi podatke") {
+                    $scope.myChartObject.data = res.data;
+                    
+                  } else {
+                    $scope.myChartObject.data = [
+                      ["ni podatkov", "ni podatkov"]
+                    ];
+                  }
+          
+          
+          
+                });
+                $http.get("php/getGrafMonthAndYear.php?widget="+vm.widget) //posodobi mesece za zgodovino
+                .then(function (res) {
+                  vm.zgodovina = res.data;
+                  
+                });
 
                
                 $rootScope.poraba = res.data;
@@ -622,7 +626,7 @@
         trenutniMesec=vm.izberiZgo.mesec_id;
       }
 
-      if(graf){ //da ne kličemo funkcije dvakrat
+      if(graf){ //da ne kličemo funkcije dvakrat oz jo pokličemo ko gremo iz prednje na zadnjo stran
       $http.get("php/getAllPoraba.php?widget="+vm.widget+ "&mesec="+trenutniMesec)
         .then(function (res) {
 
@@ -700,44 +704,7 @@ var widget_id=$attrs.widget;
 
 
         });
-      
-        /*
-      $http.get("php/widgetConfig.php?id=" + vm.id + "&test=" + $rootScope.user.id)
-        .then(function (res) {
-
-          vm.widgetConfig = res.data;
-          vm.config = JSON.parse(vm.widgetConfig.config);
-          vm.datum = vm.config.date;
-          vm.opis = vm.config.opis;
-          vm.slika = vm.config.slika;
-          vm.order = vm.config.vrstni_red;
-          vm.source = vm.config.source;
-          alert(vm.source);
-          if (Object.keys(vm.config).length > 0) {
-
-            $http.get("https://newsapi.org/v1/articles?source=" + vm.source + "&sortBy=" + vm.order + "&apiKey=8fb771b1531b4b4b990a84eb12b46f0e")
-              .then(function (res) {
-                //  console.log(res.data["articles"][0]["title"]);
-
-                vm.novice = res.data["articles"];
-              }, function (error) {
-                if (error.data["code"] == "sourceUnavailableSortedBy") {
-                  vm.error = "Izbrana razvrstitev novic ni navoljo prosimo uredite pod Nastavitve->uredi"
-                }
-
-
-              });
-          }
-
-
-        });
-        */
- //   }
-    $scope.izbrano = function () {
-
-      
-    };
-  });
+      });
 
   app.controller("TodoWidgetController", function ($http, $attrs, $rootScope, $scope, $filter, todoUntil, PostService) {
    
@@ -745,9 +712,7 @@ var widget_id=$attrs.widget;
     vm.editEnabled = false;
 
     vm.id = $attrs.widget;
-    //  var one_day=1000*60*60*24;
-    //  var one_hour=1000*60*60;
-    //   var one_minute=1000*60;
+    
     $http.get("php/getTodo.php?id=" + vm.id)
       .then(function (res) {
         vm.todo = res.data;
@@ -770,10 +735,7 @@ var widget_id=$attrs.widget;
 
       var delo = {};
 
-      //for(var i=0;i<choices.length;i++){
-
-      // delo[i]["delo"]=vm.choice[i];
-      //  delo[i]["cas"]=vm.choice2[i];
+    
       
       
       
@@ -782,20 +744,8 @@ var widget_id=$attrs.widget;
       
       delo.id = vm.id;
       delo.level = vm.level;
-     
-      // delo.push({delo:vm.choice[i],deadline:vm.choice2[i],level:1,id:vm.id})
-      //}
-      //  console.log(delo);
-      /*
-        $http({
-         method: "POST",
-         url: "php/addTodo.php",
-         data: "delo=" + JSON.stringify(delo),
-         headers: {
-           'Content-Type': 'application/x-www-form-urlencoded'
-         }
-       })
-       */ if(vm.name && vm.date && vm.level ){
+
+      if(vm.name && vm.date && vm.level ){
         var url = "php/addTodo.php";
         var data = "delo=" + JSON.stringify(delo);
         PostService.Post(url, data)
@@ -823,16 +773,7 @@ var widget_id=$attrs.widget;
 
     };
     vm.deleteTodo = function (todo) {
-      /*
-        $http({
-            method: "POST",
-            url: "php/deleteTodo.php",
-            data: "id=" + todo.id_todo,
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
-          })
-          */
+     
       var url = "php/deleteTodo.php";
       var data = "id=" + todo.id_todo;
       PostService.Post(url, data)
@@ -848,16 +789,7 @@ var widget_id=$attrs.widget;
     };
 
     vm.doneTodo = function (todo) {
-      /*
-        $http({
-            method: "POST",
-            url: "php/doneTodo.php",
-            data: "id=" + todo.id_todo,
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
-          })
-          */
+      
       var url = "php/doneTodo.php";
       var data = "id=" + todo.id_todo;
       PostService.Post(url, data)
@@ -904,29 +836,12 @@ var widget_id=$attrs.widget;
     vm.shraniDogodek = function (dogodek) {
 
       var dogodek = {};
-
-      //for(var i=0;i<choices.length;i++){
-
-      // delo[i]["delo"]=vm.choice[i];
-      //  delo[i]["cas"]=vm.choice2[i];
       dogodek.title = vm.title;
       dogodek.opis = vm.opis;
       dogodek.id = vm.id;
       dogodek.start = vm.start;
 
-      // delo.push({delo:vm.choice[i],deadline:vm.choice2[i],level:1,id:vm.id})
-      //}
-      //  console.log(delo);
-      /*
-        $http({
-         method: "POST",
-         url: "php/addDogodek.php",
-         data: "dogodek=" + JSON.stringify(dogodek),
-         headers: {
-           'Content-Type': 'application/x-www-form-urlencoded'
-         }
-       })
-       */
+     
       var url = "php/addDogodek.php";
       var data = "dogodek=" + JSON.stringify(dogodek);
       PostService.Post(url, data)
@@ -950,16 +865,7 @@ var widget_id=$attrs.widget;
 
     };
     vm.deleteDogodek = function (dogodek) {
-      /*
-          $http({
-              method: "POST",
-              url: "php/deleteDogodek.php",
-              data: "id=" + dogodek.id_event,
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-              }
-            })
-            */
+     
       var url = "php/deleteDogodek.php";
       var data = "id=" + dogodek.id_event;
       PostService.Post(url, data)
@@ -1016,6 +922,7 @@ var widget_id=$attrs.widget;
       item.selected = true;
     };
    $scope.getSorting = function(opt){
+
     $http.get("php/getSorting.php?id="+opt)
     .then(function (res) {
     
@@ -1058,16 +965,6 @@ vm.izbrano=true;
       widget.widget_type = item.id;
       widget.imeWidget = vm.name;
       
-      /*
-      $http({
-          method: "POST",
-          url: "php/addWidget.php",
-          data: "asd=" + JSON.stringify(widget),
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-        })
-        */
       var url = "php/addWidget.php";
       var data = "asd=" + JSON.stringify(widget);
       
@@ -1116,40 +1013,22 @@ vm.izbrano=true;
       widget.config = JSON.stringify(config);
       widget.imeWidget = vm.updateName;
       widget.id_widget = item.id_widget;
-      /*
-            $http({
-                method: "POST",
-                url: "php/updateWidgetConfig.php",
-                data: "asd=" + JSON.stringify(widget),
-                headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded'
-                }
-              })
-              */
+     
       var url = "php/updateWidgetConfig.php";
-      var data = "asd=" + JSON.stringify(widget);
+      var data = "data=" + JSON.stringify(widget);
       PostService.Post(url, data)
         .then(function (res) {
           $http.get("php/widgetinit.php")
             .then(function (res2) {
               $rootScope.widgets = res2.data;
-              location.reload();
+              $state.reload();
             });
         });
     };
     vm.deleteWidget = function (item) {
 
-      if (confirm("Are you sure?")) {
-        /*
-        $http({
-            method: "POST",
-            url: "php/deleteWidget.php",
-            data: "id=" + item.id_widget + "&type=" + item.widget_type,
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
-          })
-          */
+      if (confirm("Brisanje widgeta bo trajno izbrisalo podatke!")) {
+        
         var url = "php/deleteWidget.php";
         var data = "id=" + item.id_widget + "&type=" + item.widget_type;
         PostService.Post(url, data)
@@ -1164,46 +1043,12 @@ vm.izbrano=true;
               $timeout(function () {
                 vm.ifDelete = "";
               }, 2000);
-            } else {
-              vm.ifDelete = "Ta widget ima narejene todo";
             }
           });
       }
     };
-    vm.reset = function () {
-
-      /*
-      $http({
-        method: "POST",
-        url: "php/resetPoraba.php",
-        data: "id=" + $rootScope.user.id,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      })
-      */
-      var url = "php/resetPoraba.php";
-      var data = "id=" + $rootScope.user.id;
-      PostService.Post(url, data)
-        .then(function (res) {
-        
-
-          location.reload();
-
-
-          //  alert("Podatki so bili uspešno izbrisani!");
-        });
-
-
-
-    };
-
-
-
-
-
-
-    vm.test = function () {
+    
+    vm.toggleButton = function () {
       if ($rootScope.gridsterOpts.draggable.enabled == true) {
         $rootScope.gridsterOpts.draggable.enabled = false;
         $rootScope.gridsterOpts.resizable.enabled = false;
@@ -1228,16 +1073,7 @@ vm.izbrano=true;
       } else {
         item.active = 1;
       }
-      /*
-      $http({
-          method: "POST",
-          url: "php/widgetVisUpdate.php",
-          data: "id=" + item.id_widget + "&active=" + item.active,
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-        })
-        */
+    
       var url = "php/widgetVisUpdate.php";
       var data = "id=" + item.id_widget + "&active=" + item.active;
       PostService.Post(url, data)

@@ -1,7 +1,7 @@
 <?php
 include 'baza/model.php';
 
-$array=($_POST["asd"]);
+$array=($_POST["data"]);
 
 $array=json_decode($array);
 $func = new userFunc();
