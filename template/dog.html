@@ -1,5 +1,6 @@
+<div class="overflow">
 <ul  class="list-group dogodki">
-	<li class="list-group-item list-group-item"  ng-repeat="dogodek in vm.dogodki" data-toggle="tooltip" data-html="true" title="{{dogodek.event_opis}}"  id="dogodek.id">
+	<li class="list-group-item list-group-item"  ng-repeat="dogodek in vm.dogodki" data-toggle="tooltip" tooltip data-html="true" title="{{dogodek.event_opis}}"  id="dogodek.id">
 
 			<div class="bmd-list-group-col">
 					<span class="glyphicon glyphicon-trash"   ng-click="vm.deleteDogodek(dogodek)" aria-hidden="true"></span>
@@ -45,3 +46,4 @@
 
 	 
   <span id="plus-icon" class="glyphicon glyphicon-plus" data-toggle="modal" data-target="#dodajDogodek"  aria-hidden="true"></span>
+</div>

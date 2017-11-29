@@ -379,7 +379,7 @@
           vm.config = JSON.parse(vm.widgetConfig.config);
           vm.kraj = vm.config.kraj;
           //AIzaSyCUi_xtONMcAhv--hJBhLq0sEYw8s3Q6l4
-          /*
+         /*
           $http.get("php/getIDSlika.php?kraj="+vm.kraj)
           .then(function(slika){
             console.log(slika.data);
@@ -391,6 +391,7 @@
            });
           });
           */
+        
           if(angular.isDefined(vm.kraj)){
           $http.get("http://api.openweathermap.org/data/2.5/weather?q=" + vm.kraj + "&units=metric&APPID=7aca27cc40dfc3d5208fc94b6afda6db&lang=sl")
             .then(function (vreme) {
@@ -806,18 +807,28 @@ var widget_id=$attrs.widget;
 
 
   });
-  app.controller("EventWidgetController", function ($http, $attrs, $rootScope, $scope, $filter, todoUntil, PostService) {
+  app.controller("EventWidgetController", function ($http, $attrs, $rootScope, $scope, $filter, todoUntil, PostService,$sanitize) {
    
     var vm = this;
     vm.editEnabled = false;
 
     vm.id = $attrs.widget;
-    var mesec = new Date();
-    mesec = $filter('date')(mesec, 'MM');
+    var datum = new Date();
+    var nMesec = new Date();
+    mesec = $filter('date')(datum, 'MM');
 
     $http.get("php/getDogodki.php?id=" + vm.id + "&mesec=" + mesec)
       .then(function (res) {
         vm.dogodki = res.data;
+        if(vm.dogodki==""){
+          nMesec.setMonth(datum.getMonth()+1);
+          nMesec = $filter('date')(nMesec, 'MM');
+          $http.get("php/getDogodki.php?id=" + vm.id + "&mesec=" + nMesec)
+          .then(function (res) {
+            vm.dogodki=res.data;
+          });
+          
+        }
 
 
       });
@@ -837,7 +848,7 @@ var widget_id=$attrs.widget;
 
       var dogodek = {};
       dogodek.title = vm.title;
-      dogodek.opis = vm.opis;
+      dogodek.opis = $sanitize(vm.opis);
       dogodek.id = vm.id;
       dogodek.start = vm.start;
 
@@ -1091,7 +1102,7 @@ vm.izbrano=true;
         //  $rootScope.widgets = null;
        
           $cookies.remove("forever");
-          $cookies.remove("seja");
+         
        
           $state.go("login");
 
@@ -1117,5 +1128,19 @@ vm.izbrano=true;
       }
     };
   }]);
+  app.directive('tooltip', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){
+            $(element).hover(function(){
+                // on mouseenter
+                $(element).tooltip('show');
+            }, function(){
+                // on mouseleave
+                $(element).tooltip('hide');
+            });
+        }
+    };
+});
 
 })();
