@@ -379,18 +379,28 @@
           vm.config = JSON.parse(vm.widgetConfig.config);
           vm.kraj = vm.config.kraj;
           //AIzaSyCUi_xtONMcAhv--hJBhLq0sEYw8s3Q6l4
-         /*
+         
           $http.get("php/getIDSlika.php?kraj="+vm.kraj)
           .then(function(slika){
             console.log(slika.data);
             $http.get("php/getSlika.php?id="+slika.data.results[0].photos[0].photo_reference)
+
            .then(function(slika){
            //  console.log(slika.data);
               vm.test=slika.data;
               
            });
+          },function(error){
+            $http.get("php/getGenericPhoto.php")
+            .then(function(slika){
+              vm.test=slika.data;
+            });
           });
-          */
+          
+        //  $http.get("php/getGenericPhoto.php")
+        //  .then(function(slika){
+       //     vm.test=slika.data;
+       //   });
         
           if(angular.isDefined(vm.kraj)){
           $http.get("http://api.openweathermap.org/data/2.5/weather?q=" + vm.kraj + "&units=metric&APPID=7aca27cc40dfc3d5208fc94b6afda6db&lang=sl")
@@ -1032,7 +1042,7 @@ vm.izbrano=true;
           $http.get("php/widgetinit.php")
             .then(function (res2) {
               $rootScope.widgets = res2.data;
-              $state.reload();
+              location.reload();
             });
         });
     };

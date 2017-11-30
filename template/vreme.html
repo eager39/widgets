@@ -1,12 +1,23 @@
 <div class="vremeB" ng-style="{'background-image':'url('+vm.test+')','background-repeat':'no-repeat','background-size': 'cover'}" >
 
-
+<!--
         <div id="mesto">{{vm.mesto}}</div>
         <div id="temp">{{vm.temp}}</div>
       
         <div id="stanje">
             <p> {{vm.stanje}}</p> <i class="{{vm.ikona}}"></i>
         </div>
+    -->
+    
+        
+          <div id="left"><span>{{vm.mesto}}</span></div>
+          <div id="right"><span>{{vm.temp}}</span></div>
+          <div id="center">
+              <div id="vremeikona"><span><i class="{{vm.ikona}}"></i></span></div>
+              <div id="vremetext"><span>{{vm.stanje}}</span></div>
+            </div>
+    
+   
       
            
       
