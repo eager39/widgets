@@ -5,7 +5,7 @@
     <input ng-click="vm.doneTodo(todo)"  type="checkbox"/>
     <label>{{todo.delo}}</label> <label id="ostane" ng-if="!vm.editEnabled"> Ostane: {{todo.until}}</label><span class="glyphicon glyphicon-trash" ng-if="vm.editEnabled" ng-click="vm.deleteTodo(todo)" aria-hidden="true"></span>
   </li>
-  
+  <!--
   <fieldset  ng-if="vm.editEnabled">
       <ng-form name="dodajTodo" class="form-inline" >
         <input name="" class="form-control" required type="text" maxlength="20"  ng-model="vm.name" placeholder="Vnesi delo">
@@ -22,6 +22,33 @@
     </ng-form>
     <button type="button"   class="btn btn-success btn-sm" ng-disabled="!dodajTodo.$valid" ng-click="vm.shraniNovaDela()">Shrani</button>
     <div ng-show="vm.napaka" class="alert alert-errro">{{vm.napaka}}</div>
-  </fieldset>
+  </fieldset>-->
 </ul></div>
 <span id="plus-icon" class="glyphicon glyphicon-plus" ng-click="vm.edit()" aria-hidden="true"></span>
+<div ng-if="vm.editEnabled" id="grafinput">
+  <ng-form name="dodajTodo" class="form" >
+      <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+      <input name="" class="form-control input-sm" required type="text" maxlength="20"  ng-model="vm.name" placeholder="Vnesi delo">
+       </div>
+       <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+    <select class="form-control input-sm" ng-model="vm.level">
+        <option class="bg-success" value="1">1</option>
+        <option  class="bg-info" value="2">2</option>
+        <option class="bg-warning" value="3">3</option>
+        <option class="bg-danger" value="4">4</option>
+      </select> </div>
+      <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+       <input class="form-control input-sm" required type="datetime-local"  ng-model="vm.date" >
+      </div>
+       
+   
+  
+   
+</ng-form>
+<button type="button"   class="btn btn-success btn-sm" ng-disabled="!dodajTodo.$valid" ng-click="vm.shraniNovaDela()">Dodaj</button>
+<div ng-show="vm.napaka" class="alert alert-errro">{{vm.napaka}}</div>
+
+</div>

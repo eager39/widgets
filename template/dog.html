@@ -1,6 +1,6 @@
 <div class="overflow">
 <ul  class="list-group dogodki">
-	<li class="list-group-item list-group-item"  ng-repeat="dogodek in vm.dogodki" data-toggle="tooltip" tooltip data-html="true" title="{{dogodek.event_opis}}"  id="dogodek.id">
+	<li class="list-group-item list-group-item"  ng-repeat="dogodek in vm.dogodki" data-toggle="tooltip" tooltip data-html="true" data-placement="bottom" title="{{dogodek.event_opis}}"  id="dogodek.id">
 
 			<div class="bmd-list-group-col">
 					<span class="glyphicon glyphicon-trash"   ng-click="vm.deleteDogodek(dogodek)" aria-hidden="true"></span>
@@ -24,12 +24,20 @@
 			  <h4 class="modal-title">Dodaj dogodek</h4>
 			</div>
 			<div class="modal-body">
-					<ng-form name="dodajTodo" class="form-inline" >
+					<ng-form name="dodajTodo" class="form" >
+							<div class="input-group">
+									<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
 							<input  class="form-control" required type="text"  ng-model="vm.title" name="vm.title" placeholder="Vnesi naslov dogodek"/> 
+							</div>
+							<div class="input-group">
+									<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
 							<textarea  class="form-control" required type="text"  ng-model="vm.opis" name="vm.opis" placeholder="Vnesi opis"> </textarea>
+							</div>
 							  
-						   
+							<div class="input-group">
+									<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
 							<input class="form-control" required type="datetime-local"  ng-model="vm.start" name="datum"/>
+							</div>
 						   
 						</ng-form>
 			</div>

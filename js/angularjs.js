@@ -462,7 +462,14 @@
 
             backgroundColor: 'transparent',
              pieHole: 0.4,
-             legend: { position: 'bottom'}
+             legend: { position: 'bottom'},
+             titleTextStyle: {
+              color: 'white'
+          }, legend: {
+            textStyle: {
+                color: 'white'
+            }
+        }
 
           };
 
@@ -518,7 +525,14 @@
 
       backgroundColor: 'transparent',
       pieHole: 0.4,
-      legend: { position: 'bottom'}
+      legend: { position: 'bottom'},
+      titleTextStyle: {
+       color: 'white'
+   }, legend: {
+     textStyle: {
+         color: 'white'
+     }
+ }
     };
 
 
@@ -553,7 +567,15 @@
           
                 backgroundColor: 'transparent',
                 pieHole: 0.4,
-                legend: { position: 'bottom'}
+                legend: { position: 'bottom'},
+                titleTextStyle: {
+                 color: 'white'
+             }, legend: {
+               textStyle: {
+                   color: 'white'
+               }
+           }
+                
               };
               $http.get("php/getGrafMonthAndYear.php?widget="+vm.widget) //POSODOBI ZGODOVINO
               .then(function (res) {
@@ -699,9 +721,10 @@ var widget_id=$attrs.widget;
 
             $http.get("https://newsapi.org/v1/articles?source=" + vm.source + "&sortBy=" + vm.order + "&apiKey=8fb771b1531b4b4b990a84eb12b46f0e")
               .then(function (res) {
-                //  console.log(res.data["articles"][0]["title"]);
+                  
 
                 vm.novice = res.data["articles"];
+                vm.source=res.data["source"];
               }, function (error) {
                 if (error.data["code"] == "sourceUnavailableSortedBy") {
                   vm.error = "Izbrana razvrstitev novic ni navoljo prosimo uredite pod Nastavitve->uredi"
@@ -1145,6 +1168,7 @@ vm.izbrano=true;
             $(element).hover(function(){
                 // on mouseenter
                 $(element).tooltip('show');
+                
             }, function(){
                 // on mouseleave
                 $(element).tooltip('hide');

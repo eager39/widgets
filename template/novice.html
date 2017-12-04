@@ -1,7 +1,8 @@
 <div class="overflow">
   
-  <h1>{{vm.error}}</h1>
+  <h1>{{vm.error}}</h1> <div id="izvornovice">{{vm.source}}</div>
 <div ng-repeat="item in vm.novice" class="media">
+ 
     <div ng-show="vm.datum">{{item.publishedAt | date : 'dd MMMM yyyy HH mm ss Z'}}</div>
     <div ng-show="vm.slika" class="media-left media-middle"> 
       <a ng-href="{{item.url}}">

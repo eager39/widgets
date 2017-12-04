@@ -4,8 +4,8 @@ $(document).ready(function(){
 
 	
 	//setTimeout(function(){ 	$('[data-toggle="tooltip"]').tooltip(); }, 200);
-
-	$("body").niceScroll();
+	//$('[data-toggle="tooltip"]').tooltip();
+//	$("body").niceScroll();
 	$(".gridster-item").hide();
 /*	$(".navbar").css("opacity", "0");
 
