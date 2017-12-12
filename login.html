@@ -3,7 +3,7 @@
                    
                   
                              <!-- PRIJAVA PRIJAVA PRIJAVA PRIJAVA -->
-                             <div class="modalCon">
+                            <!--
                                  <form class="form-horizontal" id="prijava" name="prijava" ng-submit="vm.prijava()" role="form">
                                      <div class="form-group">
                                          <label class="control-label col-sm-3" for="email">E-Pošta:</label>
@@ -43,8 +43,53 @@
                                          <a ui-sref="register">Registracija</a>
                                      </div>
                                    
-                                 </form>
-                             </div><!-- KONEC TAB PRIJAVA -->
+                                 </form>-->
+                                 <div id="logintitle">NADZORNA PLOŠČA</div>
+                                 <div class="loginspace">
+                                    <form class="form-horizontal" id="prijava" name="prijava" ng-submit="vm.prijava()" role="form">
+                                        <div class="form-group">
+                                            
+                                            
+                                                <input class="form-control" name="email" ng-change="vm.reset()" ng-model="vm.email" placeholder="Vnesi elektronski naslov" required="" type="email">
+                                            
+                                        </div>
+                                        <div class="form-group">
+                                            
+                                           
+                                                <input class="form-control" name="password" ng-change="vm.reset()" ng-model="vm.password" placeholder="Vnesi geslo" required="" type="password">
+                                           
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="pwd">Zapomni si geslo:</label>
+                                          
+                                                <input  name="cookie" ng-change="vm.reset()" ng-model="vm.cookie" type="checkbox">
+                                            
+                                        </div>
+                                        <div class="alert alert-danger" ng-if="vm.error">
+                                            {{vm.error}}
+                                        </div>
+                                        <div class="alert alert-success" id="uspesnoReg" style="display:none;">
+                                            Registracija je bila uspešna! Zdaj se lahko prijavite.
+                                        </div>
+                                      
+                                        
+                                        <div
+                                       
+                                        vc-recaptcha
+                                        key="'6LdW2jUUAAAAAJZxrQHMJiIYot5ge4La96eZIoxn'"
+                                        ng-model="vm.captchaRes"
+                                        on-create="setWidgetId(widgetId)"
+                                        
+                                    ></div>
+                                           
+                                           
+                                       
+                                      
+                                    </form>
+                                     <button class="btn btn-default" id="prijavaBtn"  ng-disabled="vm.error " type="submit">Prijava</button>
+                                     <button class="btn btn-default" id="registerBtn"><a ui-sref="register">Registracija</a></button> 
+                                 </div>
+                            
                          </div>
                          
                            
