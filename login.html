@@ -44,9 +44,9 @@
                                      </div>
                                    
                                  </form>-->
-                                 <div id="logintitle">NADZORNA PLOŠČA</div>
+                                 <div id="logintitle">Nadzorna plošča</div>
                                  <div class="loginspace">
-                                    <form class="form-horizontal" id="prijava" name="prijava" ng-submit="vm.prijava()" role="form">
+                                    <form class="form-horizontal" id="prijava" name="prijava"  role="form">
                                         <div class="form-group">
                                             
                                             
@@ -86,8 +86,8 @@
                                        
                                       
                                     </form>
-                                     <button class="btn btn-default" id="prijavaBtn"  ng-disabled="vm.error " type="submit">Prijava</button>
-                                     <button class="btn btn-default" id="registerBtn"><a ui-sref="register">Registracija</a></button> 
+                                     <button class="btn btn-default" id="prijavaBtn"  ng-disabled="vm.error " ng-click="vm.prijava()">Prijava</button>
+                                     <button class="btn btn-default" id="registerBtn"  ui-sref="register">Registracija</button> 
                                  </div>
                             
                          </div>

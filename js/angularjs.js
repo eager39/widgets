@@ -447,7 +447,7 @@
     $http.get("php/getGrafMonthAndYear.php?widget="+vm.widget)
       .then(function (res) {
         vm.zgodovina = res.data;
-        
+        console.log(vm.zgodovina);
       });
 
 

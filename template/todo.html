@@ -28,19 +28,19 @@
 <div ng-if="vm.editEnabled" id="grafinput">
   <ng-form name="dodajTodo" class="form" >
       <div class="input-group">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+          <span class="input-group-addon"><i class="glyphicon glyphicon-tasks"></i></span>
       <input name="" class="form-control input-sm" required type="text" maxlength="20"  ng-model="vm.name" placeholder="Vnesi delo">
        </div>
        <div class="input-group">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-    <select class="form-control input-sm" ng-model="vm.level">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-signal"></i></span>
+    <select class="form-control input-sm" data-toggle="tooltip" tooltip data-html="true" data-placement="bottom" title="Pomembnost dela!" ng-model="vm.level">
         <option class="bg-success" value="1">1</option>
         <option  class="bg-info" value="2">2</option>
         <option class="bg-warning" value="3">3</option>
         <option class="bg-danger" value="4">4</option>
       </select> </div>
       <div class="input-group">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+          <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
        <input class="form-control input-sm" required type="datetime-local"  ng-model="vm.date" >
       </div>
        

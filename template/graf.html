@@ -2,7 +2,7 @@
 
 <div id="graf" ng-hide="vm.graf" >
   
-    <select  class="form-control input-sm" id="zgoGraf" ng-change="vm.whenZgoSelected()" required ng-model="vm.izberiZgo" ng-model-options="{ updateOn: 'change', debounce: { change: 0 } }" ng-options="x.mesec group by x.leto for x in vm.zgodovina">
+    <select  class="form-control input-sm" id="zgoGraf" ng-change="vm.whenZgoSelected()" required ng-model="vm.izberiZgo" ng-disabled="!vm.zgodovina.length" ng-model-options="{ updateOn: 'change', debounce: { change: 0 } }" ng-options="x.mesec group by x.leto for x in vm.zgodovina">
       
        </select>
 <div google-chart chart="myChartObject" style="height:100%; width:100%;"></div>
@@ -41,17 +41,17 @@
 </div>
 
 <div ng-if="vm.editEnabled" id="grafinput">
-  <ng-form  class="form" name="grafInput"  >
+  <ng-form  class="form" name="grafInput" novalidate >
       <div class="input-group">
-      <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span> 
+      <span class="input-group-addon"><i class="glyphicon glyphicon-euro"></i></span> 
          <input  class="form-control input-sm"  required type="text"  ng-model="vm.znesek" name="znesek" placeholder="Vnesi znesek"> 
       </div>
       <div class="input-group">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span> 
-    <input class="form-control input-sm" required type="date"  ng-model="vm.date" name="datum">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span> 
+    <input class="form-control input-sm" required type="date"  ng-model="vm.date" name="datum"  data-toggle="tooltip" tooltip data-html="true" data-placement="bottom" title="Kategorija porabe!">
       </div>
       <div class="input-group">
-          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span> 
+          <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span> 
     <input class="form-control input-sm" required type="text"  ng-model="vm.izberiVrsto" name="vrsta">
 
       </div>
