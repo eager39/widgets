@@ -189,6 +189,8 @@
     };
     vm.registracija = function () {
 
+      if(vm.email && vm.newPass && vm.confPass ){
+
       if (vm.captchaRes2 != "") {
         $http.get("php/preveriCaptcho.php?response=" + vm.captchaRes2)
           .then(function (res) {
@@ -239,6 +241,10 @@
       } else {
         vm.error = "Reši captcho!";
       }
+    }else{
+     
+      vm.error="Izpolni vse!";
+    }
 
 
     };

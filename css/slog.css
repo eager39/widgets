@@ -48,12 +48,17 @@ background-repeat: no-repeat;
 	bottom: 0;
 	right: 0;
 }
+#regBtn{
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+}
 #logintitle{
 	width: 50%;
 	height: auto;
 	margin: auto;
 	text-align: center;
-	margin-top:10%; 
+	margin-top:100px; 
 	font-size: 4vh;
 }
 @media (max-width: 600px) {

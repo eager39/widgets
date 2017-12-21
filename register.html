@@ -1,8 +1,9 @@
-<div class="modalCon" ng-controller="LoginRegisterController as vm">
-    <form class="form-horizontal" id="register" name="regForm" ng-submit="vm.registracija()" role="form">
+<div id="logintitle">Registracija</div>
+<div class="loginspace" ng-controller="LoginRegisterController as vm">
+    <form class="form-horizontal" id="register" name="regForm"  role="form">
         <div class="form-group" ng-class="{'has-error has-feedback': regForm.userEmail.$invalid && regForm.userEmail.$dirty, 'has-success has-feedback': regForm.userEmail.$valid}">
-            <label class="control-label col-sm-3" for="email">E-Pošta:</label>
-            <div class="col-sm-8">
+            
+            
                 <input class="form-control" id="email2" name="userEmail" ng-change="vm.checkpass()" ng-model="vm.email" placeholder="Vnesi elektronski naslov" required="" type="email">
                 <div ng-if="regForm.userEmail.$dirty" ng-messages="regForm.userEmail.$error">
                     <div ng-message="required">
@@ -12,11 +13,11 @@
                         Prosim popravite vaš naslov!
                     </div>
                 </div>
-            </div>
+           
         </div>
         <div class="form-group" ng-class="{'has-error has-feedback': regForm.newPassword.$invalid && regForm.newPassword.$dirty, 'has-success has-feedback': regForm.newPassword.$valid}">
-            <label class="control-label col-sm-3" for="pwd">Geslo:</label>
-            <div class="col-sm-8">
+            
+            
                 <input class="form-control" id="pwd1" name="newPassword" ng-change="vm.checkpass()" ng-minlength="3" ng-model="vm.newPass" placeholder="Vnesi geslo" required="" type="password">
                 <div ng-if="regForm.newPassword.$dirty" ng-messages="regForm.newPassword.$error">
                     <div ng-message="minlength">
@@ -26,18 +27,18 @@
                         Geslo je obvezno!
                     </div>
                 </div>
-            </div>
+            
         </div>
         <div class="form-group" ng-class="{'has-error has-feedback':vm.newPass != vm.confPass, 'has-success has-feedback': vm.newPass == vm.confPass && regForm.confirmPassword.$valid}">
-            <label class="control-label col-sm-3" for="pwd">Ponovite geslo:</label>
-            <div class="col-sm-8">
+           
+           
                 <input class="form-control" id="pwd2" name="confirmPassword" ng-change="vm.checkpass()" ng-minlength="3" ng-model="vm.confPass" placeholder="Ponovite geslo" required="" type="password">
                 <div ng-messages="regForm.confirmPassword.$error">
                     <div ng-if="vm.newPass!=vm.confPass">
                         Gesli se ne ujemata!
                     </div>
                 </div>
-            </div>
+            
         </div>
         <div class="alert alert-danger" ng-if="vm.error">
             {{vm.error}}
@@ -48,7 +49,7 @@
         <div class="alert alert-success" id="uspesnoReg" ng-show="vm.uspeh">
             Registracija je bila uspešna! Zdaj se lahko prijavite.
         </div>
-        <div class="modal-footer">
+       
         <div
        
         vc-recaptcha
@@ -57,7 +58,8 @@
         on-create="setWidgetId(widgetId)"
         
     ></div>
-            <button class="btn btn-default" ng-disabled="regForm.$invalid || vm.nomatch || vm.neuspeh" type="submit">Registracija</button>
-        </div>
+            
+      
     </form>
+    <button class="btn btn-default" id="regBtn" ng-disabled="regForm.$invalid || vm.nomatch || vm.neuspeh" ng-click="vm.registracija()">Registracija</button>
 </div>
