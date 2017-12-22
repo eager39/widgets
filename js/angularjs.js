@@ -252,10 +252,10 @@
 
     vm.prijava = function () {
 
-   //   if (vm.captchaRes != "") {
-     //   $http.get("php/preveriCaptcho.php?response=" + vm.captchaRes)
-     //     .then(function (res) {
-
+      if (vm.captchaRes != "") {
+       $http.get("php/preveriCaptcho.php?response=" + vm.captchaRes)
+          .then(function (res) {
+            if(vm.email && vm.password){
            // if (res.data.success) {
               if(vm.cookie){
                 var now = new Date(),
@@ -302,11 +302,13 @@
          //     vm.error = res.data["error-codes"][0];
          //     vcRecaptchaService.reload(0);
          //   }
-
-        //  });
-     // } else {
-     //   vm.error = "Reši captcho!";
-   //   }
+              }else{
+                vm.error = "Izpolni vse!";
+              }
+          });
+      } else {
+       vm.error = "Reši captcho!";
+     }
 
 
     };
