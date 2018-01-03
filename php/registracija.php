@@ -5,9 +5,5 @@ include 'baza/model.php';
   $repeatpassword = $_POST["password2"];
   $func = new userFunc();
   $result = $func->registracija($email, $password);
-  if ($result) {
-   echo $result;
-  } else {
-    echo $result;
-  }   
+  echo $result;
 ?>

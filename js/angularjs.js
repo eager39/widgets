@@ -17,7 +17,9 @@
     var register = {
       name: 'register',
       url: '/register',
-      templateUrl: 'register.html'
+      templateUrl: 'register.html',
+      controller:'LoginRegisterController',
+      controllerAs:'vm'
     }
     var test = {
       name: 'test',
@@ -204,13 +206,11 @@
                 PostService.Post(url, data)
                   .then(function (res) {
                     if (res.data == "exist") {
-                      vcRecaptchaService.reload(1);
-                     
-                      vm.neuspeh = "Uporabnik s to e-pošto že obstaja!";
-
+                      vm.error = "Uporabnik s to e-pošto že obstaja!";
+                       vcRecaptchaService.reload(1);
                     } else if (res.data) {
                       
-                      vm.neuspeh = false;
+                      vm.error = false;
                       vm.uspeh = true;
                       $timeout(function(){
                       $state.go("login");
@@ -218,13 +218,12 @@
                       vcRecaptchaService.reload(1);
                       
                     } else {
-                      vm.neuspeh = true;
+
                       vcRecaptchaService.reload(1);
                     }
                   });
               } else {
                 vm.uspeh = false;
-                vm.neuspeh = true;
                 vcRecaptchaService.reload(1);
               }
             } else {
