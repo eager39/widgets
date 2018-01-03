@@ -5,8 +5,8 @@
         <div class="form-group">
             <input class="form-control" id="email2" name="userEmail"  ng-model="vm.email" 
             placeholder="Vnesi elektronski naslov"
-             required="" type="email">
-            <div ng-if="regForm.userEmail.$dirty" ng-messages="regForm.userEmail.$error">
+            required="" type="email">
+            <div  ng-messages="regForm.userEmail.$error">
                 <div ng-message="required">
                     Elektronski naslov je obvezen!
                 </div>
