@@ -17,9 +17,10 @@
         </div>
 
         <div class="form-group">
-            <input class="form-control" id="pwd1" name="newPassword" ng-change="vm.checkpass()" ng-minlength="3" ng-model="vm.newPass"
-                placeholder="Vnesi geslo" required="" type="password">
-            <div ng-if="regForm.newPassword.$dirty" ng-messages="regForm.newPassword.$error">
+            <input class="form-control" id="pwd1" name="newPassword" ng-change="vm.checkpass()"
+             ng-minlength="3" ng-model="vm.newPass"
+             placeholder="Vnesi geslo" required="" type="password">
+            <div ng-messages="regForm.newPassword.$error">
                 <div ng-message="minlength">
                     Vnesite vsaj 8 znakov
                 </div>
