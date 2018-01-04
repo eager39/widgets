@@ -190,17 +190,12 @@
       $scope.widgetId = widgetId;
     };
     vm.registracija = function () {
-
       if(vm.email && vm.newPass && vm.confPass ){
-
-      if (vm.captchaRes2 != "") {
-        $http.get("php/preveriCaptcho.php?response=" + vm.captchaRes2)
-          .then(function (res) {
-
+        if (vm.captchaRes2 != "") {
+          $http.get("php/preveriCaptcho.php?response=" + vm.captchaRes2)
+           .then(function (res) {
             if (res.data.success) {
-
               if (vm.newPass == vm.confPass) {
-  
                 var url = "php/registracija.php";
                 var data = "email=" + vm.email + "&password=" + vm.newPass + "&password2=" + vm.confPass;
                 PostService.Post(url, data)
@@ -209,16 +204,13 @@
                       vm.error = "Uporabnik s to e-pošto že obstaja!";
                        vcRecaptchaService.reload(1);
                     } else if (res.data) {
-                      
                       vm.error = false;
                       vm.uspeh = true;
                       $timeout(function(){
                       $state.go("login");
                     },2000);
                       vcRecaptchaService.reload(1);
-                      
                     } else {
-
                       vcRecaptchaService.reload(1);
                     }
                   });
@@ -230,32 +222,22 @@
               vm.error = res.data["error-codes"][0];
               vcRecaptchaService.reload(1);
             }
-
-
-
           });
-
-
-
       } else {
         vm.error = "Reši captcho!";
       }
     }else{
-     
       vm.error="Izpolni vse!";
     }
-
-
     };
 
 
     vm.prijava = function () {
-
       if (vm.captchaRes != "") {
        $http.get("php/preveriCaptcho.php?response=" + vm.captchaRes)
           .then(function (res) {
             if(vm.email && vm.password){
-           // if (res.data.success) {
+            if (res.data.success) {
               if(vm.cookie){
                 var now = new Date(),
                 // this will set the expiration to 12 months
@@ -264,22 +246,10 @@
                   expires: exp
                 });
               }
-              /*
-              $http({
-                method: "POST",
-                url: "php/prijava.php",
-                data:"email=" + vm.email + "&password=" + vm.password,
-                headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded'
-                }
-              })
-              */
               var url = "php/prijava.php";
               var data = "email=" + vm.email + "&password=" + vm.password;
               PostService.Post(url, data)
                 .then(function (res) {
-
-
                   if (res.data == "1") {
                     $state.go("home");
                   } else {
@@ -290,17 +260,12 @@
                       vm.error = "Napačno geslo!"
                       vcRecaptchaService.reload(0);
                     }
-
                   }
-
                 });
-
-          //  } else {
-
-
-         //     vm.error = res.data["error-codes"][0];
-         //     vcRecaptchaService.reload(0);
-         //   }
+            } else {
+              vm.error = res.data["error-codes"][0];
+              vcRecaptchaService.reload(0);
+            }
               }else{
                 vm.error = "Izpolni vse!";
               }
@@ -308,8 +273,6 @@
       } else {
        vm.error = "Reši captcho!";
      }
-
-
     };
     vm.reset = function () {
       vm.error = null;
