@@ -29,10 +29,10 @@
                 </div>
             </div>
         </div>
-
         <div class="form-group">
-            <input class="form-control" id="pwd2" name="confirmPassword" ng-change="vm.checkpass()" ng-minlength="3" ng-model="vm.confPass"
-                placeholder="Ponovite geslo" required="" type="password">
+            <input class="form-control" id="pwd2" name="confirmPassword" ng-change="vm.checkpass()"
+             ng-minlength="8" ng-model="vm.confPass"
+             placeholder="Ponovite geslo" required="" type="password">
             <div ng-messages="regForm.confirmPassword.$error">
                 <div ng-if="vm.newPass!=vm.confPass">
                     Gesli se ne ujemata!
@@ -52,5 +52,5 @@
 
 
     </form>
-    <button class="btn btn-default" id="regBtn" ng-disabled="regForm.$invalid || vm.nomatch || vm.neuspeh" ng-click="vm.registracija()">Registracija</button>
+    <button class="btn btn-default" id="regBtn" ng-disabled="regForm.$invalid || vm.nomatch" ng-click="vm.registracija()">Registracija</button>
 </div>
