@@ -43,7 +43,6 @@ class userFunc
         $q = $this->conn->query("SELECT * FROM users WHERE email='$email'");
         if (mysqli_num_rows($q) == 1)
             {
-            
             $row = mysqli_fetch_object($q);
             $preveri = password_verify($password,$row->password);
             if ($preveri)
@@ -177,13 +176,12 @@ class userFunc
           session_start();
         $array = [];
         $q = $this->conn->query("SELECT DISTINCT DATE_FORMAT(`datum`,'%M')  as mesec, year(datum) as leto,month(datum) as mesec_id FROM `poraba` INNER JOIN poraba_list on poraba_list.id=poraba.poraba_list where poraba_list.widget='$widget'  GROUP BY `datum`");
-       // $array[]= (object) ['mesec' =>"Trenutni mesec",'leto'=>date('Y'),"mesec_id"=>date('m')];
+    
         $test= new stdClass();
         $test->custom="Trenutni mesec";
         $test->leto=date('Y');
         $test->mesec_id=date('m');
         $test->mesec=date('F');
-       // $array[]=$test;
         while ($row = mysqli_fetch_assoc($q))
             {
             $array[] = $row;
@@ -332,7 +330,11 @@ class userFunc
                         if ($source->option == "source")
                             {
                             $source->source_option = [];
-                            $q3 = $this->conn->query("SELECT *,source_type.name as typeName,sources.name as sourceName FROM sources INNER JOIN source_type ON sources.type = source_type.id_source_type  WHERE dropdown_options_id=" . $source->id);
+                            $q3 = $this->conn->query("SELECT *,source_type.name as typeName,
+                            sources.name as sourceName
+                             FROM sources 
+                            INNER JOIN source_type ON sources.type = source_type.id_source_type
+                              WHERE dropdown_options_id=" . $source->id);
                             while ($row4 = mysqli_fetch_object($q3))
                                 {
                                 array_push($source->source_option, $row4);

@@ -48,8 +48,9 @@
     <div class="loginspace">
         <form class="form-horizontal" id="prijava" name="prijava" role="form">
             <div class="form-group">
-                <input class="form-control" name="email" ng-change="vm.reset()" ng-model="vm.email" placeholder="Vnesi elektronski naslov"
-                    required="" type="email">
+                <input class="form-control" name="email" ng-change="vm.reset()" ng-model="vm.email"
+                 placeholder="Vnesi elektronski naslov"
+                 required="" type="email">
             </div>
             <div class="form-group">
                 <input class="form-control" name="password" ng-change="vm.reset()" ng-model="vm.password" placeholder="Vnesi geslo" required=""
@@ -64,7 +65,7 @@
             </div>
             <div vc-recaptcha key="'6LdW2jUUAAAAAJZxrQHMJiIYot5ge4La96eZIoxn'" ng-model="vm.captchaRes" on-create="setWidgetId(widgetId)"></div>
         </form>
-        <button class="btn btn-default" id="prijavaBtn" ng-disabled="vm.error " ng-click="vm.prijava()">Prijava</button>
+        <button class="btn btn-default" id="prijavaBtn" ng-disabled="vm.error || prijava.$invalid " ng-click="vm.prijava()">Prijava</button>
         <button class="btn btn-default" id="registerBtn" ui-sref="register">Registracija</button>
     </div>
 

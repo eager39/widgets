@@ -214,10 +214,10 @@ text-align: center;
 /* VREME WIDGET KONEC */
 
 #izvornovice{
-	position: fixed;
+	
 	text-transform: capitalize;
 	font-size: 2vh;
-	margin-top:-20px; 
+	margin-top:0px; 
 	margin-left:10px; 
 	
 

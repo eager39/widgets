@@ -240,7 +240,6 @@
             if (res.data.success) {
               if(vm.cookie){
                 var now = new Date(),
-                // this will set the expiration to 12 months
                 exp = new Date(now.getFullYear(), now.getMonth()+1, now.getDate());
                 $cookies.put('forever', vm.email,{
                   expires: exp
@@ -356,14 +355,13 @@
             $http.get("php/getSlika.php?id="+slika.data.results[0].photos[0].photo_reference)
 
            .then(function(slika){
-           //  console.log(slika.data);
-              vm.test=slika.data;
+              vm.slika=slika.data;
               
            });
           },function(error){
             $http.get("php/getGenericPhoto.php")
             .then(function(slika){
-              vm.test=slika.data;
+              vm.slika=slika.data;
             });
           });
           
@@ -373,10 +371,10 @@
        //   });
         
           if(angular.isDefined(vm.kraj)){
-          $http.get("http://api.openweathermap.org/data/2.5/weather?q=" + vm.kraj + "&units=metric&APPID=7aca27cc40dfc3d5208fc94b6afda6db&lang=sl")
+          $http.get("http://api.openweathermap.org/data/2.5/weather?q=" + vm.kraj +
+           "&units=metric&APPID=7aca27cc40dfc3d5208fc94b6afda6db&lang=sl")
             .then(function (vreme) {
             
-             console.log(vreme.data);
                 vm.vreme = vreme.data;
                 vm.mesto = vm.vreme['name'];
                 vm.ikona="owf owf-"+vm.vreme['weather'][0]['id']+" owf-5x";
@@ -393,8 +391,7 @@
 
             }, function error(vreme) {
               if (vreme.data.cod == "404") {
-                vm.mesto = "Mesto ne obstaja gtfo";
-                alert("haha");
+                vm.mesto = "Mesto ne obstaja";
               }
              });
             }
@@ -417,7 +414,6 @@
     $http.get("php/getGrafMonthAndYear.php?widget="+vm.widget)
       .then(function (res) {
         vm.zgodovina = res.data;
-        console.log(vm.zgodovina);
       });
 
 
@@ -604,7 +600,7 @@
                
                 $rootScope.poraba = res.data;
                 vm.currentPage = 0;
-                vm.pageSize = 3;
+                vm.pageSize = 7;
                 vm.stevilo = [];
 
 
@@ -636,7 +632,7 @@
           
           $rootScope.poraba = res.data;
           vm.currentPage = 0;
-          vm.pageSize = 3;
+          vm.pageSize = 7;
           vm.stevilo = [];
 
 
@@ -689,10 +685,9 @@ var widget_id=$attrs.widget;
          
         if(angular.isDefined(vm.source)){
 
-            $http.get("https://newsapi.org/v1/articles?source=" + vm.source + "&sortBy=" + vm.order + "&apiKey=8fb771b1531b4b4b990a84eb12b46f0e")
+            $http.get("https://newsapi.org/v1/articles?source=" + vm.source + "&sortBy="
+             + vm.order + "&apiKey=8fb771b1531b4b4b990a84eb12b46f0e")
               .then(function (res) {
-                  
-
                 vm.novice = res.data["articles"];
                 vm.source=res.data["source"];
               }, function (error) {
@@ -738,11 +733,6 @@ var widget_id=$attrs.widget;
     vm.shraniNovaDela = function (choices) {
 
       var delo = {};
-
-    
-      
-      
-      
       delo.delo = vm.name;
       delo.deadline = vm.date;
       
@@ -766,9 +756,7 @@ var widget_id=$attrs.widget;
                 vm.todo = res.data;
                 vm.todo = todoUntil.Until(vm.todo);
               }); //good old copy paste
-  
           });
-
        }else{
        vm.napaka="Izpolni vse!";
        }
@@ -879,7 +867,6 @@ var widget_id=$attrs.widget;
 
     };
     vm.deleteDogodek = function (dogodek) {
-     
       var url = "php/deleteDogodek.php";
       var data = "id=" + dogodek.id_event;
       PostService.Post(url, data)
@@ -889,10 +876,7 @@ var widget_id=$attrs.widget;
               vm.dogodki = res.data;
               dogodek.title = null;
               dogodek.opis = null;
-
               dogodek.start = null;
-
-
             }); //good old copy paste
         });
     };
@@ -918,8 +902,6 @@ var widget_id=$attrs.widget;
       $http.get("php/listWidgetTypes.php")
         .then(function (res) {
           vm.widgetTypes = res.data;
-         
-
         });
 
        
