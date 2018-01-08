@@ -109,17 +109,13 @@ class userFunc
                         }
                              if ($row2->inputType == "dropdown_news")
                         {
-                       
-                        
-                         
                                  $row->config->$key->source_option = [];
-                                $q3 = $this->conn->query("SELECT id_source,sorting,sources.name,sources.type,source_type.name as typeName,sources.name as sourceName FROM sources INNER JOIN source_type ON sources.type = source_type.id_source_type  WHERE dropdown_options_id=14");
+                                $q3 = $this->conn->query("SELECT id_source,sorting,sources.name,sources.type,source_type.name as typeName,
+                                sources.name as sourceName FROM sources INNER JOIN source_type ON sources.type = source_type.id_source_type");
                                 while ($row4 = mysqli_fetch_object($q3))
                                     {
                                     array_push($row->config->$key->source_option, $row4);
-                                    }
-                                
-                            
+                                    } 
                         }
                     }
                 $row->config->$key->value = $value;
@@ -291,7 +287,6 @@ class userFunc
         }
     function deleteWidget($id)
         {
-        $this->conn->query("DELETE FROM todo WHERE widget=$id"); //evno done :D
         $query = $this->conn->query("DELETE FROM widgets WHERE id_widget=$id");
         return mysqli_affected_rows($this->conn->vrni_link());
         }

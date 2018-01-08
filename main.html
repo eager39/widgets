@@ -19,7 +19,7 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a ui-sref="test">Domov</a></li>
+              
             </ul>
             <ul class="nav navbar-nav navbar-right" ng-controller="NastavitveController as vm">
             <li>
@@ -78,13 +78,19 @@
                                     <h1 ng-if="widgets.length == 0 || widgets=='error'">DODAJ WIDGETE</h1>
                                     <h1 ng-if="widgets.length &gt; 0">Skrij/Pokaži</h1>
                                     <ul ng-hide="widgets=='error'" class="list-group" ng-repeat="item in widgets track by $index">
-                                        <li class="list-group-item" ng-class="{'list-group-item-success':item.active == 1,'list-group-item-danger':item.active == 0}">
-                                            <label class="widgetLab"><span aria-hidden="true" class="glyphicon glyphicon-eye-close" ng-if="item.active == 0 ? true : false"></span>
+                                        <li class="list-group-item" 
+                                        ng-class="{'list-group-item-success':item.active == 1,'list-group-item-danger':item.active == 0}">
+                                            <label class="widgetLab"><span aria-hidden="true"
+                                                 class="glyphicon glyphicon-eye-close" ng-if="item.active == 0 ? true : false"></span>
                                             <span aria-hidden="true" class="glyphicon glyphicon-eye-open" ng-if="item.active == 1 ? true : false"></span>
-                                                <input class="skrijCh" data-toggle="toggle" ng-checked="item.active == 0 ? true : false" ng-click="vm.prikaziskrij(item)" type="checkbox"> {{item.ImeWidget}}</label>
+                                                <input class="skrijCh" data-toggle="toggle" ng-checked="item.active == 0 ? true : false"
+                                                 ng-click="vm.prikaziskrij(item)" type="checkbox"> {{item.ImeWidget}}</label>
                                             </li>
-                                    </ul><button class="btn" data-placement="right" data-toggle="tooltip" ng-class="vm.buttonClass()" ng-click="vm.toggleButton();"
-                                     ng-if="widgets.length &gt; 0" title="Omogoči premikanje in spremembo velikosti!" type="button">{{vm.buttonName}}</button>
+                                    </ul>
+                                    <button class="btn" data-placement="right"
+                                    data-toggle="tooltip" ng-class="vm.buttonClass()" ng-click="vm.toggleButton();"
+                                    ng-if="widgets.length &gt; 0" title="Omogoči premikanje in spremembo velikosti!"
+                                    type="button">{{vm.buttonName}}</button>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="dodajTab" style="padding-top:15px">
@@ -162,7 +168,8 @@
 
                                                
                                                 <div class="form-group" ng-if="value.inputType == 'dropdown'">
-                                                    <label>{{value.name}}</label> <select class="form-control" ng-init="vm.options2[value.field] = value.value" ng-model="vm.options2[value.field]">
+                                                    <label>{{value.name}}</label> <select class="form-control" 
+                                                    ng-init="vm.options2[value.field] = value.value" ng-model="vm.options2[value.field]">
                                                         <option ng-repeat="opt in value.options" value="{{opt.option}}">
                                                             {{opt.name}}
                                                         </option>

@@ -420,37 +420,32 @@
       var trenutniMesec = $filter('date')(mesec, 'MM');
     
     vm.whenZgoSelected = function () {
-   
-      $http.get("php/getPoraba.php?mesec=" + vm.izberiZgo.mesec_id + "&leto=" + vm.izberiZgo.leto + "&widget="+vm.widget+"&tMesec="+trenutniMesec)
+      $http.get("php/getPoraba.php?mesec=" + vm.izberiZgo.mesec_id + "&leto=" + vm.izberiZgo.leto +
+       "&widget=" + vm.widget + "&tMesec=" + trenutniMesec)
         .then(function (res) {
           $scope.myChartObject.options = {
             'title': "Poraba za mesec " + vm.izberiZgo.mesec + " " + vm.izberiZgo.leto,
-
             backgroundColor: 'transparent',
-             pieHole: 0.4,
-             legend: { position: 'bottom'},
-             titleTextStyle: {
+            pieHole: 0.4,
+            legend: {
+              position: 'bottom'
+            },
+            titleTextStyle: {
               color: 'white'
-          }, legend: {
-            textStyle: {
+            },
+            legend: {
+              textStyle: {
                 color: 'white'
+              }
             }
-        }
-
           };
-
-
           if (res.data != "vnesi podatke") {
             $scope.myChartObject.data = res.data;
-           
           } else {
             $scope.myChartObject.data = [
               ["ni podatkov", "ni podatkov"]
             ];
           }
-
-
-
         });
     };
 
@@ -1069,7 +1064,6 @@ vm.izbrano=true;
       } else {
         item.active = 1;
       }
-    
       var url = "php/widgetVisUpdate.php";
       var data = "id=" + item.id_widget + "&active=" + item.active;
       PostService.Post(url, data)
