@@ -329,6 +329,7 @@ text-align: center;
 #grafPoraba{
 	height: 100%;
 	width: 100%;
+	overflow:auto;
 }
 #grafinput{
 	height:100px;
@@ -382,7 +383,7 @@ text-align: center;
 }
 
 .menu-item {
-	padding-top:15px;
+	padding-top:19px;
 	padding-bottom:15px;
 	display: block;
 }

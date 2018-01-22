@@ -32,7 +32,7 @@
  
 
   <ul class="list-group">
-    <li class="list-group-item" ng-repeat="item in poraba  | limitTo:vm.pageSize:vm.currentPage*vm.pageSize">Znesek: {{item.znesek}} Datum: {{item.datum}} Vrsta:{{item.vrsta}}<span ng-click="vm.delPoraba(item)">DELETE</span></li>
+    <li class="list-group-item" ng-repeat="item in poraba  | limitTo:vm.pageSize:vm.currentPage*vm.pageSize | orderBy:item.datum ">Znesek: {{item.znesek}} Datum: {{item.datum}} Vrsta:{{item.vrsta}}<span class="glyphicon glyphicon-trash" ng-click="vm.delPoraba(item)"></span></li>
 </ul>
 
 

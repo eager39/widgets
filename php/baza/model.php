@@ -214,7 +214,7 @@ class userFunc
         {
         session_start();
         $array = [];
-        $q = $this->conn->query("SELECT znesek,vrsta,datum,id_poraba FROM poraba   INNER JOIN poraba_list on poraba_list.id=poraba.poraba_list where poraba_list.widget='$widget' and month(datum)='$mesec'  ORDER BY id_poraba DESC");
+        $q = $this->conn->query("SELECT znesek,vrsta,datum,id_poraba FROM poraba   INNER JOIN poraba_list on poraba_list.id=poraba.poraba_list where poraba_list.widget='$widget' and month(datum)='$mesec'   ORDER BY datum,vrsta DESC");
         while ($row = mysqli_fetch_assoc($q))
             {
             $array[] = $row;

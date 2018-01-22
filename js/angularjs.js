@@ -103,7 +103,7 @@
        console.log(res.data);
        var a=0;
         for(var i=0;i<res.data["sources"].length;i++){
-          asd[a]={};                                                   ADDING NEWS SOURCES AUTOMATICLY FROM API
+          asd[a]={};                                               //    ADDING NEWS SOURCES AUTOMATICLY FROM API
           asd[a]["name"]=res.data["sources"][i].name;
           asd[a]["id"]=res.data["sources"][i].id;
           asd[a]["category"]=res.data["sources"][i].category;
@@ -628,6 +628,7 @@
 
           
           $rootScope.poraba = res.data;
+          console.log($rootScope.poraba);
           vm.currentPage = 0;
           vm.pageSize = 7;
           vm.stevilo = [];

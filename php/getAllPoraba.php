@@ -5,6 +5,6 @@ include 'baza/model.php';
     $mesec=$_GET["mesec"];
     $func = new userFunc();
     $result = $func->getAllPoraba($widget,$mesec);  
-    echo json_encode($result);
+   echo json_encode($result);
 
 ?>
