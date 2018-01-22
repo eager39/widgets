@@ -233,50 +233,53 @@
 
 
     vm.prijava = function () {
-      if (vm.captchaRes != "") {
-       $http.get("php/preveriCaptcho.php?response=" + vm.captchaRes)
-          .then(function (res) {
-            if(vm.email && vm.password){
-            if (res.data.success) {
-              if(vm.cookie){
-                var now = new Date(),
-                exp = new Date(now.getFullYear(), now.getMonth()+1, now.getDate());
-                $cookies.put('forever', vm.email,{
-                  expires: exp
-                });
+        if (vm.email && vm.password) {
+          var url = "php/prijava.php";
+          var data = "email=" + vm.email + "&password=" + vm.password;
+          PostService.Post(url, data)
+            .then(function (res) {
+              if (res.data == "1") {
+                if (vm.captchaRes != "") {
+                  $http.get("php/preveriCaptcho.php?response=" + vm.captchaRes)
+                    .then(function (res) {
+                      if (res.data.success) {
+                        if (vm.cookie) {
+                          var now = new Date(),
+                            exp = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
+                          $cookies.put('forever', vm.email, {
+                            expires: exp
+                          });
+                        }
+                        $state.go("home");
+
+                      } else {
+                        vm.error = res.data["error-codes"][0];
+                        vcRecaptchaService.reload(0);
+                      }
+                    });
+                } else {
+                  vm.error = "Izpolni captcho!";
+                }
+              } else {
+                if (res.data == "3") {
+                  vm.error = "Uporabnik ne obstaja!";
+                  //   vcRecaptchaService.reload(0);
+                } else {
+                  vm.error = "Napačno geslo!"
+                  //   vcRecaptchaService.reload(0);
+                }
               }
-              var url = "php/prijava.php";
-              var data = "email=" + vm.email + "&password=" + vm.password;
-              PostService.Post(url, data)
-                .then(function (res) {
-                  if (res.data == "1") {
-                    $state.go("home");
-                  } else {
-                    if (res.data == "3") {
-                      vm.error = "Uporabnik ne obstaja!";
-                      vcRecaptchaService.reload(0);
-                    } else {
-                      vm.error = "Napačno geslo!"
-                      vcRecaptchaService.reload(0);
-                    }
-                  }
-                });
-            } else {
-              vm.error = res.data["error-codes"][0];
-              vcRecaptchaService.reload(0);
-            }
-              }else{
-                vm.error = "Izpolni vse!";
-              }
-          });
-      } else {
-       vm.error = "Reši captcho!";
-     }
-    };
+            });
+
+        } else {
+          vm.error = "Izpolni vse!";
+        }
+      };
+           
+  
     vm.reset = function () {
       vm.error = null;
     }
-
   });
 
   app.controller("WidgetController", function ($http, $rootScope, $scope, PostService) {
@@ -285,7 +288,6 @@
     $http.get("php/widgetinit.php")
       .then(function (res2) {
         $rootScope.widgets = res2.data;
-      
       });
 
     function updateXYpos() {
